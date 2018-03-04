@@ -2,7 +2,7 @@ defmodule ReversiWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", ReversiWeb.RoomChannel
+  channel "games:*", ReversiWeb.GamesChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

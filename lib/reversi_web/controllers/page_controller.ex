@@ -21,4 +21,8 @@ def home(conn, _params) do
   end
 end
 
+def game(con, params) do
+  render conn, "game.html", game: params["game"]
+end
+
 end

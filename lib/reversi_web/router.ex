@@ -33,6 +33,7 @@ defmodule ReversiWeb.Router do
 
     get "/", PageController, :index
     get "/home", PageController, :home
+    get "/game/:game", PageController, :game
     resources "/users", UserController
     post "/session", SessionController, :create
     delete "/session", SessionController, :delete
