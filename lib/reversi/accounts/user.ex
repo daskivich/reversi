@@ -2,6 +2,7 @@ defmodule Reversi.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Reversi.Play.Game
 
   schema "users" do
     field :color_primary, :string
@@ -10,6 +11,11 @@ defmodule Reversi.Accounts.User do
     field :icon_primary, :string
     field :icon_secondary, :string
     field :name, :string
+
+    has_many :player_one_games, Game, foreign_key: :player_one_id
+    has_many :player_two_games, Game, foreign_key: :player_two_id
+    has_many :player_one_opponents, through: [:player_two_games, :player_one]
+    has_many :player_two_opponents, through: [:player_one_games, :player_two]
 
     timestamps()
   end
