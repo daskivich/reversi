@@ -50,7 +50,7 @@ exports.config = {
     },
     sass: {
       options: {
-        includepaths: [node_modules/bootstrap/scss],
+        includePaths: ["node_modules/bootstrap/scss"],
         precision: 8
       }
     }
