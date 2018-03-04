@@ -1,2 +1,26 @@
 /* This file is for your main application css. */
 @import "bootstrap";
+
+.bp {
+  background-color: #6a9bc3;
+}
+
+.bp:hover {
+  background: #386890;
+}
+
+.bs {
+  background-color: DarkGrey;
+}
+
+.bs:hover {
+  background: Grey;
+}
+
+.bd {
+  background-color: LightCoral;
+}
+
+.bd:hover {
+  background: FireBrick;
+}

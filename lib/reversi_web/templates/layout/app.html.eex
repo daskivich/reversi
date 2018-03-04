@@ -7,12 +7,22 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Reversi!</title>
+    <title>Hello, Reversi!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
-  <body>
+  <body class="alice-blue">
     <div class="container">
+      <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+        <h1 class="navbar-brand mb-0">Reversi</h1>
+        <%= if @current_user do %>
+          <%= link "home", to: page_path(@conn, :home), class: "nav-item nav-link" %>
+          <%= link "my profile", to: user_path(@conn, :edit, @current_user.id), class: "nav-item nav-link" %>
+          <%= link "user profiles", to: user_path(@conn, :index), class: "nav-item nav-link" %>
+          <%= link "log out", to: "/session", method: :delete, class: "nav-item nav-link" %>
+          <%= @current_user.name %>
+        <% end %>
+      </nav>
 
       <%= if get_flash(@conn, :info) do %>
         <p class="alert alert-info text-center border-0" role="alert">
