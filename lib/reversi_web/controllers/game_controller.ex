@@ -19,7 +19,7 @@ defmodule ReversiWeb.GameController do
       {:ok, game} ->
         conn
         |> put_flash(:info, "Game created successfully.")
-        |> redirect(to: game_path(conn, :show, game))
+        |> redirect(to: page_path(conn, :home))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end

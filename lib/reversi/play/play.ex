@@ -84,6 +84,8 @@ defmodule Reversi.Play do
   """
   def list_games do
     Repo.all(Game)
+    |> Repo.preload(:player_one)
+    |> Repo.preload(:player_two)
   end
 
   @doc """
@@ -122,9 +124,18 @@ defmodule Reversi.Play do
 
   """
   def create_game(attrs \\ %{}) do
-    %Game{}
-    |> Game.changeset(attrs)
-    |> Repo.insert()
+    # prepare new game to be inserted into db
+    game = %Game{} |> Game.changeset(attrs)
+
+    # insert new game into db and get response with new game
+    { resp, game } = Repo.insert(game)
+
+    # create new starting state
+    newState = %{ :game_id => game.id, :r4c4 => 2, :r4c5 => 1, :r5c4 => 1, :r5c5 => 2 }
+    create_state(newState)
+
+    # return response with game
+    { resp, game }
   end
 
   @doc """

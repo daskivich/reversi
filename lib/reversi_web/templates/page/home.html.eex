@@ -1,5 +1,4 @@
 <%= if @current_user do %>
-
   <%= render ReversiWeb.GameView, "index.html",
     Map.put(assigns, :current_user, @current_user)
     |> Map.put(:games, @games) %>
@@ -22,9 +21,7 @@
     </div>
 
     <div class="form-group">
-      <%= submit "create new game", class: "btn btn-primary" %>
+      <%= submit "new game", class: "btn btn-primary btn-block bp border-0" %>
     </div>
   <% end %>
-
-
 <% end %>

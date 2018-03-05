@@ -1,6 +1,27 @@
 /* This file is for your main application css. */
 @import "bootstrap";
 
+.card-body {
+  background-color: #b5cde1;
+}
+
+.white {
+  color: White;
+}
+
+.alice-blue {
+  background-color: AliceBlue;
+}
+
+.incomplete {
+  background-color: MistyRose;
+}
+
+th {
+  background-color: #b5cde1;
+  color: White;
+}
+
 .bp {
   background-color: #6a9bc3;
 }

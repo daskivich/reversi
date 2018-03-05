@@ -1,30 +1,56 @@
 <%= if @current_user do %>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title text-center mb-2">Games</h2>
+        <table class="table table-striped mb-0 border-0">
+          <thead>
+            <tr>
+              <th class="border-0">id</th>
+              <th class="border-0">player one</th>
+              <th class="border-0">player two</th>
+              <th class="border-0">status</th>
+              <th class="border-0"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= for game <- @games do %>
+            <tr>
+              <td class="border-0"><%= game.id %></td>
+              <td class="border-0"><%= game.player_one.name %></td>
 
-<h2>Listing Games</h2>
+              <td class="border-0">
+                <%= if game.player_two do %>
+                  <%= game.player_two.name %>
+                <% else %>
+                  none
+                <% end %>
+              </td>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Is over</th>
+              <td class="border-0">
+                <%= if game.is_over do %>
+                  completed
+                <% else %>
+                  <%= if game.player_two do %>
+                    in progress
+                  <% else %>
+                    waiting for second player
+                  <% end %>
+                <% end %>
+              </td>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for game <- @games do %>
-    <tr>
-      <td><%= game.is_over %></td>
-
-      <td class="text-right">
-        <span><%= link "Show", to: game_path(@conn, :show, game), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: game_path(@conn, :edit, game), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: game_path(@conn, :delete, game), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
-<span><%= link "New Game", to: game_path(@conn, :new) %></span>
-
+              <td class="text-right border-0">
+                <span><%= link "Show", to: game_path(@conn, :show, game), class: "btn btn-default btn-xs" %></span>
+                <span><%= link "Edit", to: game_path(@conn, :edit, game), class: "btn btn-default btn-xs" %></span>
+                <span><%= link "Delete", to: game_path(@conn, :delete, game), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 <% end %>
