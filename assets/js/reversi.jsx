@@ -76,7 +76,7 @@ class Reversi extends React.Component {
   // waits a second before executing to allow previously waiting calls
   // to complete their execution
   concede() {
-    this.channel.push("concede").receive("ok", this.gotView.bind(this))
+    this.channel.push("concede").receive("ok", this.gotView.bind(this));
 
     // setTimeout(
     //   () => this.channel.push("concede").receive("ok", this.gotView.bind(this)),

@@ -3,6 +3,7 @@ defmodule Reversi.Play.Game do
   import Ecto.Changeset
 
   alias Reversi.Accounts.User
+  alias Reversi.Play.State
 
   schema "games" do
     field :is_over, :boolean, default: false

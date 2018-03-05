@@ -1,3 +1,5 @@
+<%= if @current_user do %>
+
 <h2>Listing Games</h2>
 
 <table class="table">
@@ -24,3 +26,5 @@
 </table>
 
 <span><%= link "New Game", to: game_path(@conn, :new) %></span>
+
+<% end %>

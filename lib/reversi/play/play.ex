@@ -7,6 +7,7 @@ defmodule Reversi.Play do
   alias Reversi.Repo
 
   alias Reversi.Play.Game
+  alias Reversi.Play.State
 
   # returns the client view of the given game
   def client_view(game_id) do
@@ -43,8 +44,8 @@ defmodule Reversi.Play do
       color_one: p1.color_primary,
       score_one: get_score(vals, 1),
       player_two: p2.id,
-      icon_two: icon_two
-      color_two: color_two
+      icon_two: icon_two,
+      color_two: color_two,
       score_two: get_score(vals, 2),
       player_ones_turn: s.player_ones_turn,
       is_over: g.is_over
@@ -53,7 +54,7 @@ defmodule Reversi.Play do
 
   def get_score(vals, player) do
     vals
-    |> Enum.reduce(0, fn(v, acc) -> if v == player do acc + 1 end)
+    |> Enum.reduce(0, fn(v, acc) -> if v == player do acc + 1 end end)
   end
 
   #
@@ -68,7 +69,8 @@ defmodule Reversi.Play do
       select: s
     query = from q in query,
       order_by: q.inserted_at
-    Repo.last(query)
+    Ecto.Query.last(query)
+    |> Repo.one()
   end
 
   @doc """

@@ -1,6 +1,9 @@
 defmodule ReversiWeb.PageController do
   use ReversiWeb, :controller
 
+  alias Reversi.Play
+  alias Reversi.Play.Game
+
   def index(conn, _params) do
     render conn, "index.html"
   end
@@ -9,12 +12,11 @@ defmodule ReversiWeb.PageController do
   # otherwise redirect to the log-in page (see index above)
   def home(conn, _params) do
     user_id = get_session(conn, :user_id)
+    games = Play.list_games()
 
     if user_id do
-  #    tasks = TaskTracker.Work.list_tasks()
-  #    changeset = TaskTracker.Work.change_task(%TaskTracker.Work.Task{})
-  #    users = TaskTracker.Accounts.list_users()
-      render conn, "home.html"#, tasks: tasks, changeset: changeset, users: users
+      changeset = Play.change_game(%Game{})
+      render conn, "home.html", changeset: changeset, games: games
     else
       conn
       |> redirect(to: page_path(conn, :index))

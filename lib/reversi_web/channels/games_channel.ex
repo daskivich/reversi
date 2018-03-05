@@ -1,6 +1,8 @@
 defmodule ReversiWeb.GamesChannel do
   use ReversiWeb, :channel
 
+  alias Reversi.Play
+
   def join("games:" <> game_id, payload, socket) do
     if authorized?(payload) do
       game = Play.get_game(game_id)
@@ -10,7 +12,7 @@ defmodule ReversiWeb.GamesChannel do
       |> assign(:game, game)
       |> assign(:game_id, game_id)
       |> assign(:state, state)
-      {:ok, %{"join" => id, "game" => Play.client_view(game_id)}, socket}
+      {:ok, %{"join" => game_id, "game" => Play.client_view(game_id)}, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
@@ -19,7 +21,7 @@ defmodule ReversiWeb.GamesChannel do
   # returns an updated view state when a "select" message is received
   def handle_in("select", %{"index" => ii}, socket) do
     game = Play.select(socket.assigns[:game], ii)
-    Memory.GameBackup.save(socket.assigns[:name], game)
+#    Memory.GameBackup.save(socket.assigns[:name], game)
     socket = assign(socket, :game, game)
     {:reply, {:ok, %{ "game" => Play.client_view(game)}}, socket}
   end
