@@ -11,7 +11,6 @@ defmodule Reversi.Accounts.User do
     field :icon_primary, :string
     field :icon_secondary, :string
     field :name, :string
-
     has_many :player_one_games, Game, foreign_key: :player_one_id
     has_many :player_two_games, Game, foreign_key: :player_two_id
     has_many :player_one_opponents, through: [:player_two_games, :player_one]

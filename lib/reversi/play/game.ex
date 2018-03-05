@@ -8,6 +8,7 @@ defmodule Reversi.Play.Game do
     field :is_over, :boolean, default: false
     belongs_to :player_one, User
     belongs_to :player_two, User
+    has_many :states, State, foreign_key: :game_id
 
     timestamps()
   end

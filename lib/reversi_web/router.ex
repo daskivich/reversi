@@ -41,7 +41,8 @@ defmodule ReversiWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", ReversiWeb do
-  #   pipe_through :api
-  # end
+  scope "/api/v1", ReversiWeb do
+    pipe_through :api
+    resources "/states", StateController, except: [:new, :edit]
+  end
 end
