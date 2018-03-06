@@ -6,7 +6,8 @@ defmodule ReversiWeb.GameController do
 
   def index(conn, _params) do
     games = Play.list_games()
-    render(conn, "index.html", games: games)
+    changeset = Play.change_game(%Game{})
+    render(conn, "index.html", games: games, changeset: changeset)
   end
 
   def new(conn, _params) do
@@ -37,6 +38,7 @@ defmodule ReversiWeb.GameController do
   end
 
   def update(conn, %{"id" => id, "game" => game_params}) do
+    IO.puts "entered game_controller/update"
     game = Play.get_game!(id)
 
     case Play.update_game(game, game_params) do

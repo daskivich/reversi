@@ -17,7 +17,7 @@
 
     <div class="form-group">
       <%= hidden_input f, :player_one_id, value: @current_user.id %>
-      <%= error_tag f, :is_over %>
+      <%= error_tag f, :player_one_id %>
     </div>
 
     <div class="form-group">
