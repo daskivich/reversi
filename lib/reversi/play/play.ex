@@ -52,6 +52,8 @@ defmodule Reversi.Play do
 
     IO.write("game over: ")
     IO.puts(game.is_over)
+    IO.write("selected value: ")
+    IO.puts(get_val(current_state, index))
     IO.write("current player: ")
     IO.puts(if current_state.player_ones_turn, do: game.player_one.id, else: game.player_two.id)
     IO.write("current user: ")
@@ -59,8 +61,11 @@ defmodule Reversi.Play do
     IO.write("is current user's turn: ")
     IO.puts(is_current_users_turn(game, current_state, current_user_id))
 
-    if !game.is_over && is_current_users_turn(game, current_state, current_user_id) do
+    if !game.is_over && get_val(current_state, index) == 0 && is_current_users_turn(game, current_state, current_user_id) do
       indexes_to_flip = get_indexes_to_flip(index, player, current_state)
+
+      IO.write("indexes to flip: ")
+      IO.puts(Enum.count(indexes_to_flip))
 
       if Enum.count(indexes_to_flip) < 1 do
         game
@@ -87,10 +92,8 @@ defmodule Reversi.Play do
     # get indexes of all 0's in current_state
     # concatenate list of indexes to flip for each 0
     # if list is not empty, return true, else return false
-    flippable_indexes = []
-
-    get_zero_indexes(current_state)
-    |> Enum.each(fn(i) -> Enum.concat(flippable_indexes, get_indexes_to_flip(i, player, current_state)) end)
+    flippable_indexes = get_zero_indexes(current_state)
+    |> Enum.flat_map(fn(i) -> get_indexes_to_flip(i, player, current_state) end)
 
     Enum.count(flippable_indexes) > 0
   end
@@ -199,6 +202,15 @@ defmodule Reversi.Play do
     { row, col } = get_row_col_indexes(index)
     opponent = get_opponent(player)
 
+    IO.write("selected row: ")
+    IO.puts(row)
+    IO.write("selected col: ")
+    IO.puts(col)
+    IO.write("current player: ")
+    IO.puts(player)
+    IO.write("current opponent: ")
+    IO.puts(opponent)
+
     []
     |> Enum.concat(get_east_to_flip(player, opponent, row, col, current_state))
     |> Enum.concat(get_south_to_flip(player, opponent, row, col, current_state))
@@ -211,9 +223,15 @@ defmodule Reversi.Play do
     if col == 6 || col == 7 do
       []
     else
-      (col + 1)..7
+      east = (col + 1)..7
       |> Enum.map(fn(c) -> get_index(row, c) end)
       |> valid_move(player, opponent, current_state)
+
+      IO.write("east: [")
+      Enum.each(east, fn(i) -> IO.write(i) end)
+      IO.puts("]")
+
+      east
     end
   end
 
@@ -222,9 +240,15 @@ defmodule Reversi.Play do
     if row == 6 || row == 7 do
       []
     else
-      (row + 1)..7
+      south = (row + 1)..7
       |> Enum.map(fn(r) -> get_index(r, col) end)
       |> valid_move(player, opponent, current_state)
+
+      IO.write("south: [")
+      Enum.each(south, fn(i) -> IO.write(i) end)
+      IO.puts("]")
+
+      south
     end
   end
 
@@ -233,10 +257,16 @@ defmodule Reversi.Play do
     if col == 0 || col == 1 do
       []
     else
-      0..(col - 1)
+      west = 0..(col - 1)
       |> Enum.map(fn(c) -> get_index(row, c) end)
       |> Enum.reverse()
       |> valid_move(player, opponent, current_state)
+
+      IO.write("west: [")
+      Enum.each(west, fn(i) -> IO.write(i) end)
+      IO.puts("]")
+
+      west
     end
   end
 
@@ -245,14 +275,24 @@ defmodule Reversi.Play do
     if row == 0 || row == 1 do
       []
     else
-      0..(row - 1)
+      north = 0..(row - 1)
       |> Enum.map(fn(r) -> get_index(r, col) end)
       |> Enum.reverse()
       |> valid_move(player, opponent, current_state)
+
+      IO.write("north: [")
+      Enum.each(north, fn(i) -> IO.write(i) end)
+      IO.puts("]")
+
+      north
     end
   end
 
   def valid_move([first | rest], player, opponent, current_state) do
+    IO.puts("entering valid_move()")
+    IO.write("first: ")
+    IO.puts(first)
+
     if get_val(current_state, first) != opponent do
       []
     else
@@ -261,17 +301,26 @@ defmodule Reversi.Play do
   end
 
   def valid_rest(player, opponent, rest, possible_flips, current_state) do
+    IO.puts("entering valid_move()")
+
     if rest == [] do
+      IO.puts("rest: []")
       []
     else
       [head | tail] = rest
 
+      IO.write("head: ")
+      IO.puts(head)
+
       val = get_val(current_state, head)
+
+      IO.write("val: ")
+      IO.puts(val)
 
       cond do
         val == 0 -> []
         val == player -> possible_flips
-        val == opponent -> valid_rest(player, opponent, tail, List.insert_at(possible_flips, 0, head), current_state)
+        val == opponent -> valid_rest(player, opponent, tail, Enum.concat(possible_flips, [head]), current_state)
       end
     end
   end
