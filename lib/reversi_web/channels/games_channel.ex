@@ -19,11 +19,10 @@ defmodule ReversiWeb.GamesChannel do
   end
 
   # returns an updated view state when a "select" message is received
-  def handle_in("select", %{"index" => ii}, socket) do
-    game = Play.select(socket.assigns[:game], ii)
-#    Memory.GameBackup.save(socket.assigns[:name], game)
+  def handle_in("select", %{"grid_index" => gi, "current_user_id" => cuid}, socket) do
+    game = Play.select(socket.assigns[:game], gi, cuid)
     socket = assign(socket, :game, game)
-    {:reply, {:ok, %{ "game" => Play.client_view(game)}}, socket}
+    {:reply, {:ok, %{ "game" => Play.client_view(game.id)}}, socket}
   end
 
 
