@@ -48,6 +48,16 @@ defmodule Reversi.Play do
   def select(game, index, current_user_id) do
     current_state = get_current_state(game.id)
     player = if current_state.player_ones_turn, do: 1, else: 2
+    current_user_id = String.to_integer(current_user_id)
+
+    IO.write("game over: ")
+    IO.puts(game.is_over)
+    IO.write("current player: ")
+    IO.puts(if current_state.player_ones_turn, do: game.player_one.id, else: game.player_two.id)
+    IO.write("current user: ")
+    IO.puts(current_user_id)
+    IO.write("is current user's turn: ")
+    IO.puts(is_current_users_turn(game, current_state, current_user_id))
 
     if !game.is_over && is_current_users_turn(game, current_state, current_user_id) do
       indexes_to_flip = get_indexes_to_flip(index, player, current_state)
@@ -71,12 +81,6 @@ defmodule Reversi.Play do
     else
       game
     end
-
-    attrs = get_new_state_attrs(current_state, [], index, player)
-    create_state(attrs)
-    current_state = get_current_state(game.id)
-    game
-
   end
 
   def has_next_move(player, current_state) do
