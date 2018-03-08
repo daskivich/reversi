@@ -11,6 +11,8 @@ defmodule Reversi.Play do
 
   # returns the client view of the given game
   def client_view(game_id) do
+    IO.puts("entered Play.client_view()")
+
     g = get_game(game_id)
     s = get_current_state(game_id)
     p1 = g.player_one
@@ -39,15 +41,15 @@ defmodule Reversi.Play do
 
   def get_score(vals, player) do
     vals
-    |> Enum.reduce(0, fn(v, acc) -> if v == player do acc + 1 end end)
+    |> Enum.reduce(0, fn(v, acc) -> if v == player, do: acc + 1, else: acc end)
   end
 
   #
   def select(game, index, current_user_id) do
     current_state = get_current_state(game.id)
+    player = if current_state.player_ones_turn, do: 1, else: 2
 
-    if !game.is_over and is_current_users_turn(game, current_state, current_user_id) do
-      player = if current_state.player_ones_turn, do: 1, else: 2
+    if !game.is_over && is_current_users_turn(game, current_state, current_user_id) do
       indexes_to_flip = get_indexes_to_flip(index, player, current_state)
 
       if Enum.count(indexes_to_flip) < 1 do
@@ -58,13 +60,10 @@ defmodule Reversi.Play do
         create_state(attrs)
         current_state = get_current_state(game.id)
 
-        # TODO: check to see if next player has a move
-        # TODO: check to see if the game is over
-
-        if game_over(current_state) do
-          # set is_over = true for current game
-          attrs = get_new_game_attrs(game)
-          game = get_game(game.id)
+        cond do
+          has_next_move(get_opponent(player), current_state) -> :ok
+          has_next_move(player, current_state) -> update_state(current_state, %{player_ones_turn: (if player == 1, do: true, else: false)})
+          true -> update_game(game, %{is_over: true})
         end
 
         game
@@ -72,6 +71,29 @@ defmodule Reversi.Play do
     else
       game
     end
+
+    attrs = get_new_state_attrs(current_state, [], index, player)
+    create_state(attrs)
+    current_state = get_current_state(game.id)
+    game
+
+  end
+
+  def has_next_move(player, current_state) do
+    # get indexes of all 0's in current_state
+    # concatenate list of indexes to flip for each 0
+    # if list is not empty, return true, else return false
+    flippable_indexes = []
+
+    get_zero_indexes(current_state)
+    |> Enum.each(fn(i) -> Enum.concat(flippable_indexes, get_indexes_to_flip(i, player, current_state)) end)
+
+    Enum.count(flippable_indexes) > 0
+  end
+
+  def get_zero_indexes(current_state) do
+    index_string_list()
+    |> Enum.filter(fn(i) -> get_val(current_state, i) == 0 end)
   end
 
   def get_new_state_attrs(current_state, indexes_to_flip, selected, player) do
@@ -81,21 +103,15 @@ defmodule Reversi.Play do
 
     attrs
     |> Map.put(String.to_atom(selected), player)
-    |> Map.put(:plater_ones_turn, !player_ones_turn)
-    |> Map.put(:game_id, game_id)
+    |> Map.put(:plater_ones_turn, !current_state.player_ones_turn)
+    |> Map.put(:game_id, current_state.game_id)
   end
 
   def is_current_users_turn(game, current_state, current_user_id) do
-    cond do
-      current_state.player_ones_turn and game.player_one.id == current_user_id -> true
-      !current_state.player_ones_turn and game.player_two.id == current_user_id -> true
-      _ -> false
-    end
+    (current_state.player_ones_turn && game.player_one.id == current_user_id) || (!current_state.player_ones_turn && game.player_two.id == current_user_id)
   end
 
-  def get_current_state_attrs(current_state) do
-    attrs = %{}
-
+  def index_string_list() do
     ["r1c1", "r1c2", "r1c3", "r1c4", "r1c5", "r1c6", "r1c7", "r1c8",
       "r2c1", "r2c2", "r2c3", "r2c4", "r2c5", "r2c6", "r2c7", "r2c8",
       "r3c1", "r3c2", "r3c3", "r3c4", "r3c5", "r3c6", "r3c7", "r3c8",
@@ -104,9 +120,75 @@ defmodule Reversi.Play do
       "r6c1", "r6c2", "r6c3", "r6c4", "r6c5", "r6c6", "r6c7", "r6c8",
       "r7c1", "r7c2", "r7c3", "r7c4", "r7c5", "r7c6", "r7c7", "r7c8",
       "r8c1", "r8c2", "r8c3", "r8c4", "r8c5", "r8c6", "r8c7", "r8c8"]
-    |> Enum.each(fn(i) -> Map.put(attrs, i, get_val(current_state, i)) end)
+  end
 
-    attrs
+  def get_current_state_attrs(current_state) do
+    %{
+      r1c1: get_val(current_state, "r1c1"),
+      r1c2: get_val(current_state, "r1c2"),
+      r1c3: get_val(current_state, "r1c3"),
+      r1c4: get_val(current_state, "r1c4"),
+      r1c5: get_val(current_state, "r1c5"),
+      r1c6: get_val(current_state, "r1c6"),
+      r1c7: get_val(current_state, "r1c7"),
+      r1c8: get_val(current_state, "r1c8"),
+      r2c1: get_val(current_state, "r2c1"),
+      r2c2: get_val(current_state, "r2c2"),
+      r2c3: get_val(current_state, "r2c3"),
+      r2c4: get_val(current_state, "r2c4"),
+      r2c5: get_val(current_state, "r2c5"),
+      r2c6: get_val(current_state, "r2c6"),
+      r2c7: get_val(current_state, "r2c7"),
+      r2c8: get_val(current_state, "r2c8"),
+      r3c1: get_val(current_state, "r3c1"),
+      r3c2: get_val(current_state, "r3c2"),
+      r3c3: get_val(current_state, "r3c3"),
+      r3c4: get_val(current_state, "r3c4"),
+      r3c5: get_val(current_state, "r3c5"),
+      r3c6: get_val(current_state, "r3c6"),
+      r3c7: get_val(current_state, "r3c7"),
+      r3c8: get_val(current_state, "r3c8"),
+      r4c1: get_val(current_state, "r4c1"),
+      r4c2: get_val(current_state, "r4c2"),
+      r4c3: get_val(current_state, "r4c3"),
+      r4c4: get_val(current_state, "r4c4"),
+      r4c5: get_val(current_state, "r4c5"),
+      r4c6: get_val(current_state, "r4c6"),
+      r4c7: get_val(current_state, "r4c7"),
+      r4c8: get_val(current_state, "r4c8"),
+      r5c1: get_val(current_state, "r5c1"),
+      r5c2: get_val(current_state, "r5c2"),
+      r5c3: get_val(current_state, "r5c3"),
+      r5c4: get_val(current_state, "r5c4"),
+      r5c5: get_val(current_state, "r5c5"),
+      r5c6: get_val(current_state, "r5c6"),
+      r5c7: get_val(current_state, "r5c7"),
+      r5c8: get_val(current_state, "r5c8"),
+      r6c1: get_val(current_state, "r6c1"),
+      r6c2: get_val(current_state, "r6c2"),
+      r6c3: get_val(current_state, "r6c3"),
+      r6c4: get_val(current_state, "r6c4"),
+      r6c5: get_val(current_state, "r6c5"),
+      r6c6: get_val(current_state, "r6c6"),
+      r6c7: get_val(current_state, "r6c7"),
+      r6c8: get_val(current_state, "r6c8"),
+      r7c1: get_val(current_state, "r7c1"),
+      r7c2: get_val(current_state, "r7c2"),
+      r7c3: get_val(current_state, "r7c3"),
+      r7c4: get_val(current_state, "r7c4"),
+      r7c5: get_val(current_state, "r7c5"),
+      r7c6: get_val(current_state, "r7c6"),
+      r7c7: get_val(current_state, "r7c7"),
+      r7c8: get_val(current_state, "r7c8"),
+      r8c1: get_val(current_state, "r8c1"),
+      r8c2: get_val(current_state, "r8c2"),
+      r8c3: get_val(current_state, "r8c3"),
+      r8c4: get_val(current_state, "r8c4"),
+      r8c5: get_val(current_state, "r8c5"),
+      r8c6: get_val(current_state, "r8c6"),
+      r8c7: get_val(current_state, "r8c7"),
+      r8c8: get_val(current_state, "r8c8"),
+    }
   end
 
   def get_indexes_to_flip(index, player, current_state) do
@@ -180,10 +262,12 @@ defmodule Reversi.Play do
     else
       [head | tail] = rest
 
-      case get_val(current_state, head) do
-        0 -> []
-        player -> possible_flips
-        opponent -> valid_rest(player, opponent, tail, List.insert_at(possible_flips, 0, head), current_state)
+      val = get_val(current_state, head)
+
+      cond do
+        val == 0 -> []
+        val == player -> possible_flips
+        val == opponent -> valid_rest(player, opponent, tail, List.insert_at(possible_flips, 0, head), current_state)
       end
     end
   end
@@ -281,7 +365,7 @@ defmodule Reversi.Play do
 
   def get_vals(state) do
     s = state
-    vals = [s.r1c1, s.r1c2, s.r1c3, s.r1c4, s.r1c5, s.r1c6, s.r1c7, s.r1c8,
+    [s.r1c1, s.r1c2, s.r1c3, s.r1c4, s.r1c5, s.r1c6, s.r1c7, s.r1c8,
       s.r2c1, s.r2c2, s.r2c3, s.r2c4, s.r2c5, s.r2c6, s.r2c7, s.r2c8,
       s.r3c1, s.r3c2, s.r3c3, s.r3c4, s.r3c5, s.r3c6, s.r3c7, s.r3c8,
       s.r4c1, s.r4c2, s.r4c3, s.r4c4, s.r4c5, s.r4c6, s.r4c7, s.r4c8,

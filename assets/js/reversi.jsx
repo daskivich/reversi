@@ -61,13 +61,12 @@ class Reversi extends React.Component {
   // uses closure to pass tile index to the channel message
   sendSelection(index) {
       let i = index;
-      let u = current_user_id;
+      let u = window.currentUserID;
       let c = this.channel;
       let gv = this.gotView.bind(this);
 
       return function (ev) {
-        c.push("select", { grid_index: i, current_user_id: window.currentUserId})
-          .receive("ok", gv);
+        c.push("select", { grid_index: i, current_user_id: u }).receive("ok", gv);
       }
   }
 
