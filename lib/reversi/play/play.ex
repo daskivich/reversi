@@ -81,7 +81,7 @@ defmodule Reversi.Play do
           true -> update_game(game, %{is_over: true})
         end
 
-        game
+        get_game(game.id)
       end
     else
       game
