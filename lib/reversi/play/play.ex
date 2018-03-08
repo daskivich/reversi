@@ -212,9 +212,13 @@ defmodule Reversi.Play do
 
     []
     |> Enum.concat(get_east_to_flip(player, opponent, row, col, current_state))
+    |> Enum.concat(get_southeast_to_flip(player, opponent, row, col, current_state))
     |> Enum.concat(get_south_to_flip(player, opponent, row, col, current_state))
+    |> Enum.concat(get_southwest_to_flip(player, opponent, row, col, current_state))
     |> Enum.concat(get_west_to_flip(player, opponent, row, col, current_state))
+    |> Enum.concat(get_northwest_to_flip(player, opponent, row, col, current_state))
     |> Enum.concat(get_north_to_flip(player, opponent, row, col, current_state))
+    |> Enum.concat(get_northeast_to_flip(player, opponent, row, col, current_state))
   end
 
   # gets a list of indexes to flip to the east of the selected row/col
@@ -234,6 +238,20 @@ defmodule Reversi.Play do
     end
   end
 
+  # gets a list of indexes to flip to the southeast of the selected row/col
+  def get_southeast_to_flip(player, opponent, row, col, current_state) do
+    if row == 6 || row == 7 || col == 6 || col == 7 do
+      []
+    else
+      [get_index(row + 1, col + 1), get_index(row + 2, col + 2),
+        get_index(row + 3, col + 3), get_index(row + 4, col + 4),
+        get_index(row + 5, col + 5), get_index(row + 6, col + 6),
+        get_index(row + 7, col + 7)]
+      |> Enum.filter(fn(i) -> !String.contains?(i, "0") && !String.contains?(i, "9") && String.length(i) == 4 end)
+      |> valid_move(player, opponent, current_state)
+    end
+  end
+
   # gets a list of indexes to flip to the south of the selected row/col
   def get_south_to_flip(player, opponent, row, col, current_state) do
     if row == 6 || row == 7 do
@@ -248,6 +266,20 @@ defmodule Reversi.Play do
       IO.puts("]")
 
       south
+    end
+  end
+
+  # gets a list of indexes to flip to the southwest of the selected row/col
+  def get_southwest_to_flip(player, opponent, row, col, current_state) do
+    if row == 6 || row == 7 || col == 0 || col == 1 do
+      []
+    else
+      [get_index(row + 1, col - 1), get_index(row + 2, col - 2),
+        get_index(row + 3, col - 3), get_index(row + 4, col - 4),
+        get_index(row + 5, col - 5), get_index(row + 6, col - 6),
+        get_index(row + 7, col - 7)]
+      |> Enum.filter(fn(i) -> !String.contains?(i, "0") && !String.contains?(i, "9") && String.length(i) == 4 end)
+      |> valid_move(player, opponent, current_state)
     end
   end
 
@@ -269,6 +301,20 @@ defmodule Reversi.Play do
     end
   end
 
+  # gets a list of indexes to flip to the northwest of the selected row/col
+  def get_northwest_to_flip(player, opponent, row, col, current_state) do
+    if row == 0 || row == 1 || col == 0 || col == 1 do
+      []
+    else
+      [get_index(row - 1, col - 1), get_index(row - 2, col - 2),
+        get_index(row - 3, col - 3), get_index(row - 4, col - 4),
+        get_index(row - 5, col - 5), get_index(row - 6, col - 6),
+        get_index(row - 7, col - 7)]
+      |> Enum.filter(fn(i) -> !String.contains?(i, "0") && !String.contains?(i, "9") && String.length(i) == 4 end)
+      |> valid_move(player, opponent, current_state)
+    end
+  end
+
   # gets a list of indexes to flip to the north of the selected row/col
   def get_north_to_flip(player, opponent, row, col, current_state) do
     if row == 0 || row == 1 do
@@ -284,6 +330,20 @@ defmodule Reversi.Play do
       IO.puts("]")
 
       north
+    end
+  end
+
+  # gets a list of indexes to flip to the northeast of the selected row/col
+  def get_northeast_to_flip(player, opponent, row, col, current_state) do
+    if row == 0 || row == 1 || col == 6 || col == 7 do
+      []
+    else
+      [get_index(row - 1, col + 1), get_index(row - 2, col + 2),
+        get_index(row - 3, col + 3), get_index(row - 4, col + 4),
+        get_index(row - 5, col + 5), get_index(row - 6, col + 6),
+        get_index(row - 7, col + 7)]
+      |> Enum.filter(fn(i) -> !String.contains?(i, "0") && !String.contains?(i, "9") && String.length(i) == 4 end)
+      |> valid_move(player, opponent, current_state)
     end
   end
 
