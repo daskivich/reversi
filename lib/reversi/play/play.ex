@@ -105,12 +105,11 @@ defmodule Reversi.Play do
 
   def get_new_state_attrs(current_state, indexes_to_flip, selected, player) do
     attrs = get_current_state_attrs(current_state)
+    enum = Enum.map(indexes_to_flip, fn(i) ->  {String.to_atom(i), player} end)
 
-    Enum.each(indexes_to_flip, fn(i) -> Map.put(attrs, String.to_atom(i), player) end)
-
-    attrs
+    Map.merge(attrs, Map.new(enum))
     |> Map.put(String.to_atom(selected), player)
-    |> Map.put(:plater_ones_turn, !current_state.player_ones_turn)
+    |> Map.put(:player_ones_turn, !current_state.player_ones_turn)
     |> Map.put(:game_id, current_state.game_id)
   end
 
