@@ -34,6 +34,18 @@
   color: #777777;
 }
 
+.darks-turn-info {
+  background-color: #323232;
+  border: thick solid #277714;
+  color: #277714;
+}
+
+.lights-turn-info {
+  background-color: Gainsboro;
+  border: thick solid #277714;
+  color: #277714;
+}
+
 .navbar-styling {
   color: #Gainsboro;
 }
@@ -53,12 +65,20 @@
 //  background-color: #277714;
 }
 
-.btn-success {
-  background-color: #277714;
+.game-over:hover {
+  background: #277714
 }
 
-.btn-success:hover {
-  background: #777777;
+.dark-success:hover {
+    background: #323232;
+}
+
+.light-success:hover {
+  background: Gainsboro;
+}
+
+.btn-success {
+  background-color: #277714;
 }
 
 .btn-info, .btn-info:hover {

@@ -86,7 +86,9 @@ class Reversi extends React.Component {
   }
 
   render() {
-    let status = "dark's turn";
+    let status = "";
+    let dark_info = "col-2 text-center dark-info rounded pt-2 pb-1";
+    let light_info = "col-2 text-center light-info rounded pt-2 pb-1";
 
     if (this.state.is_over) {
       if (this.state.score_one > this.state.score_two) {
@@ -94,29 +96,28 @@ class Reversi extends React.Component {
       } else if (this.state.score_two > this.state.score_one) {
         status = "game over: light wins";
       } else {
-        status = "game over: draw";
+        status = "ended in a draw";
       }
     } else if (!this.state.player_ones_turn) {
-      status = "light's turn";
+      status = "";
+      light_info = "col-2 text-center lights-turn-info rounded pt-2 pb-1";
+    } else {
+      dark_info = "col-2 text-center darks-turn-info rounded pt-2 pb-1";
     }
 
     return (
       <div>
         <div className="row justify-content-center mb-4">
-          <div className="col-2 text-center dark-info rounded pt-2 pb-1">
-            <p className="mb-0 pb-0">
-              <Button className="border-0 middle-grey-color" color={this.state.color_one}>{this.state.name_one}</Button>
-            </p>
+          <div className={dark_info}>
+            <p className="mb-0 pb-0">{this.state.name_one}</p>
             <h1 className="mt-0 pt-0">{this.state.score_one}</h1>
           </div>
-          <div className="col-4 text-center">
-            <p>Game #{this.state.game_id}</p>
+          <div className="col-4 text-center middle-grey-color pt-4">
+            <h2>Game #{this.state.game_id}</h2>
             <p>{status}</p>
           </div>
-          <div className="col-2 text-center light-info rounded pt-2 pb-1">
-            <p className="mb-0 pb-0">
-              <Button className="border-0 middle-grey-color" color={this.state.color_two}>{this.state.name_two}</Button>
-            </p>
+          <div className={light_info}>
+            <p className="mb-0 pb-0">{this.state.name_two}</p>
             <h1 className="mt-0 pt-0">{this.state.score_two}</h1>
           </div>
         </div>
@@ -423,20 +424,26 @@ function Tile(props) {
   let index = ((row - 1) * 8) + (col - 1);
   let val = props.state.vals[index];
 
-  var clr;
+  var class_name;
 
   if (val == 1) {
-    clr = "info";
+    class_name = "cell rounded-circle border-0 btn-info"
   } else if (val == 2) {
-    clr = "warning";
+    class_name = "cell rounded-circle border-0 btn-warning"
   } else {
-    clr = "success";
+    if (props.state.is_over) {
+      class_name = "cell rounded-circle border-0 btn-success game-over"
+    } else if (props.state.player_ones_turn) {
+      class_name = "cell rounded-circle border-0 btn-success dark-success"
+    } else {
+      class_name = "cell rounded-circle border-0 btn-success light-success"
+    }
   }
 
   return (
     <div className="col-1 game-board">
       <div className="spacer"></div>
-      <Button className="cell rounded-circle border-0" color={clr} onClick={props.select(indexString, props.state.current_user_id)}>
+      <Button className={class_name} onClick={props.select(indexString, props.state.current_user_id)}>
       </Button>
     </div>
   );
