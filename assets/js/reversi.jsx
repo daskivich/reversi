@@ -86,7 +86,7 @@ class Reversi extends React.Component {
   }
 
   render() {
-    let status = "light's turn";
+    let status = "dark's turn";
 
     if (this.state.is_over) {
       if (this.state.score_one > this.state.score_two) {
@@ -97,7 +97,7 @@ class Reversi extends React.Component {
         status = "game over: draw";
       }
     } else if (!this.state.player_ones_turn) {
-      status = "dark's turn";
+      status = "light's turn";
     }
 
     return (
