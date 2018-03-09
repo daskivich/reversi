@@ -6,21 +6,46 @@
 //  background-color: #b5cde1;
 }
 
+.dark-color {
+  color: #323232;
+}
+
+.dark-background {
+  background-color: #323232;
+}
+
+.middle-grey-color {
+  color: #777777;
+}
+
 .white {
   color: White;
 }
 
-.tan {
-  background-color: Tan;
+.dark-info {
+  background-color: #323232;
+  border: thick solid #777777;
+  color: #777777;
+}
+
+.light-info {
+  background-color: Gainsboro;
+  border: thick solid #777777;
+  color: #777777;
+}
+
+.navbar-styling {
+  color: #Gainsboro;
 }
 
 .app-background {
-  background-color: DarkGrey;
+  background-color: #323232;
 }
 
 .game-board {
   background-color: #277714;
-  border: medium solid DarkGrey;
+  border: thin solid #323232;
+  border-radius: 5%;
 }
 
 .alice-blue {
@@ -33,32 +58,47 @@
 }
 
 .btn-success:hover {
-  background: DarkGrey;
+  background: #777777;
 }
+
+.btn-info, .btn-info:hover {
+  background-color: #323232;
+}
+
+.btn-warning, .btn-warning:hover {
+  background-color: Gainsboro;
+}
+
+// red: #761428
+// blue: #142876
 
 .incomplete {
   background-color: MistyRose;
 }
 
 th {
-  background-color: #761428;
-  color: White;
+  background-color: #777777;
+  color: Gainsboro;
 }
 
 .bp {
-  background-color: OliveDrab;
+  background-color: #777777;
+  color: Gainsboro;
 }
 
 .bp:hover {
-  background: DarkOliveGreen;
+  background: #142876;
+  color: Gainsboro;
 }
 
 .bs {
-  background-color: DarkGrey;
+  background-color: #777777;
+  color: Gainsboro;
 }
 
 .bs:hover {
-  background: Grey;
+  background: #761428;
+  color: Gainsboro;
 }
 
 .bd {
@@ -70,19 +110,15 @@ th {
 }
 
 .spacer {
-  margin-top: 125%;
+  margin-top: 142.5%;
 }
 
 .cell {
   position: absolute;
-  top: 0;
+  top: 11.5%;
   bottom: 0;
-  left: 0;
+  left: 11%;
   right: 0;
-  width: 95%;
-  height: 95%;
-}
-
-.concede {
-  width: 25%;
+  width: 77.5%;
+  height: 77.5%;
 }
