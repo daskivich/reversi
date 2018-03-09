@@ -2,19 +2,38 @@
 @import "bootstrap";
 
 .card-body {
-  background-color: #b5cde1;
+  background-color: DarkGrey;
+//  background-color: #b5cde1;
 }
 
 .white {
   color: White;
 }
 
-.alice-blue {
+.tan {
+  background-color: Tan;
+}
+
+.app-background {
+  background-color: DarkGrey;
+}
+
+.game-board {
   background-color: #277714;
+  border: medium solid DarkGrey;
+}
+
+.alice-blue {
+  background-color: AliceBlue;
+//  background-color: #277714;
 }
 
 .btn-success {
   background-color: #277714;
+}
+
+.btn-success:hover {
+  background: DarkGrey;
 }
 
 .incomplete {
@@ -22,16 +41,16 @@
 }
 
 th {
-  background-color: #b5cde1;
+  background-color: #761428;
   color: White;
 }
 
 .bp {
-  background-color: #6a9bc3;
+  background-color: OliveDrab;
 }
 
 .bp:hover {
-  background: #386890;
+  background: DarkOliveGreen;
 }
 
 .bs {

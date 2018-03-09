@@ -102,310 +102,319 @@ class Reversi extends React.Component {
 
     return (
       <div>
-        <div className="row">
-          <div className="col text-left">
-            <p>player one</p>
-            <p>{this.state.name_one}</p>
-            <p>color:&nbsp;
-              <Button className="border-0" color={this.state.color_one}></Button>
-            </p>
-            <p>score: {this.state.score_one}</p>
-          </div>
-          <div className="col text-center">
-            <p>Game #{this.state.game_id}</p>
-            <p>{status}</p>
-          </div>
-          <div className="col text-right">
-            <p>player two</p>
-            <p>{this.state.name_two}</p>
-            <p>color:&nbsp;
-              <Button className="border-0" color={this.state.color_two}></Button>
-            </p>
-            <p>score: {this.state.score_two}</p>
-          </div>
-        </div>
-        <div className="container game">
-          <div className="row">
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r1c1"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r1c2"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r1c3"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r1c4"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r1c5"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r1c6"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r1c7"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r1c8"} />
-          </div>
-          <div className="row">
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r2c1"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r2c2"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r2c3"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r2c4"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r2c5"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r2c6"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r2c7"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r2c8"} />
-          </div>
-          <div className="row">
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r3c1"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r3c2"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r3c3"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r3c4"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r3c5"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r3c6"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r3c7"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r3c8"} />
-          </div>
-          <div className="row">
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r4c1"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r4c2"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r4c3"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r4c4"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r4c5"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r4c6"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r4c7"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r4c8"} />
-          </div>
-          <div className="row">
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r5c1"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r5c2"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r5c3"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r5c4"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r5c5"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r5c6"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r5c7"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r5c8"} />
-          </div>
-          <div className="row">
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r6c1"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r6c2"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r6c3"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r6c4"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r6c5"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r6c6"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r6c7"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r6c8"} />
-          </div>
-          <div className="row">
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r7c1"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r7c2"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r7c3"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r7c4"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r7c5"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r7c6"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r7c7"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r7c8"} />
-          </div>
-          <div className="row">
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r8c1"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r8c2"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r8c3"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r8c4"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r8c5"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r8c6"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r8c7"} />
-            <Tile
-              state={this.state}
-              select={this.sendSelection.bind(this)}
-              index={"r8c8"} />
-          </div>
-          <div className="row">
-            <div className="col">
-              <Button className="btn btn-primary btn-block bp border-0" color="warning"
-                onClick={this.concede.bind(this)}>
-                concede
-              </Button>
+        <div className="card border-0">
+          <div className="card-body">
+            <div className="row">
+              <div className="col text-left">
+                <p>player one</p>
+                <p>{this.state.name_one}</p>
+                <p>color:&nbsp;
+                  <Button className="border-0" color={this.state.color_one}></Button>
+                </p>
+                <p>score: {this.state.score_one}</p>
+              </div>
+              <div className="col text-center">
+                <p>Game #{this.state.game_id}</p>
+                <p>{status}</p>
+              </div>
+              <div className="col text-right">
+                <p>player two</p>
+                <p>{this.state.name_two}</p>
+                <p>color:&nbsp;
+                  <Button className="border-0" color={this.state.color_two}></Button>
+                </p>
+                <p>score: {this.state.score_two}</p>
+              </div>
             </div>
           </div>
         </div>
+
+            <div className="row">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c8"} />
+            </div>
+            <div className="row">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c8"} />
+            </div>
+            <div className="row">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c8"} />
+            </div>
+            <div className="row">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c8"} />
+            </div>
+            <div className="row">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c8"} />
+            </div>
+            <div className="row">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c8"} />
+            </div>
+            <div className="row">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c8"} />
+            </div>
+            <div className="row">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c8"} />
+            </div>
+
+        <div className="card border-0">
+          <div className="card-body">
+            <div className="row">
+              <div className="col">
+                <Button className="btn btn-primary btn-block bp border-0" color="warning"
+                  onClick={this.concede.bind(this)}>
+                  concede
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     );
   }
@@ -430,7 +439,7 @@ function Tile(props) {
   }
 
   return (
-    <div className="col-sm border border-dark">
+    <div className="col-sm game-board">
       <div className="spacer"></div>
       <Button className="cell rounded-circle border-0" color={clr} onClick={props.select(indexString, props.state.current_user_id)}>
       </Button>
