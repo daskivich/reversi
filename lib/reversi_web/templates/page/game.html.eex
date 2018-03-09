@@ -1,7 +1,6 @@
 <%= if @current_user do %>
   <div class="row">
     <div class="col">
-      <h1 class="text-center">Game #<%= @game %></h1>
       <script>window.gameName = "<%= @game %>";</script>
       <script>window.currentUserID = "<%= @current_user.id %>";</script>
       <div id="game">Loading...</div>

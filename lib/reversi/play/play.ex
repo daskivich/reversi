@@ -35,7 +35,8 @@ defmodule Reversi.Play do
       color_two: "warning",#color_two,
       score_two: get_score(vals, 2),
       player_ones_turn: s.player_ones_turn,
-      is_over: g.is_over
+      is_over: g.is_over,
+      game_id: game_id
     }
   end
 
@@ -44,7 +45,20 @@ defmodule Reversi.Play do
     |> Enum.reduce(0, fn(v, acc) -> if v == player, do: acc + 1, else: acc end)
   end
 
-  #
+  # returns the updated game for valid conessions
+  def concede(game, current_user_id) do
+    current_state = get_current_state(game.id)
+    current_user_id = String.to_integer(current_user_id)
+
+    if !game.is_over && is_current_users_turn(game, current_state, current_user_id) do
+      update_game(game, %{is_over: true})
+      get_game(game.id)
+    else
+      game
+    end
+  end
+
+  # creates a new state for valid selections, returns the updated game
   def select(game, index, current_user_id) do
     current_state = get_current_state(game.id)
     player = if current_state.player_ones_turn, do: 1, else: 2
