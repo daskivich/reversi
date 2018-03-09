@@ -50,11 +50,29 @@ defmodule Reversi.Play do
     current_state = get_current_state(game.id)
     current_user_id = String.to_integer(current_user_id)
 
-    if !game.is_over && is_current_users_turn(game, current_state, current_user_id) do
+    # can only concede if it's your turn and you're losing
+    current_users_turn = is_current_users_turn(game, current_state, current_user_id)
+    current_player_losing = is_current_player_losing(current_state)
+
+    if !game.is_over && current_users_turn && current_player_losing do
       update_game(game, %{is_over: true})
       get_game(game.id)
     else
       game
+    end
+  end
+
+  def is_current_player_losing(current_state) do
+    vals = get_vals(current_state)
+
+    if current_state.player_ones_turn && get_score(vals, 1) < get_score(vals, 2) do
+      true
+    else
+      if !current_state.player_ones_turn && get_score(vals, 2) < get_score(vals, 1) do
+        true
+      else
+        false
+      end
     end
   end
 
