@@ -13,18 +13,18 @@
   </head>
 
   <body class="app-background">
-    <div class="container">
-      <nav class="navbar navbar-toggleable-md navbar-styling">
-        <h1 class="navbar-brand mb-0">Reversi</h1>
-        <%= if @current_user do %>
-          <%= link "home", to: page_path(@conn, :home), class: "nav-item nav-link" %>
-          <%= link "my profile", to: user_path(@conn, :edit, @current_user.id), class: "nav-item nav-link" %>
-          <%= link "user profiles", to: user_path(@conn, :index), class: "nav-item nav-link" %>
-          <%= link "log out", to: "/session", method: :delete, class: "nav-item nav-link" %>
-          <%= @current_user.name %>
-        <% end %>
-      </nav>
+    <nav class="navbar navbar-toggleable-md navbar-styling mb-2">
+      <h1 class="navbar-brand mb-0 middle-grey-color">Reversi</h1>
+      <%= if @current_user do %>
+        <%= link "home", to: page_path(@conn, :home), class: "nav-item nav-link" %>
+        <%= link "my profile", to: user_path(@conn, :edit, @current_user.id), class: "nav-item nav-link" %>
+        <%= link "user profiles", to: user_path(@conn, :index), class: "nav-item nav-link" %>
+        <%= link "log out", to: "/session", method: :delete, class: "nav-item nav-link" %>
+        <span class="middle-grey-color"><%= @current_user.name %></span>
+      <% end %>
+    </nav>
 
+    <div class="container">
       <%= if get_flash(@conn, :info) do %>
         <p class="alert alert-info text-center border-0" role="alert">
           <%= get_flash(@conn, :info) %>
@@ -40,8 +40,8 @@
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
+    </div>
 
-    </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

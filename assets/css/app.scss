@@ -18,6 +18,22 @@
   color: #777777;
 }
 
+.nav-link {
+  color: #777777;
+}
+
+.nav-link:hover {
+  color: #277714;
+}
+
+.table-styling {
+  background-color: #277714;
+}
+
+.table-row {
+  border: thin solid #323232;
+}
+
 .white {
   color: White;
 }
@@ -70,15 +86,15 @@
 }
 
 .dark-success:hover {
-    background: #323232;
+    background: #323232;//dark
 }
 
 .light-success:hover {
-  background: Gainsboro;
+  background: Gainsboro;//light
 }
 
 .btn-success {
-  background-color: #277714;
+  background-color: #277714;//pool felt green
 }
 
 .btn-info, .btn-info:hover {
@@ -97,8 +113,13 @@
 }
 
 th {
-  background-color: #777777;
+  background-color: #323232;
   color: Gainsboro;
+}
+
+tr {
+  border: thin solid #323232;
+  border-radius: 5px;
 }
 
 .bp {

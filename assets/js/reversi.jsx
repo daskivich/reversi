@@ -87,22 +87,22 @@ class Reversi extends React.Component {
 
   render() {
     let status = "";
-    let dark_info = "col-2 text-center dark-info rounded pt-2 pb-1";
-    let light_info = "col-2 text-center light-info rounded pt-2 pb-1";
+    let dark_info = "col-2 text-center dark-info rounded pt-2 pb-0";
+    let light_info = "col-2 text-center light-info rounded pt-2 pb-0";
 
     if (this.state.is_over) {
       if (this.state.score_one > this.state.score_two) {
-        status = "game over: dark wins";
+        status = "ended in a dark victory";
       } else if (this.state.score_two > this.state.score_one) {
-        status = "game over: light wins";
+        status = "ended in a light victory";
       } else {
         status = "ended in a draw";
       }
     } else if (!this.state.player_ones_turn) {
       status = "";
-      light_info = "col-2 text-center lights-turn-info rounded pt-2 pb-1";
+      light_info = "col-2 text-center lights-turn-info rounded pt-2 pb-0";
     } else {
-      dark_info = "col-2 text-center darks-turn-info rounded pt-2 pb-1";
+      dark_info = "col-2 text-center darks-turn-info rounded pt-2 pb-0";
     }
 
     return (
@@ -110,15 +110,15 @@ class Reversi extends React.Component {
         <div className="row justify-content-center mb-4">
           <div className={dark_info}>
             <p className="mb-0 pb-0">{this.state.name_one}</p>
-            <h1 className="mt-0 pt-0">{this.state.score_one}</h1>
+            <h1 className="mt-0 pt-0 mb-0 pb-0">{this.state.score_one}</h1>
           </div>
-          <div className="col-4 text-center middle-grey-color pt-4">
-            <h2>Game #{this.state.game_id}</h2>
-            <p>{status}</p>
+          <div className="col-4 text-center middle-grey-color pt-3">
+            <h2 className="mb-0">Game #{this.state.game_id}</h2>
+            <p className="mb-0">{status}</p>
           </div>
           <div className={light_info}>
             <p className="mb-0 pb-0">{this.state.name_two}</p>
-            <h1 className="mt-0 pt-0">{this.state.score_two}</h1>
+            <h1 className="mt-0 pt-0 mb-0 pb-0">{this.state.score_two}</h1>
           </div>
         </div>
 

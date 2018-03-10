@@ -1,92 +1,87 @@
 <%= if @current_user do %>
 <div class="row">
   <div class="col">
-    <div class="card">
-      <div class="card-body">
-        <h2 class="card-title text-center mb-2">Games</h2>
-        <table class="table table-striped mb-0 border-0">
-          <thead>
-            <tr>
-              <th class="border-0">id</th>
-              <th class="border-0">player one</th>
-              <th class="border-0">player two</th>
-              <th class="border-0">status</th>
-              <th class="border-0"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <%= for game <- @games do %>
-            <tr>
-              <td class="border-0"><%= game.id %></td>
-              <td class="border-0"><%= game.player_one.name %></td>
+    <table class="table table-striped mb-0 rounded table-styling">
+      <thead>
+        <tr class="rounded">
+          <th class="border-0">game</th>
+          <th class="border-0">player one</th>
+          <th class="border-0">player two</th>
+          <th class="border-0">status</th>
+          <th class="border-0"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for game <- @games do %>
+        <tr>
+          <td class="border-0"><%= game.id %></td>
+          <td class="border-0"><%= game.player_one.name %></td>
 
-              <td class="border-0">
-                <%= if game.player_two do %>
-                  <%= game.player_two.name %>
-                <% else %>
-                  none
-                <% end %>
-              </td>
-
-              <td class="border-0">
-                <%= if game.is_over do %>
-                  completed
-                <% else %>
-                  <%= if game.player_two do %>
-                    in progress
-                  <% else %>
-                    waiting for second player
-                  <% end %>
-                <% end %>
-              </td>
-
-              <td class="text-right border-0">
-                <%= if game.player_two_id == nil do %>
-                  <%= form_for @changeset, game_path(@conn, :update, game.id), [method: :put], fn f -> %>
-                    <% IO.puts game_path(@conn, :update, game.id) %>
-                    <%= if @changeset.action do %>
-                      <div class="alert alert-danger">
-                        <p>Oops, something went wrong! Please check the errors below.</p>
-                      </div>
-                    <% end %>
-
-                    <div class="form-group">
-                      <%= hidden_input f, :is_over, value: game.is_over %>
-                      <%= error_tag f, :is_over %>
-                    </div>
-
-                    <div class="form-group">
-                      <%= hidden_input f, :player_one_id, value: game.player_one_id %>
-                      <%= error_tag f, :player_one_id %>
-                    </div>
-
-                    <div class="form-group">
-                      <%= hidden_input f, :player_two_id, value: @current_user.id %>
-                      <%= error_tag f, :player_two_id %>
-                    </div>
-
-                    <div class="form-group">
-                      <%= submit "join game", class: "btn btn-primary btn-block bp border-0" %>
-                    </div>
-                  <% end %>
-                <% else %>
-                  <%= if (game.player_one_id == @current_user.id or game.player_two_id == @current_user.id) and !game.is_over do %>
-                    <span>
-                      <%= link "play", to: page_path(@conn, :game, game), class: "btn btn-primary btn-block bp border-0" %>
-                    </span>
-                  <% else %>
-                  <span>
-                    <%= link "view", to: page_path(@conn, :game, game), class: "btn btn-primary btn-block bp border-0" %>
-                  </span>
-                  <% end %>
-                <% end %>
-              </td>
-            </tr>
+          <td class="border-0">
+            <%= if game.player_two do %>
+              <%= game.player_two.name %>
+            <% else %>
+              none
             <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
+          </td>
+
+          <td class="border-0">
+            <%= if game.is_over do %>
+              completed
+            <% else %>
+              <%= if game.player_two do %>
+                in progress
+              <% else %>
+                waiting for second player
+              <% end %>
+            <% end %>
+          </td>
+
+          <td class="text-right border-0">
+            <%= if game.player_two_id == nil do %>
+              <%= form_for @changeset, game_path(@conn, :update, game.id), [method: :put], fn f -> %>
+                <% IO.puts game_path(@conn, :update, game.id) %>
+                <%= if @changeset.action do %>
+                  <div class="alert alert-danger">
+                    <p>Oops, something went wrong! Please check the errors below.</p>
+                  </div>
+                <% end %>
+
+                <div class="form-group">
+                  <%= hidden_input f, :is_over, value: game.is_over %>
+                  <%= error_tag f, :is_over %>
+                </div>
+
+                <div class="form-group">
+                  <%= hidden_input f, :player_one_id, value: game.player_one_id %>
+                  <%= error_tag f, :player_one_id %>
+                </div>
+
+                <div class="form-group">
+                  <%= hidden_input f, :player_two_id, value: @current_user.id %>
+                  <%= error_tag f, :player_two_id %>
+                </div>
+
+                <div class="form-group">
+                  <%= submit "join game", class: "btn btn-primary btn-block bp border-0" %>
+                </div>
+              <% end %>
+            <% else %>
+              <%= if (game.player_one_id == @current_user.id or game.player_two_id == @current_user.id) and !game.is_over do %>
+                <span>
+                  <%= link "play", to: page_path(@conn, :game, game), class: "btn btn-primary btn-block bp border-0" %>
+                </span>
+              <% else %>
+              <span>
+                <%= link "view", to: page_path(@conn, :game, game), class: "btn btn-primary btn-block bp border-0" %>
+              </span>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>
 <% end %>
