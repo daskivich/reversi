@@ -13,14 +13,16 @@
   </head>
 
   <body class="app-background">
-    <nav class="navbar navbar-toggleable-md navbar-styling mb-2">
+    <nav class="navbar navbar-toggleable-md navbar-styling mb-1">
       <h1 class="navbar-brand mb-0 middle-grey-color">Reversi</h1>
       <%= if @current_user do %>
+        <p></p>
         <%= link "home", to: page_path(@conn, :home), class: "nav-item nav-link" %>
         <%= link "my profile", to: user_path(@conn, :edit, @current_user.id), class: "nav-item nav-link" %>
         <%= link "user profiles", to: user_path(@conn, :index), class: "nav-item nav-link" %>
         <%= link "log out", to: "/session", method: :delete, class: "nav-item nav-link" %>
-        <span class="middle-grey-color"><%= @current_user.name %></span>
+        <p></p>
+        <h1 class="navbar-brand mb-0 mr-0 middle-grey-color"><%= @current_user.name %></h1>
       <% end %>
     </nav>
 
