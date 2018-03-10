@@ -2,20 +2,16 @@
 <div class="row justify-content-center">
   <div class="col-8">
     <table class="table-styling">
-      <thead>
-        <tr class="table-header">
-          <th class="border-0 text-center">game</th>
-          <th class="border-0 text-center">dark</th>
-          <th class="border-0 text-center">light</th>
-          <th class="border-0 text-center">status</th>
-          <th class="border-0"></th>
-        </tr>
-      </thead>
       <tbody>
         <%= for game <- @games do %>
         <tr>
-          <td class="align-middle first-td"><%= game.id %></td>
+          <td class="align-middle first-td">
+            <span class="game-id rounded">g<%= game.id %></span>
+          </td>
+
           <td class="align-middle"><%= game.player_one.name %></td>
+
+          <td class="align-middle">vs.</td>
 
           <td class="align-middle">
             <%= if game.player_two do %>

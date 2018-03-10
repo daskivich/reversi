@@ -1,27 +1,32 @@
 <%= if @current_user do %>
+  <div class="row justify-content-center mb-3">
+    <div class="col-4">
+      <%= form_for @changeset, game_path(@conn, :create), fn f -> %>
+        <%= if @changeset.action do %>
+          <div class="alert alert-danger">
+            <p>Oops, something went wrong! Please check the errors below.</p>
+          </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= hidden_input f, :is_over, value: "false" %>
+          <%= error_tag f, :is_over %>
+        </div>
+
+        <div class="form-group">
+          <%= hidden_input f, :player_one_id, value: @current_user.id %>
+          <%= error_tag f, :player_one_id %>
+        </div>
+
+        <div class="form-group">
+          <%= submit "new game", class: "btn btn-primary btn-block bp border-0" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
   <%= render ReversiWeb.GameView, "index.html",
     Map.put(assigns, :current_user, @current_user)
     |> Map.put(:games, @games) %>
 
-  <%= form_for @changeset, game_path(@conn, :create), fn f -> %>
-    <%= if @changeset.action do %>
-      <div class="alert alert-danger">
-        <p>Oops, something went wrong! Please check the errors below.</p>
-      </div>
-    <% end %>
-
-    <div class="form-group">
-      <%= hidden_input f, :is_over, value: "false" %>
-      <%= error_tag f, :is_over %>
-    </div>
-
-    <div class="form-group">
-      <%= hidden_input f, :player_one_id, value: @current_user.id %>
-      <%= error_tag f, :player_one_id %>
-    </div>
-
-    <div class="form-group">
-      <%= submit "new game", class: "btn btn-primary btn-block bp border-0" %>
-    </div>
-  <% end %>
 <% end %>
