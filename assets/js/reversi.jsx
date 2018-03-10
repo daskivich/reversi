@@ -112,7 +112,7 @@ class Reversi extends React.Component {
             <p className="mb-0 pb-0">{this.state.name_one}</p>
             <h1 className="mt-0 pt-0 mb-0 pb-0">{this.state.score_one}</h1>
           </div>
-          <div className="col-4 text-center middle-grey-color pt-3">
+          <div className="col-4 text-center nav-text pt-3">
             <h2 className="mb-0">Game #{this.state.game_id}</h2>
             <p className="mb-0">{status}</p>
           </div>

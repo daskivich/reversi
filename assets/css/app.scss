@@ -6,10 +6,6 @@
 //  background-color: #b5cde1;
 }
 
-.dark-color {
-  color: #323232;
-}
-
 .dark-background {
   background-color: #323232;
 }
@@ -18,20 +14,70 @@
   color: #777777;
 }
 
+.nav-text {
+  color: #848484;
+}
+
 .nav-link {
   color: #777777;
 }
 
 .nav-link:hover {
-  color: #277714;
+  color: #438421;
 }
 
 .table-styling {
-  background-color: #277714;
+  background-color: #323232;
+  color: #848484;
+  border-collapse: collapse;
 }
 
-.table-row {
-  border: thin solid #323232;
+th {
+  font-weight: normal;
+}
+
+td {
+  text-align: center;
+  padding: 10px 20px;
+}
+
+tbody tr td {
+  border-top: thick solid #323232;
+  border-bottom: thick solid #323232;
+}
+
+.first-td {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.last-td {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+tbody tr td {
+  background-color: #348421;
+  color: #323232;
+}
+
+tbody tr:hover td {
+  background-color: #277714;
+  color: Gainsboro;
+}
+
+// tbody tr:nth-of-type(odd) td {
+//   background-color: #277714;
+//   color: Gainsboro;
+// }
+//
+// tbody tr:nth-of-type(even) td {
+//   background-color: #348421;
+//   color: Gainsboro;
+// }
+
+.dark-color {
+  color: #323232;
 }
 
 .white {
@@ -40,14 +86,14 @@
 
 .dark-info {
   background-color: #323232;
-  border: thick solid #777777;
-  color: #777777;
+  border: thick solid #848484;
+  color: #848484;
 }
 
 .light-info {
   background-color: Gainsboro;
-  border: thick solid #777777;
-  color: #777777;
+  border: thick solid #6a6a6a;
+  color: #6a6a6a;
 }
 
 .darks-turn-info {
@@ -60,10 +106,6 @@
   background-color: Gainsboro;
   border: thick solid #277714;
   color: #277714;
-}
-
-.navbar-styling {
-  color: #Gainsboro;
 }
 
 .app-background {
@@ -112,23 +154,13 @@
   background-color: MistyRose;
 }
 
-th {
-  background-color: #323232;
-  color: Gainsboro;
-}
-
-tr {
-  border: thin solid #323232;
-  border-radius: 5px;
-}
-
 .bp {
-  background-color: #777777;
+  background: #777777;
   color: Gainsboro;
 }
 
 .bp:hover {
-  background: #142876;
+  background-color: #142876;
   color: Gainsboro;
 }
 
