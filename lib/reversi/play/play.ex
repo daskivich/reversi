@@ -537,6 +537,51 @@ defmodule Reversi.Play do
     |> Repo.preload(:player_two)
   end
 
+  def list_games(which_games, user_id) do
+
+    query = from g in Game,
+      select: g
+
+    case which_games do
+      "yours" -> query = from g in Game,
+        where: g.player_one_id == ^user_id or g.player_two_id == ^user_id,
+        select: g
+
+      "yours_to_join" -> query = from g in Game,
+        where: g.player_one_id == ^user_id and is_nil(g.player_two_id),
+        select: g
+
+      "yours_in_progress" -> query = from g in Game,
+        where: (g.player_one_id == ^user_id or g.player_two_id == ^user_id)
+          and not is_nil(g.player_two_id) and not g.is_over,
+        select: g
+
+      "yours_complete" -> query = from g in Game,
+        where: (g.player_one_id == ^user_id or g.player_two_id == ^user_id)
+          and g.is_over,
+        select: g
+
+      "all_to_join" -> query = from g in Game,
+        where: is_nil(g.player_two_id),
+        select: g
+
+      "all_in_progress" -> query = from g in Game,
+        where: not is_nil(g.player_two_id) and not g.is_over,
+        select: g
+
+      "all_complete" -> query = from g in Game,
+        where: g.is_over,
+        select: g
+
+      _ -> query = query
+    end
+
+    Ecto.Query.order_by(query, desc: :id)
+    |> Repo.all()
+    |> Repo.preload(:player_one)
+    |> Repo.preload(:player_two)
+  end
+
   @doc """
   Gets a single game.
 

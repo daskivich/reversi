@@ -1,25 +1,40 @@
 <%= form_tag("/session", method: :post) do %>
   <div class="row justify-content-center mt-4">
     <div class="col-8">
-      <div class="btn btn-block form-label">email</div>
+      <div class="btn btn-block form-label">&nbsp;</div>
     </div>
   </div>
 
   <div class="row justify-content-center mb-4">
     <div class="col-8 form-group">
-      <input class="form-control reg-input" type="email" name="email" placeholder="...">
+      <input class="reg-input form-control" type="email" name="email" placeholder="enter your email...">
     </div>
   </div>
 
+
   <div class="row justify-content-center">
-    <div class="col-8 form-group mb-0">
-      <%= link "create an account", to: user_path(@conn, :new), class: "btn btn-block btn-cancel" %>
+    <div class="col-8">
+      <div class="btn btn-block form-label">&nbsp;</div>
     </div>
   </div>
 
-  <div class="row justify-content-center">
-    <div class="col-8 form-group mb-0">
+  <div class="row justify-content-center mb-4">
+    <div class="col-8 form-group">
       <button class="btn btn-block btn-log-in border-0">log in</button>
     </div>
   </div>
+
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <div class="btn btn-block form-label">&nbsp;</div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-8 form-group mb-0">
+      <%= link "create an account", to: user_path(@conn, :new), class: "btn btn-block btn-create-account" %>
+    </div>
+  </div>
+
+
 <% end %>

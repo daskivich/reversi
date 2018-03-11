@@ -10,9 +10,9 @@ defmodule ReversiWeb.PageController do
 
   # if a user is logged in, render the home page
   # otherwise redirect to the log-in page (see index above)
-  def home(conn, _params) do
+  def home(conn, params) do
     user_id = get_session(conn, :user_id)
-    games = Play.list_games()
+    games = Play.list_games(params["which"], user_id)
 
     if user_id do
       changeset = Play.change_game(%Game{})

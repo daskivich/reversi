@@ -45,6 +45,10 @@
   color: #252525;
 }
 
+.form-control:hover::placeholder {
+  color: Gainsboro;
+}
+
 .reg-input {
   background-color: #277714;
   color: #252525;
@@ -109,31 +113,25 @@ tbody tr td {
   border-bottom-right-radius: 7.5px;
 }
 
-tbody tr td {
-  background-color: #277714;
-  color: #252525;
-}
-
-tbody tr:hover td {
-  background-color: #348421;
-  color: Gainsboro;
-}
-
 .game-id {
   background-color: #323232;
   color: #277714;
   padding: 10px 15px;
 }
 
-// tbody tr:nth-of-type(odd) td {
-//   background-color: #277714;
-//   color: Gainsboro;
-// }
-//
-// tbody tr:nth-of-type(even) td {
-//   background-color: #348421;
-//   color: Gainsboro;
-// }
+tbody tr:nth-of-type(odd) td {
+  background-color: #277714;
+  color: #252525;
+}
+
+tbody tr:nth-of-type(even) td {
+  background-color: #348421;
+  color: #252525;
+}
+
+tbody tr:hover td {
+  color: Gainsboro;
+}
 
 .dark-color {
   color: #323232;
@@ -223,11 +221,19 @@ tbody tr:hover td {
 .btn-create-account {
   background-color: #761428;
   color: #777777;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .btn-create-account:hover {
   background-color: #832135;
   color: Gainsboro;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .btn-cancel {
