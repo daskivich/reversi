@@ -6,7 +6,7 @@
         <%= for game <- @games do %>
         <tr>
           <td class="align-middle first-td">
-            <span class="game-id rounded">g<%= game.id %></span>
+            <span class="game-id rounded"><%= game.id %></span>
           </td>
 
           <td class="align-middle"><%= game.player_one.name %></td>

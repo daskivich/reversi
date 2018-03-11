@@ -19,7 +19,7 @@
 }
 
 .nav-text {
-  color: #848484;
+  color: Gainsboro;
 }
 
 .nav-link {
@@ -28,6 +28,55 @@
 
 .nav-link:hover {
   color: #438421;
+}
+
+.form-label {
+  display: block;
+  background-color: #777777;
+  color: #323232;
+  text-align: center;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.form-control::placeholder {
+  color: #252525;
+}
+
+.reg-input {
+  background-color: #277714;
+  color: #252525;
+  text-align: center;
+  border-style: none;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.reg-input:hover {
+  background-color: #348421;
+  color: Gainsboro;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.reg-input:focus {
+  background-color: Gainsboro;
+  color: #252525;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.form-control-login {
+  background-color: #277714;
+  color: #252525;
 }
 
 .table-styling {
@@ -61,12 +110,12 @@ tbody tr td {
 }
 
 tbody tr td {
-  background-color: #348421;
+  background-color: #277714;
   color: #252525;
 }
 
 tbody tr:hover td {
-  background-color: #277714;
+  background-color: #348421;
   color: Gainsboro;
 }
 
@@ -157,11 +206,64 @@ tbody tr:hover td {
   background-color: Gainsboro;
 }
 
-// red: #761428
-// blue: #142876
-
 .incomplete {
   background-color: MistyRose;
+}
+
+.btn-log-in {
+  background-color: #142876;
+  color: #777777;
+}
+
+.btn-log-in:hover {
+  background-color: #213583;
+  color: Gainsboro;
+}
+
+.btn-create-account {
+  background-color: #761428;
+  color: #777777;
+}
+
+.btn-create-account:hover {
+  background-color: #832135;
+  color: Gainsboro;
+}
+
+.btn-cancel {
+  background-color: #777777;
+  color: #323232;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.btn-cancel:hover {
+  background-color: #848484;
+  color: Gainsboro;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.btn-submit {
+  background-color: #142876;
+  color: #777777;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.btn-submit:hover {
+  background-color: #213583;
+  color: Gainsboro;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .bp {
@@ -176,20 +278,22 @@ tbody tr:hover td {
 
 .bs {
   background-color: #777777;
-  color: Gainsboro;
+  color: #252525;
 }
 
 .bs:hover {
-  background: #761428;
+  background: #142876;
   color: Gainsboro;
 }
 
 .bd {
-  background-color: LightCoral;
+  background-color: #777777;
+  color: #252525
 }
 
 .bd:hover {
-  background: FireBrick;
+  background: #761428;
+  color: Gainsboro;
 }
 
 .spacer {
@@ -205,3 +309,12 @@ tbody tr:hover td {
   width: 77.5%;
   height: 77.5%;
 }
+
+// dark green: #277714
+// light green: #348421
+
+// dark blue: #142876
+// light blue: #323232
+
+// dark red: #761428
+// light red: #832135

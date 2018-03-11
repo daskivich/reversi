@@ -1,47 +1,50 @@
 <%= form_for @changeset, @action, fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+
+  <div class="row justify-content-center mt-4">
+    <div class="col-8">
+      <%= if @changeset.action do %>
+        <div class="alert alert-danger">
+          <p>Oops, something went wrong! Please check the errors below.</p>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-
-  <div class="form-group">
-    <%= label f, :name, class: "control-label" %>
-    <%= text_input f, :name, class: "form-control" %>
-    <%= error_tag f, :name %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :email, class: "control-label" %>
-    <%= text_input f, :email, class: "form-control" %>
-    <%= error_tag f, :email %>
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <div class="btn btn-block form-label">name</div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= label f, :icon_primary, class: "control-label" %>
-    <%= text_input f, :icon_primary, class: "form-control" %>
-    <%= error_tag f, :icon_primary %>
+  <div class="row justify-content-center mb-4">
+    <div class="col-8 form-group">
+      <%= text_input f, :name, class: "form-control reg-input", placeholder: "..." %>
+      <%= error_tag f, :name %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= label f, :icon_secondary, class: "control-label" %>
-    <%= text_input f, :icon_secondary, class: "form-control" %>
-    <%= error_tag f, :icon_secondary %>
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <div class="btn btn-block form-label">email</div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= label f, :color_primary, class: "control-label" %>
-    <%= text_input f, :color_primary, class: "form-control" %>
-    <%= error_tag f, :color_primary %>
+  <div class="row justify-content-center mb-4">
+    <div class="col-8 form-group">
+      <%= text_input f, :email, class: "form-control reg-input", placeholder: "..." %>
+      <%= error_tag f, :email %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= label f, :color_secondary, class: "control-label" %>
-    <%= text_input f, :color_secondary, class: "form-control" %>
-    <%= error_tag f, :color_secondary %>
+  <div class="row justify-content-center">
+    <div class="col-8 form-group mb-0">
+      <%= link "cancel", to: page_path(@conn, :index), class: "btn btn-block btn-cancel" %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
+  <div class="row justify-content-center">
+    <div class="col-8 form-group">
+      <%= submit "submit", class: "btn btn-block btn-submit border-0" %>
+    </div>
   </div>
 <% end %>

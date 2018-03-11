@@ -18,21 +18,13 @@ defmodule Reversi.Play do
     p1 = g.player_one
     p2 = g.player_two
 
-    # if p2.color_primary == p1.color_primary do
-    #   color_two = p2.color_secondary
-    # else
-    #   color_two = p2.color_primary
-    # end
-
     vals = get_vals(s)
 
     %{
       vals: vals,
       name_one: p1.name,
-      color_one: "info",#p1.color_primary,
       score_one: get_score(vals, 1),
       name_two: p2.name,
-      color_two: "warning",#color_two,
       score_two: get_score(vals, 2),
       player_ones_turn: s.player_ones_turn,
       is_over: g.is_over,

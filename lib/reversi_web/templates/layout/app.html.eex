@@ -30,22 +30,28 @@
       </div>
 
       <div class="col-3">
-        <h5 class="mb-0 mr-0 nav-text text-right mr-3"><%= @current_user.name %></h5>
+        <h5 class="mb-0 mr-0 nav-text text-right mr-3">
+        <%= if @current_user, do: @current_user.name %>
+      </h5>
       </div>
     </div>
 
     <div class="container">
-      <%= if get_flash(@conn, :info) do %>
-        <p class="alert alert-info text-center border-0" role="alert">
-          <%= get_flash(@conn, :info) %>
-        </p>
-      <% end %>
+      <div class="row justify-content-center">
+        <div class="col-8">
+          <%= if get_flash(@conn, :info) do %>
+            <p class="alert alert-info text-center border-0" role="alert">
+              <%= get_flash(@conn, :info) %>
+            </p>
+          <% end %>
 
-      <%= if get_flash(@conn, :error) do %>
-        <p class="alert alert-danger text-center border-0" role="alert">
-          <%= get_flash(@conn, :error) %>
-        </p>
-      <% end %>
+          <%= if get_flash(@conn, :error) do %>
+            <p class="alert alert-danger text-center border-0" role="alert">
+              <%= get_flash(@conn, :error) %>
+            </p>
+          <% end %>
+        </div>
+      </div>
 
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
