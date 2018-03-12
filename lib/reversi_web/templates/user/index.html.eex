@@ -1,10 +1,11 @@
 <%= if @current_user do %>
   <div class="row justify-content-center">
-    <div class="col-6">
+    <div class="col-7">
       <table class="table-styling">
         <thead>
           <tr>
             <th class="first-th"></th>
+            <th></th>
             <th>w</th>
             <th>l</th>
             <th>d</th>
@@ -15,7 +16,10 @@
         <tbody>
           <%= for user <- @users do %>
             <tr>
-              <td class="align-middle first-td"><%= user.name %></td>
+              <td class="align-middle first-td">
+                <span class="game-id rounded"><%= user.id %></span>
+              </td>
+              <td class="align-middle"><%= user.name %></td>
               <td class="align-middle"><%= user.victories %></td>
               <td class="align-middle"><%= user.defeats %></td>
               <td class="align-middle"><%= user.games - user.victories - user.defeats %></td>
