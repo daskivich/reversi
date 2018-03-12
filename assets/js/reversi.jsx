@@ -8,9 +8,14 @@ export default function run_reversi(root, channel) {
 
 /*
 state
-  vals: the tile values to be displayed as a list of 16 values
-  colors: the colors of the tiles as a list of 16 colors
-  score: the current game score
+  vals: the values of the grid cells of the game board
+  name_one: the name of player name_one
+  score_one: the score of player one
+  name_two: the name of player name_two
+  score_two: the score of player two
+  player_ones_turn: a boolean to determine whose turn is it
+  is_over: a boolean to determine if the game is is_over
+  game_id: id of this game
 */
 class Reversi extends React.Component {
   constructor(props) {
@@ -90,16 +95,17 @@ class Reversi extends React.Component {
 
     if (this.state.is_over) {
       if (this.state.score_one > this.state.score_two) {
-        status = "ended in a dark victory";
+        status = "dark wins";
       } else if (this.state.score_two > this.state.score_one) {
-        status = "ended in a light victory";
+        status = "light wins";
       } else {
-        status = "ended in a draw";
+        status = "draw";
       }
     } else if (!this.state.player_ones_turn) {
-      status = "";
+      status = "light's turn";
       light_info = "col-2 text-center lights-turn-info rounded pt-2 pb-0";
     } else {
+      status = "dark's turn"
       dark_info = "col-2 text-center darks-turn-info rounded pt-2 pb-0";
     }
 
@@ -110,7 +116,7 @@ class Reversi extends React.Component {
             <p className="mb-0 pb-0">{this.state.name_one}</p>
             <h1 className="mt-0 pt-0 mb-0 pb-0">{this.state.score_one}</h1>
           </div>
-          <div className="col-4 text-center nav-text pt-3">
+          <div className="col-4 text-center middle-grey-color pt-3">
             <h2 className="mb-0">Game #{this.state.game_id}</h2>
             <p className="mb-0">{status}</p>
           </div>

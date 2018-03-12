@@ -4,10 +4,9 @@ defmodule ReversiWeb.GameController do
   alias Reversi.Play
   alias Reversi.Play.Game
 
-  def index(conn, _params) do
-    games = Play.list_games()
-    changeset = Play.change_game(%Game{})
-    render(conn, "index.html", games: games, changeset: changeset)
+  def index(conn, params) do
+    games = Play.list_games("yours_complete_two_player", params["user_id"])
+    render(conn, "index.html", games: games)
   end
 
   def new(conn, _params) do
@@ -45,7 +44,7 @@ defmodule ReversiWeb.GameController do
       {:ok, game} ->
         conn
         |> put_flash(:info, "Game updated successfully.")
-        |> redirect(to: game_path(conn, :show, game))
+        |> redirect(to: page_path(conn, :game, game))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", game: game, changeset: changeset)
     end

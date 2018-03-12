@@ -90,15 +90,29 @@
 }
 
 th {
+  background-color: #777777;
+  color: #252525;
+  text-align: center;
   font-weight: normal;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-top: thick solid #323232;
+  border-bottom: thick solid #323232;
+}
+
+.first-th {
+  border-top-left-radius: 7.5px;
+  border-bottom-left-radius: 7.5px;
+}
+
+.last-th {
+  border-top-right-radius: 7.5px;
+  border-bottom-right-radius: 7.5px;
 }
 
 td {
   text-align: center;
   padding: 10px 20px;
-}
-
-tbody tr td {
   border-top: thick solid #323232;
   border-bottom: thick solid #323232;
 }
@@ -141,28 +155,32 @@ tbody tr:hover td {
   color: White;
 }
 
+.info-spacer {
+  margin-top: 35%;
+}
+
 .dark-info {
-  background-color: #323232;
   border: thick solid #848484;
+  background-color: #323232;
   color: #848484;
 }
 
 .light-info {
-  background-color: Gainsboro;
   border: thick solid #6a6a6a;
+  background-color: Gainsboro;
   color: #6a6a6a;
 }
 
 .darks-turn-info {
-  background-color: #323232;
   border: thick solid #277714;
-  color: #277714;
+  background-color: #323232;
+  color: #848484;
 }
 
 .lights-turn-info {
-  background-color: Gainsboro;
   border: thick solid #277714;
-  color: #277714;
+  background-color: Gainsboro;
+  color: #6a6a6a;
 }
 
 .app-background {

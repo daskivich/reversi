@@ -561,6 +561,11 @@ defmodule Reversi.Play do
           and g.is_over,
         select: g
 
+      "yours_complete_two_player" -> query = from g in Game,
+        where: (g.player_one_id == ^user_id or g.player_two_id == ^user_id)
+          and g.player_one_id != g.player_two_id and g.is_over,
+        select: g
+
       "all_to_join" -> query = from g in Game,
         where: is_nil(g.player_two_id),
         select: g

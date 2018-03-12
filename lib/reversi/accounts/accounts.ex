@@ -30,6 +30,7 @@ defmodule Reversi.Accounts do
     |> Enum.map(fn(u) -> Map.put(u, :victories, Play.victories(u.id)) end)
     |> Enum.map(fn(u) -> Map.put(u, :defeats, Play.defeats(u.id)) end)
     |> Enum.map(fn(u) -> Map.put(u, :differential, Play.differential(u.id)) end)
+    |> Enum.sort(fn(u1, u2) -> u1.name < u2.name end)
   end
 
   @doc """

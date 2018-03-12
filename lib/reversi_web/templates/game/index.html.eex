@@ -18,7 +18,7 @@
             <%= if game.player_two do %>
               <%= game.player_two.name %>
             <% else %>
-              pending
+
             <% end %>
           </td>
 
@@ -29,7 +29,7 @@
               <%= if game.player_two do %>
                 ongoing
               <% else %>
-                pending
+                pending second player
               <% end %>
             <% end %>
           </td>
