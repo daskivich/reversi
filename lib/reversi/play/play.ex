@@ -580,6 +580,8 @@ defmodule Reversi.Play do
     |> Repo.all()
     |> Repo.preload(:player_one)
     |> Repo.preload(:player_two)
+    |> Enum.map(fn(g) -> Map.put(g, :score_one, get_score(get_vals(get_current_state(g.id)), 1)) end)
+    |> Enum.map(fn(g) -> Map.put(g, :score_two, get_score(get_vals(get_current_state(g.id)), 2)) end)
   end
 
   @doc """

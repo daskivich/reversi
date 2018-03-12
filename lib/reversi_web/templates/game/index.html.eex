@@ -10,25 +10,26 @@
           </td>
 
           <td class="align-middle"><%= game.player_one.name %></td>
-
+          <td class="align-middle"><%= game.score_one %></td>
           <td class="align-middle">vs.</td>
+          <td class="align-middle"><%= game.score_two %></td>
 
           <td class="align-middle">
             <%= if game.player_two do %>
               <%= game.player_two.name %>
             <% else %>
-              none
+              pending
             <% end %>
           </td>
 
           <td class="align-middle">
             <%= if game.is_over do %>
-              completed
+              complete
             <% else %>
               <%= if game.player_two do %>
-                in progress
+                ongoing
               <% else %>
-                waiting for second player
+                pending
               <% end %>
             <% end %>
           </td>
