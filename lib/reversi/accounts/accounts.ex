@@ -7,6 +7,9 @@ defmodule Reversi.Accounts do
   alias Reversi.Repo
 
   alias Reversi.Accounts.User
+  alias Reversi.Play.Game
+  alias Reversi.Play.State
+  alias Reversi.Play
 
   @doc """
   Returns the list of users.
@@ -19,6 +22,14 @@ defmodule Reversi.Accounts do
   """
   def list_users do
     Repo.all(User)
+  end
+
+  def get_users_with_stats do
+    Repo.all(User)
+    |> Enum.map(fn(u) -> Map.put(u, :games, Play.games(u.id)) end)
+    |> Enum.map(fn(u) -> Map.put(u, :victories, Play.victories(u.id)) end)
+    |> Enum.map(fn(u) -> Map.put(u, :defeats, Play.defeats(u.id)) end)
+    |> Enum.map(fn(u) -> Map.put(u, :differential, Play.differential(u.id)) end)
   end
 
   @doc """

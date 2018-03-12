@@ -774,4 +774,103 @@ defmodule Reversi.Play do
   def change_state(%State{} = state) do
     State.changeset(state, %{})
   end
+
+  def games(user_id) do
+    query = from g in Game,
+      where: g.is_over and g.player_one_id != g.player_two_id
+        and (g.player_one_id == ^user_id or g.player_two_id == ^user_id),
+      select: g
+
+    Repo.all(query)
+    |> Enum.count()
+  end
+
+  def accumulate_victories(game, acc, player) do
+    current_state = get_current_state(game.id)
+    vals = get_vals(current_state)
+
+    if get_score(vals, player) > get_score(vals, get_opponent(player)) do
+      acc + 1
+    else
+      acc
+    end
+  end
+
+  def victories(user_id) do
+    p1_games = from g in Game,
+      where: g.is_over
+        and g.player_one_id == ^user_id
+        and g.player_two_id != ^user_id,
+      select: g
+
+    p2_games = from g in Game,
+      where: g.is_over
+        and g.player_one_id != ^user_id
+        and g.player_two_id == ^user_id,
+      select: g
+
+    victories = Repo.all(p1_games)
+    |> Enum.reduce(0, fn(g, acc) -> accumulate_victories(g, acc, 1) end)
+
+    Repo.all(p2_games)
+    |> Enum.reduce(victories, fn(g, acc) -> accumulate_victories(g, acc, 2) end)
+  end
+
+  def accumulate_defeats(game, acc, player) do
+    current_state = get_current_state(game.id)
+    vals = get_vals(current_state)
+
+    if get_score(vals, player) < get_score(vals, get_opponent(player)) do
+      acc + 1
+    else
+      acc
+    end
+  end
+
+  def defeats(user_id) do
+    p1_games = from g in Game,
+      where: g.is_over
+        and g.player_one_id == ^user_id
+        and g.player_two_id != ^user_id,
+      select: g
+
+    p2_games = from g in Game,
+      where: g.is_over
+        and g.player_one_id != ^user_id
+        and g.player_two_id == ^user_id,
+      select: g
+
+    defeats = Repo.all(p1_games)
+    |> Enum.reduce(0, fn(g, acc) -> accumulate_defeats(g, acc, 1) end)
+
+    Repo.all(p2_games)
+    |> Enum.reduce(defeats, fn(g, acc) -> accumulate_defeats(g, acc, 2) end)
+  end
+
+  def accumulate_differential(game, acc, player) do
+    current_state = get_current_state(game.id)
+    vals = get_vals(current_state)
+
+    acc + get_score(vals, player) - get_score(vals, get_opponent(player))
+  end
+
+  def differential(user_id) do
+    p1_games = from g in Game,
+      where: g.is_over
+        and g.player_one_id == ^user_id
+        and g.player_two_id != ^user_id,
+      select: g
+
+    p2_games = from g in Game,
+      where: g.is_over
+        and g.player_one_id != ^user_id
+        and g.player_two_id == ^user_id,
+      select: g
+
+    defeats = Repo.all(p1_games)
+    |> Enum.reduce(0, fn(g, acc) -> accumulate_differential(g, acc, 1) end)
+
+    Repo.all(p2_games)
+    |> Enum.reduce(defeats, fn(g, acc) -> accumulate_differential(g, acc, 2) end)
+  end
 end

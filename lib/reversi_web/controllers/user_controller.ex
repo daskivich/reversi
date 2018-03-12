@@ -5,7 +5,7 @@ defmodule ReversiWeb.UserController do
   alias Reversi.Accounts.User
 
   def index(conn, _params) do
-    users = Accounts.list_users()
+    users = Accounts.get_users_with_stats
     render(conn, "index.html", users: users)
   end
 
@@ -43,7 +43,7 @@ defmodule ReversiWeb.UserController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "User updated successfully.")
-        |> redirect(to: user_path(conn, :show, user))
+        |> redirect(to: page_path(conn, :home))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", user: user, changeset: changeset)
     end

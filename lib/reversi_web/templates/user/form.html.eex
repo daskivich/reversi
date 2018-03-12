@@ -38,7 +38,7 @@
 
   <div class="row justify-content-center">
     <div class="col-8 form-group mb-0">
-      <%= link "cancel", to: page_path(@conn, :index), class: "btn btn-block btn-cancel" %>
+      <%= link "cancel", to: page_path(@conn, :home), class: "btn btn-block btn-cancel" %>
     </div>
   </div>
 
