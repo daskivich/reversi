@@ -7,7 +7,6 @@ defmodule ReversiWeb.GamesChannel do
     if authorized?(payload) do
       game = Play.get_game(game_id)
       state = Play.get_current_state(game_id)
-      # TODO: assuming game already exists; handle new game case if necessary
       socket = socket
       |> assign(:game, game)
       |> assign(:game_id, game_id)
@@ -19,8 +18,8 @@ defmodule ReversiWeb.GamesChannel do
   end
 
   # returns an updated view state when a "select" message is received
-  def handle_in("select", %{"grid_index" => gi, "current_user_id" => cuid}, socket) do
-    game = Play.select(socket.assigns[:game], gi, cuid)
+  def handle_in("select", %{"grid_index" => gi, "current_user_id" => cuid, "is_current" => ic}, socket) do
+    game = Play.select(socket.assigns[:game], gi, cuid, ic)
     socket = assign(socket, :game, game)
     {:reply, {:ok, %{ "game" => Play.client_view(game.id)}}, socket}
   end
@@ -30,6 +29,18 @@ defmodule ReversiWeb.GamesChannel do
     game = Play.concede(socket.assigns[:game], cuid)
     socket = assign(socket, :game, game)
     {:reply, {:ok, %{ "game" => Play.client_view(game.id)}}, socket}
+  end
+
+  # returns the initial view state of this session's game
+  def handle_in("init", _payload, socket) do
+    game = socket.assigns[:game]
+    {:reply, {:ok, %{ "game" => Play.client_view(game.id, "init")}}, socket}
+  end
+
+  # returns the current view state of this session's game
+  def handle_in("now", _payload, socket) do
+    game = socket.assigns[:game]
+    {:reply, {:ok, %{ "game" => Play.client_view(game.id, "now")}}, socket}
   end
 
   # # Channels can be used in a request/response fashion

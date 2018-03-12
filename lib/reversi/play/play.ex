@@ -9,10 +9,8 @@ defmodule Reversi.Play do
   alias Reversi.Play.Game
   alias Reversi.Play.State
 
-  # returns the client view of the given game
+  # returns the client view of the given game in its current state
   def client_view(game_id) do
-    IO.puts("entered Play.client_view()")
-
     g = get_game(game_id)
     s = get_current_state(game_id)
     p1 = g.player_one
@@ -28,7 +26,40 @@ defmodule Reversi.Play do
       score_two: get_score(vals, 2),
       player_ones_turn: s.player_ones_turn,
       is_over: g.is_over,
-      game_id: game_id
+      game_id: game_id,
+      state_id: s.id,
+      is_current: true
+    }
+  end
+
+  # returns the appropriate client view based on the given option
+  #   init: the initial state of the game upon creation
+  #   now: the current state of the games
+  def client_view(game_id, option) do
+    g = get_game(game_id)
+    p1 = g.player_one
+    p2 = g.player_two
+
+    cs = get_current_state(game_id)
+
+    s = case option do
+      "init" -> get_initial_state(game_id)
+      _ -> cs
+    end
+
+    vals = get_vals(s)
+
+    %{
+      vals: vals,
+      name_one: p1.name,
+      score_one: get_score(vals, 1),
+      name_two: p2.name,
+      score_two: get_score(vals, 2),
+      player_ones_turn: s.player_ones_turn,
+      is_over: g.is_over,
+      game_id: game_id,
+      state_id: s.id,
+      is_current: s.id == cs.id
     }
   end
 
@@ -69,27 +100,13 @@ defmodule Reversi.Play do
   end
 
   # creates a new state for valid selections, returns the updated game
-  def select(game, index, current_user_id) do
+  def select(game, index, current_user_id, is_current) do
     current_state = get_current_state(game.id)
     player = if current_state.player_ones_turn, do: 1, else: 2
     current_user_id = String.to_integer(current_user_id)
 
-    IO.write("game over: ")
-    IO.puts(game.is_over)
-    IO.write("selected value: ")
-    IO.puts(get_val(current_state, index))
-    IO.write("current player: ")
-    IO.puts(if current_state.player_ones_turn, do: game.player_one.id, else: game.player_two.id)
-    IO.write("current user: ")
-    IO.puts(current_user_id)
-    IO.write("is current user's turn: ")
-    IO.puts(is_current_users_turn(game, current_state, current_user_id))
-
-    if !game.is_over && get_val(current_state, index) == 0 && is_current_users_turn(game, current_state, current_user_id) do
+    if is_current && !game.is_over && get_val(current_state, index) == 0 && is_current_users_turn(game, current_state, current_user_id) do
       indexes_to_flip = get_indexes_to_flip(index, player, current_state)
-
-      IO.write("indexes to flip: ")
-      IO.puts(Enum.count(indexes_to_flip))
 
       if Enum.count(indexes_to_flip) < 1 do
         game
@@ -225,15 +242,6 @@ defmodule Reversi.Play do
     { row, col } = get_row_col_indexes(index)
     opponent = get_opponent(player)
 
-    IO.write("selected row: ")
-    IO.puts(row)
-    IO.write("selected col: ")
-    IO.puts(col)
-    IO.write("current player: ")
-    IO.puts(player)
-    IO.write("current opponent: ")
-    IO.puts(opponent)
-
     []
     |> Enum.concat(get_east_to_flip(player, opponent, row, col, current_state))
     |> Enum.concat(get_southeast_to_flip(player, opponent, row, col, current_state))
@@ -250,15 +258,9 @@ defmodule Reversi.Play do
     if col == 6 || col == 7 do
       []
     else
-      east = (col + 1)..7
+      (col + 1)..7
       |> Enum.map(fn(c) -> get_index(row, c) end)
       |> valid_move(player, opponent, current_state)
-
-      IO.write("east: [")
-      Enum.each(east, fn(i) -> IO.write(i) end)
-      IO.puts("]")
-
-      east
     end
   end
 
@@ -281,15 +283,9 @@ defmodule Reversi.Play do
     if row == 6 || row == 7 do
       []
     else
-      south = (row + 1)..7
+      (row + 1)..7
       |> Enum.map(fn(r) -> get_index(r, col) end)
       |> valid_move(player, opponent, current_state)
-
-      IO.write("south: [")
-      Enum.each(south, fn(i) -> IO.write(i) end)
-      IO.puts("]")
-
-      south
     end
   end
 
@@ -312,16 +308,10 @@ defmodule Reversi.Play do
     if col == 0 || col == 1 do
       []
     else
-      west = 0..(col - 1)
+      0..(col - 1)
       |> Enum.map(fn(c) -> get_index(row, c) end)
       |> Enum.reverse()
       |> valid_move(player, opponent, current_state)
-
-      IO.write("west: [")
-      Enum.each(west, fn(i) -> IO.write(i) end)
-      IO.puts("]")
-
-      west
     end
   end
 
@@ -344,16 +334,10 @@ defmodule Reversi.Play do
     if row == 0 || row == 1 do
       []
     else
-      north = 0..(row - 1)
+      0..(row - 1)
       |> Enum.map(fn(r) -> get_index(r, col) end)
       |> Enum.reverse()
       |> valid_move(player, opponent, current_state)
-
-      IO.write("north: [")
-      Enum.each(north, fn(i) -> IO.write(i) end)
-      IO.puts("]")
-
-      north
     end
   end
 
@@ -372,10 +356,6 @@ defmodule Reversi.Play do
   end
 
   def valid_move([first | rest], player, opponent, current_state) do
-    IO.puts("entering valid_move()")
-    IO.write("first: ")
-    IO.puts(first)
-
     if get_val(current_state, first) != opponent do
       []
     else
@@ -384,21 +364,11 @@ defmodule Reversi.Play do
   end
 
   def valid_rest(player, opponent, rest, possible_flips, current_state) do
-    IO.puts("entering valid_move()")
-
     if rest == [] do
-      IO.puts("rest: []")
       []
     else
       [head | tail] = rest
-
-      IO.write("head: ")
-      IO.puts(head)
-
       val = get_val(current_state, head)
-
-      IO.write("val: ")
-      IO.puts(val)
 
       cond do
         val == 0 -> []
@@ -521,6 +491,18 @@ defmodule Reversi.Play do
     Ecto.Query.last(query)
     |> Repo.one()
   end
+
+  # takes a game id and returns the initial state of this game
+  def get_initial_state(game_id) do
+    query = from s in State,
+      where: s.game_id == ^game_id,
+      select: s
+    query = from q in query,
+      order_by: q.inserted_at
+    Ecto.Query.first(query)
+    |> Repo.one()
+  end
+
 
   @doc """
   Returns the list of games.

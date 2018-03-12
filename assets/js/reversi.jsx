@@ -37,7 +37,9 @@ class Reversi extends React.Component {
       score_two: 2,
       player_ones_turn: true,
       is_over: false,
-      game_id: -1
+      game_id: -1,
+      state_id: -1,
+      is_current: true
     };
 
     this.channel.join()
@@ -68,9 +70,10 @@ class Reversi extends React.Component {
       let u = window.currentUserID;
       let c = this.channel;
       let gv = this.gotView.bind(this);
+      let ic = this.state.is_current;
 
       return function (ev) {
-        c.push("select", { grid_index: i, current_user_id: u }).receive("ok", gv);
+        c.push("select", { grid_index: i, current_user_id: u, is_current: ic }).receive("ok", gv);
       }
   }
 
@@ -88,25 +91,68 @@ class Reversi extends React.Component {
     // );
   }
 
+  init() {
+    this.channel.push("init").receive("ok", this.gotView.bind(this));
+  }
+
+  now() {
+    this.channel.push("now").receive("ok", this.gotView.bind(this));
+  }
+
+  prev() {
+    this.channel.push("prev", {state_id: this.state.state_id}).receive("ok", this.gotView.bind(this));
+  }
+
+  next() {
+    this.channel.push("next", {state_id: this.state.state_id}).receive("ok", this.gotView.bind(this));
+  }
+
   render() {
     let status = "";
+    let mode = "";
     let dark_info = "col-2 text-center dark-info rounded pt-2 pb-0";
     let light_info = "col-2 text-center light-info rounded pt-2 pb-0";
 
     if (this.state.is_over) {
-      if (this.state.score_one > this.state.score_two) {
-        status = "dark wins";
-      } else if (this.state.score_two > this.state.score_one) {
-        status = "light wins";
-      } else {
-        status = "draw";
+      if (this.state.is_current) {
+        if (this.state.score_one > this.state.score_two) {
+          status = "dark wins";
+        } else if (this.state.score_two > this.state.score_one) {
+          status = "light wins";
+        } else {
+          status = "draw";
+        }
+      } else {// if the state is not current (but the game is over)
+        if (this.state.player_ones_turn) {
+          status = "dark's turn";
+          mode = "(historical view)";
+          dark_info = "col-2 text-center darks-turn-info rounded pt-2 pb-0";
+        } else {// if it's player two's turn (game over, not current state)
+          status = "light's turn";
+          mode = "(historical view)";
+          light_info = "col-2 text-center lights-turn-info rounded pt-2 pb-0";
+        }
       }
-    } else if (!this.state.player_ones_turn) {
-      status = "light's turn";
-      light_info = "col-2 text-center lights-turn-info rounded pt-2 pb-0";
-    } else {
-      status = "dark's turn"
-      dark_info = "col-2 text-center darks-turn-info rounded pt-2 pb-0";
+    } else {// if the game is not over
+      if (this.state.is_current) {
+        if (this.state.player_ones_turn) {
+          status = "dark's turn";
+          dark_info = "col-2 text-center darks-turn-info rounded pt-2 pb-0";
+        } else {// if it's player two's turn (game not over, current state)
+          status = "light's turn";
+          light_info = "col-2 text-center lights-turn-info rounded pt-2 pb-0";
+        }
+      } else {// if the state is not current (and the game is not over)
+        if (this.state.player_ones_turn) {
+          status = "dark's turn";
+          mode = "(historical view)";
+          dark_info = "col-2 text-center darks-turn-info rounded pt-2 pb-0";
+        } else {
+          status = "light's turn";
+          mode = "(historical view)";
+          light_info = "col-2 text-center lights-turn-info rounded pt-2 pb-0";
+        }
+      }
     }
 
     return (
@@ -119,6 +165,7 @@ class Reversi extends React.Component {
           <div className="col-4 text-center middle-grey-color pt-3">
             <h2 className="mb-0">Game #{this.state.game_id}</h2>
             <p className="mb-0">{status}</p>
+            <p className="mb-0">{mode}</p>
           </div>
           <div className={light_info}>
             <p className="mb-0 pb-0">{this.state.name_two}</p>
@@ -407,14 +454,45 @@ class Reversi extends React.Component {
         </div>
 
         <div className="row justify-content-center mt-4">
+          <div className="col-1">
+            <Button className="btn btn-primary btn-block bs border-0"
+              onClick={this.prev.bind(this)}>
+              prev
+            </Button>
+          </div>
+
+          <div className="col-1">
+            <Button className="btn btn-primary btn-block bs border-0"
+              onClick={this.next.bind(this)}>
+              next
+            </Button>
+          </div>
+
+          <div className="col-1"></div>
+
           <div className="col-2">
-            <Button className="btn btn-primary btn-block bs border-0" color="warning"
+            <Button className="btn btn-block bd border-0"
               onClick={this.concede.bind(this)}>
               concede
             </Button>
           </div>
-        </div>
 
+          <div className="col-1"></div>
+
+          <div className="col-1">
+            <Button className="btn btn-primary btn-block bs border-0"
+              onClick={this.init.bind(this)}>
+              init
+            </Button>
+          </div>
+
+          <div className="col-1">
+            <Button className="btn btn-block bs border-0"
+              onClick={this.now.bind(this)}>
+              now
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
