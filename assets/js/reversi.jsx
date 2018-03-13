@@ -162,7 +162,7 @@ class Reversi extends React.Component {
             <p className="mb-0 pb-0">{this.state.name_one}</p>
             <h1 className="mt-0 pt-0 mb-0 pb-0">{this.state.score_one}</h1>
           </div>
-          <div className="col-4 text-center middle-grey-color pt-3">
+          <div className="col-4 text-center middle-grey-color pt-1">
             <h2 className="mb-0">Game #{this.state.game_id}</h2>
             <p className="mb-0">{status}</p>
             <p className="mb-0">{mode}</p>
@@ -453,7 +453,7 @@ class Reversi extends React.Component {
             index={"r8c8"} />
         </div>
 
-        <div className="row justify-content-center mt-4">
+        <div className="row justify-content-center mb-4 mt-4">
           <div className="col-1">
             <Button className="btn btn-primary btn-block bs border-0"
               onClick={this.prev.bind(this)}>

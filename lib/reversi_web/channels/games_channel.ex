@@ -43,6 +43,18 @@ defmodule ReversiWeb.GamesChannel do
     {:reply, {:ok, %{ "game" => Play.client_view(game.id, "now")}}, socket}
   end
 
+  # returns the previous view state of this session's game
+  def handle_in("prev", %{"state_id" => state_id}, socket) do
+    game = socket.assigns[:game]
+    {:reply, {:ok, %{ "game" => Play.client_view(game.id, state_id, "prev")}}, socket}
+  end
+
+  # returns the next view state of this session's game
+  def handle_in("next", %{"state_id" => state_id}, socket) do
+    game = socket.assigns[:game]
+    {:reply, {:ok, %{ "game" => Play.client_view(game.id, state_id, "next")}}, socket}
+  end
+
   # # Channels can be used in a request/response fashion
   # # by sending replies to requests from the client
   # def handle_in("ping", payload, socket) do

@@ -34,7 +34,7 @@ defmodule Reversi.Play do
 
   # returns the appropriate client view based on the given option
   #   init: the initial state of the game upon creation
-  #   now: the current state of the games
+  #   now: the current state of the game
   def client_view(game_id, option) do
     g = get_game(game_id)
     p1 = g.player_one
@@ -44,6 +44,38 @@ defmodule Reversi.Play do
 
     s = case option do
       "init" -> get_initial_state(game_id)
+      _ -> cs
+    end
+
+    vals = get_vals(s)
+
+    %{
+      vals: vals,
+      name_one: p1.name,
+      score_one: get_score(vals, 1),
+      name_two: p2.name,
+      score_two: get_score(vals, 2),
+      player_ones_turn: s.player_ones_turn,
+      is_over: g.is_over,
+      game_id: game_id,
+      state_id: s.id,
+      is_current: s.id == cs.id
+    }
+  end
+
+  # returns the appropriate client view based on the given option
+  #   prev: the previous state of the game
+  #   next: the next state of the game
+  def client_view(game_id, state_id, option) do
+    g = get_game(game_id)
+    p1 = g.player_one
+    p2 = g.player_two
+
+    cs = get_current_state(game_id)
+
+    s = case option do
+      "prev" -> get_previous_state(game_id, state_id)
+      "next" -> get_next_state(game_id, state_id)
       _ -> cs
     end
 
@@ -698,6 +730,38 @@ defmodule Reversi.Play do
 
   """
   def get_state!(id), do: Repo.get!(State, id)
+
+  # returns the previous game state (or the given game state if no prev exists)
+  def get_previous_state(game_id, state_id) do
+    query = from s in State,
+      where: s.game_id == ^game_id and s.id < ^state_id,
+      order_by: s.id,
+      select: s
+
+    previous_states = Repo.all(query)
+
+    if Enum.count(previous_states) == 0 do
+      Repo.get_state!(state_id)
+    else
+      Enum.at(previous_states, -1)
+    end
+  end
+
+  # returns the next game state (or the given game state if no prev exists)
+  def get_next_state(game_id, state_id) do
+    query = from s in State,
+      where: s.game_id == ^game_id and s.id > ^state_id,
+      order_by: s.id,
+      select: s
+
+    next_states = Repo.all(query)
+
+    if Enum.count(next_states) == 0 do
+      Repo.get_state!(state_id)
+    else
+      Enum.at(next_states, 0)
+    end
+  end
 
   @doc """
   Creates a state.
