@@ -9,12 +9,14 @@ defmodule Reversi.Play do
   alias Reversi.Play.Game
   alias Reversi.Play.State
 
-  # returns the client view of the given game in its current state
-  def client_view(game_id) do
-    g = get_game(game_id)
-    s = get_current_state(game_id)
+  # returns the client view of the state corresponding to the given state id
+  def client_view(state_id) do
+    s = get_state(state_id)
+    g = get_game(s.game_id)
     p1 = g.player_one
     p2 = g.player_two
+
+    cs = get_current_state(s.game_id)
 
     vals = get_vals(s)
 
@@ -26,24 +28,29 @@ defmodule Reversi.Play do
       score_two: get_score(vals, 2),
       player_ones_turn: s.player_ones_turn,
       is_over: g.is_over,
-      game_id: game_id,
+      game_id: s.game_id,
       state_id: s.id,
-      is_current: true
+      is_current: state_id == cs.id
     }
   end
 
   # returns the appropriate client view based on the given option
-  #   init: the initial state of the game upon creation
-  #   now: the current state of the game
-  def client_view(game_id, option) do
-    g = get_game(game_id)
+  #   init: the initial state of the given state's game
+  #   now: the current state of the given state's game
+  #   prev: the previous state of the given state's game
+  #   next: the next state of the given state's game
+  def client_view(state_id, option) do
+    s = get_state(state_id)
+    g = get_game(s.game_id)
     p1 = g.player_one
     p2 = g.player_two
 
-    cs = get_current_state(game_id)
+    cs = get_current_state(s.game_id)
 
     s = case option do
-      "init" -> get_initial_state(game_id)
+      "init" -> get_initial_state(s.game_id)
+      "prev" -> get_previous_state(s.game_id, state_id)
+      "next" -> get_next_state(s.game_id, state_id)
       _ -> cs
     end
 
@@ -57,39 +64,7 @@ defmodule Reversi.Play do
       score_two: get_score(vals, 2),
       player_ones_turn: s.player_ones_turn,
       is_over: g.is_over,
-      game_id: game_id,
-      state_id: s.id,
-      is_current: s.id == cs.id
-    }
-  end
-
-  # returns the appropriate client view based on the given option
-  #   prev: the previous state of the game
-  #   next: the next state of the game
-  def client_view(game_id, state_id, option) do
-    g = get_game(game_id)
-    p1 = g.player_one
-    p2 = g.player_two
-
-    cs = get_current_state(game_id)
-
-    s = case option do
-      "prev" -> get_previous_state(game_id, state_id)
-      "next" -> get_next_state(game_id, state_id)
-      _ -> cs
-    end
-
-    vals = get_vals(s)
-
-    %{
-      vals: vals,
-      name_one: p1.name,
-      score_one: get_score(vals, 1),
-      name_two: p2.name,
-      score_two: get_score(vals, 2),
-      player_ones_turn: s.player_ones_turn,
-      is_over: g.is_over,
-      game_id: game_id,
+      game_id: s.game_id,
       state_id: s.id,
       is_current: s.id == cs.id
     }
@@ -101,20 +76,22 @@ defmodule Reversi.Play do
   end
 
   # returns the updated game for valid conessions
-  def concede(game, current_user_id) do
-    current_state = get_current_state(game.id)
+  def concede(state_id, current_user_id) do
+    state = get_state(state_id)
+    game = get_game(state.game_id)
+    current_state = get_current_state(state.game_id)
     current_user_id = String.to_integer(current_user_id)
 
-    # can only concede if it's your turn and you're losing
+    # can only concede if the state is current and it's your turn and you're losing
+    is_current = state_id == current_state.id
     current_users_turn = is_current_users_turn(game, current_state, current_user_id)
     current_player_losing = is_current_player_losing(current_state)
 
-    if !game.is_over && current_users_turn && current_player_losing do
+    if !game.is_over && is_current && current_users_turn && current_player_losing do
       update_game(game, %{is_over: true})
-      get_game(game.id)
-    else
-      game
     end
+
+    state_id
   end
 
   def is_current_player_losing(current_state) do
@@ -131,33 +108,36 @@ defmodule Reversi.Play do
     end
   end
 
-  # creates a new state for valid selections, returns the updated game
-  def select(game, index, current_user_id, is_current) do
-    current_state = get_current_state(game.id)
-    player = if current_state.player_ones_turn, do: 1, else: 2
+  # creates a new state for valid selections, returns the updated state
+  def select(state_id, index, current_user_id) do
+    s = get_state(state_id)
+    cs = get_current_state(s.game_id)
+    is_current = state_id == cs.id
+    g = get_game(s.game_id)
+    p = if cs.player_ones_turn, do: 1, else: 2
     current_user_id = String.to_integer(current_user_id)
 
-    if is_current && !game.is_over && get_val(current_state, index) == 0 && is_current_users_turn(game, current_state, current_user_id) do
-      indexes_to_flip = get_indexes_to_flip(index, player, current_state)
+    if is_current && !g.is_over && get_val(cs, index) == 0 && is_current_users_turn(g, cs, current_user_id) do
+      indexes_to_flip = get_indexes_to_flip(index, p, cs)
 
       if Enum.count(indexes_to_flip) < 1 do
-        game
+        state_id
       else
         # create new state from attrs
-        attrs = get_new_state_attrs(current_state, indexes_to_flip, index, player)
+        attrs = get_new_state_attrs(cs, indexes_to_flip, index, p)
         create_state(attrs)
-        current_state = get_current_state(game.id)
+        new_state = get_current_state(s.game_id)
 
         cond do
-          has_next_move(get_opponent(player), current_state) -> :ok
-          has_next_move(player, current_state) -> update_state(current_state, %{player_ones_turn: (if player == 1, do: true, else: false)})
-          true -> update_game(game, %{is_over: true})
+          has_next_move(get_opponent(p), new_state) -> :ok
+          has_next_move(p, new_state) -> update_state(new_state, %{player_ones_turn: (if p == 1, do: true, else: false)})
+          true -> update_game(g, %{is_over: true})
         end
 
-        get_game(game.id)
+        new_state.id
       end
     else
-      game
+      state_id
     end
   end
 
@@ -551,51 +531,49 @@ defmodule Reversi.Play do
     |> Repo.preload(:player_two)
   end
 
-  def list_games(which_games, user_id) do
-
-    query = from g in Game,
-      select: g
-
+  def get_list_games_query(which_games, user_id) do
     case which_games do
-      "yours" -> query = from g in Game,
+      "yours" -> from g in Game,
         where: g.player_one_id == ^user_id or g.player_two_id == ^user_id,
         select: g
 
-      "yours_to_join" -> query = from g in Game,
+      "yours_to_join" -> from g in Game,
         where: g.player_one_id == ^user_id and is_nil(g.player_two_id),
         select: g
 
-      "yours_in_progress" -> query = from g in Game,
+      "yours_in_progress" -> from g in Game,
         where: (g.player_one_id == ^user_id or g.player_two_id == ^user_id)
           and not is_nil(g.player_two_id) and not g.is_over,
         select: g
 
-      "yours_complete" -> query = from g in Game,
+      "yours_complete" -> from g in Game,
         where: (g.player_one_id == ^user_id or g.player_two_id == ^user_id)
           and g.is_over,
         select: g
 
-      "yours_complete_two_player" -> query = from g in Game,
+      "yours_complete_two_player" -> from g in Game,
         where: (g.player_one_id == ^user_id or g.player_two_id == ^user_id)
           and g.player_one_id != g.player_two_id and g.is_over,
         select: g
 
-      "all_to_join" -> query = from g in Game,
+      "all_to_join" -> from g in Game,
         where: is_nil(g.player_two_id),
         select: g
 
-      "all_in_progress" -> query = from g in Game,
+      "all_in_progress" -> from g in Game,
         where: not is_nil(g.player_two_id) and not g.is_over,
         select: g
 
-      "all_complete" -> query = from g in Game,
+      "all_complete" -> from g in Game,
         where: g.is_over,
         select: g
 
-      _ -> query = query
+      _ -> from g in Game, select: g
     end
+  end
 
-    Ecto.Query.order_by(query, desc: :id)
+  def list_games(which_games, user_id) do
+    Ecto.Query.order_by(get_list_games_query(which_games, user_id), desc: :id)
     |> Repo.all()
     |> Repo.preload(:player_one)
     |> Repo.preload(:player_two)
@@ -731,6 +709,8 @@ defmodule Reversi.Play do
   """
   def get_state!(id), do: Repo.get!(State, id)
 
+  def get_state(id), do: Repo.get(State, id)
+
   # returns the previous game state (or the given game state if no prev exists)
   def get_previous_state(game_id, state_id) do
     query = from s in State,
@@ -741,7 +721,7 @@ defmodule Reversi.Play do
     previous_states = Repo.all(query)
 
     if Enum.count(previous_states) == 0 do
-      Repo.get_state!(state_id)
+      get_state!(state_id)
     else
       Enum.at(previous_states, -1)
     end
@@ -757,7 +737,7 @@ defmodule Reversi.Play do
     next_states = Repo.all(query)
 
     if Enum.count(next_states) == 0 do
-      Repo.get_state!(state_id)
+      get_state!(state_id)
     else
       Enum.at(next_states, 0)
     end

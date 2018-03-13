@@ -66,14 +66,14 @@ class Reversi extends React.Component {
   // event handler for tile selections
   // uses closure to pass tile index to the channel message
   sendSelection(index) {
+    let c = this.channel;
       let i = index;
       let u = window.currentUserID;
-      let c = this.channel;
+      let si = this.state.state_id;
       let gv = this.gotView.bind(this);
-      let ic = this.state.is_current;
 
       return function (ev) {
-        c.push("select", { grid_index: i, current_user_id: u, is_current: ic }).receive("ok", gv);
+        c.push("select", { grid_index: i, current_user_id: u, state_id: si }).receive("ok", gv);
       }
   }
 
@@ -83,7 +83,7 @@ class Reversi extends React.Component {
   concede() {
     let u = window.currentUserID;
 
-    this.channel.push("concede", {current_user_id: u}).receive("ok", this.gotView.bind(this));
+    this.channel.push("concede", {current_user_id: u, state_id: si}).receive("ok", this.gotView.bind(this));
 
     // setTimeout(
     //   () => this.channel.push("concede").receive("ok", this.gotView.bind(this)),
@@ -92,11 +92,11 @@ class Reversi extends React.Component {
   }
 
   init() {
-    this.channel.push("init").receive("ok", this.gotView.bind(this));
+    this.channel.push("init", {state_id: this.state.state_id}).receive("ok", this.gotView.bind(this));
   }
 
   now() {
-    this.channel.push("now").receive("ok", this.gotView.bind(this));
+    this.channel.push("now", {state_id: this.state.state_id}).receive("ok", this.gotView.bind(this));
   }
 
   prev() {

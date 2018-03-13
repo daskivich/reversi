@@ -11,48 +11,60 @@ defmodule ReversiWeb.GamesChannel do
       |> assign(:game, game)
       |> assign(:game_id, game_id)
       |> assign(:state, state)
-      {:ok, %{"join" => game_id, "game" => Play.client_view(game_id)}, socket}
+      {:ok, %{"join" => game_id, "game" => Play.client_view(state.id)}, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
 
   # returns an updated view state when a "select" message is received
-  def handle_in("select", %{"grid_index" => gi, "current_user_id" => cuid, "is_current" => ic}, socket) do
-    game = Play.select(socket.assigns[:game], gi, cuid, ic)
+  def handle_in("select", %{"grid_index" => gi, "current_user_id" => cuid, "state_id" => si}, socket) do
+    state_id = Play.select(si, gi, cuid)
+    state = Play.get_state(state_id)
+    game = Play.get_game(state.game_id)
     socket = assign(socket, :game, game)
-    {:reply, {:ok, %{ "game" => Play.client_view(game.id)}}, socket}
+    {:reply, {:ok, %{ "game" => Play.client_view(state_id)}}, socket}
   end
 
   # returns an updated view state when a "concede" message is received
-  def handle_in("concede", %{"current_user_id" => cuid}, socket) do
-    game = Play.concede(socket.assigns[:game], cuid)
+  def handle_in("concede", %{"current_user_id" => cuid, "state_id" => si}, socket) do
+    state_id = Play.concede(si, cuid)
+    state = Play.get_state(state_id)
+    game = Play.get_game(state.game_id)
     socket = assign(socket, :game, game)
-    {:reply, {:ok, %{ "game" => Play.client_view(game.id)}}, socket}
+    {:reply, {:ok, %{ "game" => Play.client_view(state_id)}}, socket}
   end
 
   # returns the initial view state of this session's game
-  def handle_in("init", _payload, socket) do
-    game = socket.assigns[:game]
-    {:reply, {:ok, %{ "game" => Play.client_view(game.id, "init")}}, socket}
+  def handle_in("init",  %{"state_id" => state_id}, socket) do
+    state = Play.get_state(state_id)
+    game = Play.get_game(state.game_id)
+    socket = assign(socket, :game, game)
+    {:reply, {:ok, %{ "game" => Play.client_view(state_id, "init")}}, socket}
   end
 
   # returns the current view state of this session's game
-  def handle_in("now", _payload, socket) do
-    game = socket.assigns[:game]
-    {:reply, {:ok, %{ "game" => Play.client_view(game.id, "now")}}, socket}
+  def handle_in("now", %{"state_id" => state_id}, socket) do
+    state = Play.get_state(state_id)
+    game = Play.get_game(state.game_id)
+    socket = assign(socket, :game, game)
+    {:reply, {:ok, %{ "game" => Play.client_view(state_id, "now")}}, socket}
   end
 
   # returns the previous view state of this session's game
   def handle_in("prev", %{"state_id" => state_id}, socket) do
-    game = socket.assigns[:game]
-    {:reply, {:ok, %{ "game" => Play.client_view(game.id, state_id, "prev")}}, socket}
+    state = Play.get_state(state_id)
+    game = Play.get_game(state.game_id)
+    socket = assign(socket, :game, game)
+    {:reply, {:ok, %{ "game" => Play.client_view(state_id, "prev")}}, socket}
   end
 
   # returns the next view state of this session's game
   def handle_in("next", %{"state_id" => state_id}, socket) do
-    game = socket.assigns[:game]
-    {:reply, {:ok, %{ "game" => Play.client_view(game.id, state_id, "next")}}, socket}
+    state = Play.get_state(state_id)
+    game = Play.get_game(state.game_id)
+    socket = assign(socket, :game, game)
+    {:reply, {:ok, %{ "game" => Play.client_view(state_id, "next")}}, socket}
   end
 
   # # Channels can be used in a request/response fashion

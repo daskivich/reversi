@@ -16,7 +16,7 @@ defmodule ReversiWeb.GameController do
 
   def create(conn, %{"game" => game_params}) do
     case Play.create_game(game_params) do
-      {:ok, game} ->
+      {:ok, _game} ->
         conn
         |> put_flash(:info, "Game created successfully.")
         |> redirect(to: page_path(conn, :home))
