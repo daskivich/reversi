@@ -20,8 +20,18 @@ defmodule Reversi.Play do
 
     vals = get_vals(s)
 
+    angles = [0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0]
+
     %{
       vals: vals,
+      angles: angles,
       name_one: p1.name,
       score_one: get_score(vals, 1),
       name_two: p2.name,
@@ -56,8 +66,18 @@ defmodule Reversi.Play do
 
     vals = get_vals(s)
 
+    angles = [0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0]
+
     %{
       vals: vals,
+      angles: angles,
       name_one: p1.name,
       score_one: get_score(vals, 1),
       name_two: p2.name,

@@ -31,6 +31,14 @@ class Reversi extends React.Component {
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0],
+      angles: [0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0],
       name_one: 'dark',
       score_one: 2,
       name_two: 'light',
@@ -50,17 +58,68 @@ class Reversi extends React.Component {
   // resets the view upon receiving an updated game state from the controller
   // sends a subsequent "match" message to the channel if two tiles are selected
   gotView(view) {
-    // console.log("New view", view);
-    this.setState(view.game);
+    // identify index of new piece and pieces to be flipped
+    var new_piece_index;
+    var new_piece_val;
+    var indexes_to_be_flipped = [];
+    var i;
 
-    // let selections = _.filter(this.state.colors, (c) => c == "primary");
-    //
-    // if (selections.length == 2) {
-    //   setTimeout(
-    //     () => this.channel.push("match").receive("ok", this.gotView.bind(this)),
-    //     1000
-    //   );
-    // }
+    for (i = 0; i < this.state.vals.length; i++) {
+      if (this.state.vals[i] == 0 && view.game.vals[i] != 0) {
+        new_piece_index = i;
+        new_piece_val = view.game.vals[i];
+      } else if (this.state.vals[i] != view.game.vals[i]) {
+        indexes_to_be_flipped.push(i);
+      }
+    }
+
+    console.log(indexes_to_be_flipped);
+
+    // flip pieces 45 degrees
+    for (i = 0; i < indexes_to_be_flipped.length; i++) {
+      view.game.angles[indexes_to_be_flipped[i]] = 45;
+    }
+
+    this.setState(view.game);
+    console.log("45 state set");
+    console.log(view.game.angles);
+
+    // flip pieces 90 degrees
+    setTimeout(
+      () => {
+        for (i = 0; i < indexes_to_be_flipped.length; i++) {
+          view.game.angles[indexes_to_be_flipped[i]] = 90;
+        }
+        this.setState(view.game);
+        console.log("90 state set");
+        console.log(view.game.angles);
+      }, 333
+    );
+
+
+    // flip pieces 135 degrees
+    setTimeout(
+      () => {
+        for (i = 0; i < indexes_to_be_flipped.length; i++) {
+          view.game.angles[indexes_to_be_flipped[i]] = 135;
+        }
+        this.setState(view.game);
+        console.log("135 state set");
+        console.log(view.game.angles);
+      }, 666
+    );
+
+    // flip pieces 180 degrees
+    setTimeout(
+      () => {
+        for (i = 0; i < indexes_to_be_flipped.length; i++) {
+          view.game.angles[indexes_to_be_flipped[i]] = 0;
+        }
+        this.setState(view.game);
+        console.log("180 state set");
+        console.log(view.game.angles);
+      }, 999
+    );
   }
 
   // event handler for tile selections
@@ -505,14 +564,39 @@ function Tile(props) {
   let col = indexString.charAt(3);
   let index = ((row - 1) * 8) + (col - 1);
   let val = props.state.vals[index];
+  let angle = props.state.angles[index];
 
   var class_name;
 
   if (val == 1) {
-    class_name = "cell rounded-circle border-0 btn-info"
+    switch(angle) {
+      case 45:
+        class_name = "flip-45 rounded-circle border-0 btn-warning"
+        break;
+      case 90:
+        class_name = "flip-90 rounded-circle border-0 btn-warning"
+        break;
+      case 135:
+        class_name = "flip-135 rounded-circle border-0 btn-info"
+        break;
+      default:
+        class_name = "cell rounded-circle border-0 btn-info"
+    }
   } else if (val == 2) {
-    class_name = "cell rounded-circle border-0 btn-warning"
-  } else {
+    switch(angle) {
+      case 45:
+        class_name = "flip-45 rounded-circle border-0 btn-info"
+        break;
+      case 90:
+        class_name = "flip-90 rounded-circle border-0 btn-info"
+        break;
+      case 135:
+        class_name = "flip-135 rounded-circle border-0 btn-warning"
+        break;
+      default:
+        class_name = "cell rounded-circle border-0 btn-warning"
+    }
+  } else { // val == 0 for empty cells
     if (props.state.is_over) {
       class_name = "cell rounded-circle border-0 btn-success game-over"
     } else if (props.state.player_ones_turn) {
