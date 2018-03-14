@@ -225,12 +225,6 @@ tbody tr:hover td {
   background-color: #323232;
 }
 
-.game-board {
-  background-color: #277714;
-  border: thin solid #323232;
-  border-radius: 5%;
-}
-
 .alice-blue {
   background-color: AliceBlue;
 //  background-color: #277714;
@@ -359,7 +353,13 @@ tbody tr:hover td {
 }
 
 .spacer {
-  margin-top: 142.5%;
+  padding-bottom: 142.5%;
+}
+
+.game-board {
+  background-color: #277714;
+  border: thin solid #323232;
+  border-radius: 5%;
 }
 
 .cell {
@@ -372,9 +372,29 @@ tbody tr:hover td {
   height: 77.5%;
 }
 
+.flip-15 {
+  position: absolute;
+  top: 20%;
+  bottom: 0;
+  left: 11%;
+  right: 0;
+  width: 77.5%;
+  height: 64.6%;
+}
+
+.flip-30 {
+  position: absolute;
+  top: 25%;
+  bottom: 0;
+  left: 11%;
+  right: 0;
+  width: 77.5%;
+  height: 51.7%;
+}
+
 .flip-45 {
   position: absolute;
-  top: 11.5%;
+  top: 30%;
   bottom: 0;
   left: 11%;
   right: 0;
@@ -382,9 +402,29 @@ tbody tr:hover td {
   height: 38.7%;
 }
 
+.flip-60 {
+  position: absolute;
+  top: 35%;
+  bottom: 0;
+  left: 11%;
+  right: 0;
+  width: 77.5%;
+  height: 25.8%;
+}
+
+.flip-75 {
+  position: absolute;
+  top: 40%;
+  bottom: 0;
+  left: 11%;
+  right: 0;
+  width: 77.5%;
+  height: 12.9%;
+}
+
 .flip-90 {
   position: absolute;
-  top: 11.5%;
+  top: 40%;
   bottom: 0;
   left: 11%;
   right: 0;
@@ -392,14 +432,54 @@ tbody tr:hover td {
   height: 0%;
 }
 
+.flip-105 {
+  position: absolute;
+  top: 40%;
+  bottom: 0;
+  left: 11%;
+  right: 0;
+  width: 77.5%;
+  height: 12.9%;
+}
+
+.flip-120 {
+  position: absolute;
+  top: 35%;
+  bottom: 0;
+  left: 11%;
+  right: 0;
+  width: 77.5%;
+  height: 25.8%;
+}
+
 .flip-135 {
   position: absolute;
-  top: 11.5%;
+  top: 30%;
   bottom: 0;
   left: 11%;
   right: 0;
   width: 77.5%;
   height: 38.7%;
+}
+
+.flip-150 {
+  position: absolute;
+  top: 25%;
+  bottom: 0;
+  left: 11%;
+  right: 0;
+  width: 77.5%;
+  height: 51.7%;
+}
+
+.flip-165 {
+  position: absolute;
+  top: 20%;
+  bottom: 0;
+  left: 11%;
+  right: 0;
+  width: 77.5%;
+  height: 64.6%;
 }
 
 // dark green: #277714

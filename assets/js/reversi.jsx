@@ -73,16 +73,52 @@ class Reversi extends React.Component {
       }
     }
 
-    console.log(indexes_to_be_flipped);
-
-    // flip pieces 45 degrees
+    // flip pieces 15 degrees
     for (i = 0; i < indexes_to_be_flipped.length; i++) {
-      view.game.angles[indexes_to_be_flipped[i]] = 45;
+      view.game.angles[indexes_to_be_flipped[i]] = 15;
     }
 
     this.setState(view.game);
-    console.log("45 state set");
-    console.log(view.game.angles);
+
+    // flip pieces 30 degrees
+    setTimeout(
+      () => {
+        for (i = 0; i < indexes_to_be_flipped.length; i++) {
+          view.game.angles[indexes_to_be_flipped[i]] = 30;
+        }
+        this.setState(view.game);
+      }, 90
+    );
+
+    // flip pieces 45 degrees
+    setTimeout(
+      () => {
+        for (i = 0; i < indexes_to_be_flipped.length; i++) {
+          view.game.angles[indexes_to_be_flipped[i]] = 45;
+        }
+        this.setState(view.game);
+      }, 180
+    );
+
+    // flip pieces 60 degrees
+    setTimeout(
+      () => {
+        for (i = 0; i < indexes_to_be_flipped.length; i++) {
+          view.game.angles[indexes_to_be_flipped[i]] = 60;
+        }
+        this.setState(view.game);
+      }, 270
+    );
+
+    // flip pieces 75 degrees
+    setTimeout(
+      () => {
+        for (i = 0; i < indexes_to_be_flipped.length; i++) {
+          view.game.angles[indexes_to_be_flipped[i]] = 75;
+        }
+        this.setState(view.game);
+      }, 360
+    );
 
     // flip pieces 90 degrees
     setTimeout(
@@ -91,11 +127,28 @@ class Reversi extends React.Component {
           view.game.angles[indexes_to_be_flipped[i]] = 90;
         }
         this.setState(view.game);
-        console.log("90 state set");
-        console.log(view.game.angles);
-      }, 333
+      }, 450
     );
 
+    // flip pieces 105 degrees
+    setTimeout(
+      () => {
+        for (i = 0; i < indexes_to_be_flipped.length; i++) {
+          view.game.angles[indexes_to_be_flipped[i]] = 105;
+        }
+        this.setState(view.game);
+      }, 540
+    );
+
+    // flip pieces 120 degrees
+    setTimeout(
+      () => {
+        for (i = 0; i < indexes_to_be_flipped.length; i++) {
+          view.game.angles[indexes_to_be_flipped[i]] = 120;
+        }
+        this.setState(view.game);
+      }, 630
+    );
 
     // flip pieces 135 degrees
     setTimeout(
@@ -104,9 +157,27 @@ class Reversi extends React.Component {
           view.game.angles[indexes_to_be_flipped[i]] = 135;
         }
         this.setState(view.game);
-        console.log("135 state set");
-        console.log(view.game.angles);
-      }, 666
+      }, 720
+    );
+
+    // flip pieces 150 degrees
+    setTimeout(
+      () => {
+        for (i = 0; i < indexes_to_be_flipped.length; i++) {
+          view.game.angles[indexes_to_be_flipped[i]] = 150;
+        }
+        this.setState(view.game);
+      }, 810
+    );
+
+    // flip pieces 165 degrees
+    setTimeout(
+      () => {
+        for (i = 0; i < indexes_to_be_flipped.length; i++) {
+          view.game.angles[indexes_to_be_flipped[i]] = 165;
+        }
+        this.setState(view.game);
+      }, 900
     );
 
     // flip pieces 180 degrees
@@ -116,9 +187,7 @@ class Reversi extends React.Component {
           view.game.angles[indexes_to_be_flipped[i]] = 0;
         }
         this.setState(view.game);
-        console.log("180 state set");
-        console.log(view.game.angles);
-      }, 999
+      }, 990
     );
   }
 
@@ -570,28 +639,76 @@ function Tile(props) {
 
   if (val == 1) {
     switch(angle) {
+      case 15:
+        class_name = "flip-15 rounded-circle border-0 btn-warning"
+        break;
+      case 30:
+        class_name = "flip-30 rounded-circle border-0 btn-warning"
+        break;
       case 45:
         class_name = "flip-45 rounded-circle border-0 btn-warning"
         break;
+      case 60:
+        class_name = "flip-60 rounded-circle border-0 btn-warning"
+        break;
+      case 75:
+        class_name = "flip-75 rounded-circle border-0 btn-warning"
+        break;
       case 90:
-        class_name = "flip-90 rounded-circle border-0 btn-warning"
+        class_name = "flip-90 rounded-circle border-0 btn-info"
+        break;
+      case 105:
+        class_name = "flip-105 rounded-circle border-0 btn-info"
+        break;
+      case 120:
+        class_name = "flip-120 rounded-circle border-0 btn-info"
         break;
       case 135:
         class_name = "flip-135 rounded-circle border-0 btn-info"
+        break;
+      case 150:
+        class_name = "flip-150 rounded-circle border-0 btn-info"
+        break;
+      case 165:
+        class_name = "flip-165 rounded-circle border-0 btn-info"
         break;
       default:
         class_name = "cell rounded-circle border-0 btn-info"
     }
   } else if (val == 2) {
     switch(angle) {
+      case 15:
+        class_name = "flip-15 rounded-circle border-0 btn-info"
+        break;
+      case 30:
+        class_name = "flip-30 rounded-circle border-0 btn-info"
+        break;
       case 45:
         class_name = "flip-45 rounded-circle border-0 btn-info"
         break;
+      case 60:
+        class_name = "flip-60 rounded-circle border-0 btn-info"
+        break;
+      case 75:
+        class_name = "flip-75 rounded-circle border-0 btn-info"
+        break;
       case 90:
-        class_name = "flip-90 rounded-circle border-0 btn-info"
+        class_name = "flip-90 rounded-circle border-0 btn-warning"
+        break;
+      case 105:
+        class_name = "flip-105 rounded-circle border-0 btn-warning"
+        break;
+      case 120:
+        class_name = "flip-120 rounded-circle border-0 btn-warning"
         break;
       case 135:
         class_name = "flip-135 rounded-circle border-0 btn-warning"
+        break;
+      case 150:
+        class_name = "flip-150 rounded-circle border-0 btn-warning"
+        break;
+      case 165:
+        class_name = "flip-165 rounded-circle border-0 btn-warning"
         break;
       default:
         class_name = "cell rounded-circle border-0 btn-warning"
