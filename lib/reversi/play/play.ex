@@ -129,7 +129,7 @@ defmodule Reversi.Play do
   end
 
   # creates a new state for valid selections, returns the updated state
-  def select(state_id, index, current_user_id) do
+  def select(state_id, index, current_user_id, pieces_flipping) do
     s = get_state(state_id)
     cs = get_current_state(s.game_id)
     is_current = state_id == cs.id
@@ -137,7 +137,7 @@ defmodule Reversi.Play do
     p = if cs.player_ones_turn, do: 1, else: 2
     current_user_id = String.to_integer(current_user_id)
 
-    if is_current && !g.is_over && get_val(cs, index) == 0 && is_current_users_turn(g, cs, current_user_id) do
+    if !pieces_flipping && is_current && !g.is_over && get_val(cs, index) == 0 && is_current_users_turn(g, cs, current_user_id) do
       indexes_to_flip = get_indexes_to_flip(index, p, cs)
 
       if Enum.count(indexes_to_flip) < 1 do

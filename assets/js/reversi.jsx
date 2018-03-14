@@ -200,8 +200,18 @@ class Reversi extends React.Component {
       let si = this.state.state_id;
       let gv = this.gotView.bind(this);
 
+      var pf = false;
+      var j;
+
+      for (j = 0; j < this.state.angles.length; j++) {
+        if (this.state.angles[j] != 0) {
+          pf = true;
+          break;
+        }
+      }
+
       return function (ev) {
-        c.push("select", { grid_index: i, current_user_id: u, state_id: si }).receive("ok", gv);
+        c.push("select", { grid_index: i, current_user_id: u, state_id: si, pieces_flipping: pf }).receive("ok", gv);
       }
   }
 

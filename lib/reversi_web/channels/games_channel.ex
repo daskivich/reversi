@@ -13,8 +13,8 @@ defmodule ReversiWeb.GamesChannel do
   end
 
   # returns an updated view state when a "select" message is received
-  def handle_in("select", %{"grid_index" => gi, "current_user_id" => cuid, "state_id" => si}, socket) do
-    state_id = Play.select(si, gi, cuid)
+  def handle_in("select", %{"grid_index" => gi, "current_user_id" => cuid, "state_id" => si, "pieces_flipping" => pf}, socket) do
+    state_id = Play.select(si, gi, cuid, pf)
     {:reply, {:ok, %{ "game" => Play.client_view(state_id)}}, socket}
   end
 
