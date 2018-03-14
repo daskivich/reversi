@@ -572,6 +572,10 @@ defmodule Reversi.Play do
     end
   end
 
+  def get_player_ones_turn(state) do
+    state.player_ones_turn
+  end
+
   def list_games(which_games, user_id) do
     Ecto.Query.order_by(get_list_games_query(which_games, user_id), desc: :id)
     |> Repo.all()
@@ -579,6 +583,7 @@ defmodule Reversi.Play do
     |> Repo.preload(:player_two)
     |> Enum.map(fn(g) -> Map.put(g, :score_one, get_score(get_vals(get_current_state(g.id)), 1)) end)
     |> Enum.map(fn(g) -> Map.put(g, :score_two, get_score(get_vals(get_current_state(g.id)), 2)) end)
+    |> Enum.map(fn(g) -> Map.put(g, :player_ones_turn, get_player_ones_turn(get_current_state(g.id))) end)
   end
 
   @doc """

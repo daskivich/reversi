@@ -27,7 +27,23 @@
               complete
             <% else %>
               <%= if game.player_two do %>
-                ongoing
+                <%= if game.player_ones_turn and @current_user.id == game.player_one.id do %>
+                  your turn
+                <% else %>
+                  <%= if game.player_ones_turn and @current_user.id == game.player_two.id do %>
+                    opponent's turn
+                  <% else %>
+                    <%= if !game.player_ones_turn and @current_user.id == game.player_two.id do %>
+                      your turn
+                    <% else %>
+                      <%= if !game.player_ones_turn and @current_user.id == game.player_one.id do %>
+                        opponent's turn
+                      <% else %>
+                        ongoing
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                <% end %>
               <% else %>
                 pending second player
               <% end %>
