@@ -78,6 +78,44 @@
   border-bottom-right-radius: 5px;
 }
 
+.block {
+  display: block;
+}
+
+.log-input {
+  display: block;
+  background-color: #777777;
+  color: #252525;
+  text-align: center;
+  border-style: none;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.log-input:hover {
+  background-color: #777777;
+  color: Gainsboro;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.log-input::placeholder {
+  color: #252525;
+}
+
+.log-input:focus {
+  background-color: Gainsboro;
+  color: #252525;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
 .form-control-login {
   background-color: #277714;
   color: #252525;
