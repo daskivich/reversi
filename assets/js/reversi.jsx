@@ -39,8 +39,10 @@ class Reversi extends React.Component {
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0],
+      id_one: -1,
       name_one: 'loading',
       score_one: '...',
+      id_two: -1,
       name_two: 'loading',
       score_two: '...',
       player_ones_turn: true,
@@ -724,12 +726,12 @@ function Tile(props) {
         class_name = "cell rounded-circle border-0 btn-warning"
     }
   } else { // val == 0 for empty cells
-    if (props.state.is_over) {
-      class_name = "cell rounded-circle border-0 btn-success game-over"
-    } else if (props.state.player_ones_turn) {
+    if (!props.state.is_over && props.state.player_ones_turn && props.state.id_one == window.currentUserID) {
       class_name = "cell rounded-circle border-0 btn-success dark-success"
-    } else {
+    } else if (!props.state.is_over && !props.state.player_ones_turn && props.state.id_two == window.currentUserID) {
       class_name = "cell rounded-circle border-0 btn-success light-success"
+    } else {
+      class_name = "cell rounded-circle border-0 btn-success game-over"
     }
   }
 

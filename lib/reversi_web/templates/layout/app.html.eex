@@ -23,7 +23,7 @@
           <%= if @current_user do %>
             <%= link "games", to: page_path(@conn, :home), class: "nav-item nav-link" %>
             <%= link "my profile", to: user_path(@conn, :edit, @current_user.id), class: "nav-item nav-link" %>
-            <%= link "player stats", to: user_path(@conn, :index), class: "nav-item nav-link" %>
+            <%= link "leader board", to: user_path(@conn, :index), class: "nav-item nav-link" %>
             <%= link "log out", to: "/session", method: :delete, class: "nav-item nav-link" %>
           <% end %>
         </nav>

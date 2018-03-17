@@ -32,8 +32,10 @@ defmodule Reversi.Play do
     %{
       vals: vals,
       angles: angles,
+      id_one: p1.id,
       name_one: p1.name,
       score_one: get_score(vals, 1),
+      id_two: p2.id,
       name_two: p2.name,
       score_two: get_score(vals, 2),
       player_ones_turn: s.player_ones_turn,
@@ -78,8 +80,10 @@ defmodule Reversi.Play do
     %{
       vals: vals,
       angles: angles,
+      id_one: p1.id,
       name_one: p1.name,
       score_one: get_score(vals, 1),
+      id_two: p2.id,
       name_two: p2.name,
       score_two: get_score(vals, 2),
       player_ones_turn: s.player_ones_turn,

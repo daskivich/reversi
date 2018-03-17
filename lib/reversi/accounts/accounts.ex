@@ -30,7 +30,18 @@ defmodule Reversi.Accounts do
     |> Enum.map(fn(u) -> Map.put(u, :victories, Play.victories(u.id)) end)
     |> Enum.map(fn(u) -> Map.put(u, :defeats, Play.defeats(u.id)) end)
     |> Enum.map(fn(u) -> Map.put(u, :differential, Play.differential(u.id)) end)
-    |> Enum.sort(fn(u1, u2) -> u1.name < u2.name end)
+    |> Enum.sort(fn(u1, u2) -> compare_users(u1, u2) end)
+  end
+
+  def compare_users(u1, u2) do
+    points_one = u1.victories - u1.defeats
+    points_two = u2.victories - u2.defeats
+
+    cond do
+      points_one == points_two && u1.differential == u2.differential -> u1.name < u2.name
+      points_one == points_two -> u1.differential > u2.differential
+      true -> points_one > points_two
+    end
   end
 
   @doc """
