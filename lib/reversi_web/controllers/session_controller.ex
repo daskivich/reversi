@@ -10,7 +10,7 @@ defmodule ReversiWeb.SessionController do
       conn
       |> put_session(:user_id, user.id)
       |> put_flash(:info, "Welcome back, #{user.name}!")
-      |> redirect(to: page_path(conn, :home))
+      |> redirect(to: page_path(conn, :home, which: "all_to_join"))
     else
       conn
       |> put_flash(:error, "Invalid credentials!")

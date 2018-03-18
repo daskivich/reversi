@@ -1,9 +1,17 @@
 /* This file is for your main application css. */
 @import "bootstrap";
 
+// dark green: #277714
+// light green: #348421
+
+// dark blue: #142876
+// light blue: #323232
+
+// dark red: #761428
+// light red: #832135
+
 .card-body {
   background-color: DarkGrey;
-//  background-color: #b5cde1;
 }
 
 .dark-background {
@@ -119,6 +127,19 @@
 .form-control-login {
   background-color: #277714;
   color: #252525;
+}
+
+// solution to hiding default bootstrap borders via James Donnelly and miken32
+// https://stackoverflow.com/questions/40524729/in-a-bootstrap-table-how-remove-lines-between-rows
+.table>tbody>tr>td {
+  border-top: none;
+}
+
+// solution to hiding default bootstrap borders via James Donnelly and miken32
+// https://stackoverflow.com/questions/40524729/in-a-bootstrap-table-how-remove-lines-between-rows
+.table>thead>tr>th {
+  border-top: thick solid #323232;
+  border-bottom: thick solid #323232;
 }
 
 .table-styling {
@@ -481,12 +502,3 @@ tbody tr:hover td {
   width: 77.5%;
   height: 64.6%;
 }
-
-// dark green: #277714
-// light green: #348421
-
-// dark blue: #142876
-// light blue: #323232
-
-// dark red: #761428
-// light red: #832135

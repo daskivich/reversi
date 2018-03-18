@@ -1,7 +1,7 @@
 <%= if @current_user do %>
   <div class="row justify-content-center">
-    <div class="col-6">
-      <table class="table-styling">
+    <div class="col-6 table-responsive">
+      <table class="table table-styling">
         <thead>
           <tr>
             <th class="first-th"></th>

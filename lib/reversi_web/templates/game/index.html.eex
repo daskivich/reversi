@@ -1,10 +1,10 @@
 <%= if @current_user do %>
 <div class="row justify-content-center mb-4">
-  <div class="col-8">
-    <table class="table-styling">
-      <tbody>
+  <div class="col-8 border-0 table-responsive">
+    <table class="table table-styling border-0">
+      <tbody class="border-0">
         <%= for game <- @games do %>
-        <tr>
+        <tr class="border-0">
           <td class="align-middle first-td">
             <span class="game-id rounded"><%= game.id %></span>
           </td>
