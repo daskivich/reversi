@@ -3,8 +3,8 @@ defmodule ReversiWeb.SessionController do
 
   alias Reversi.Accounts
 
-  def create(conn, %{"email" => email}) do
-    user = Accounts.get_user_by_email(email)
+  def create(conn, %{"email" => email, "password" => password}) do
+    user = Accounts.get_and_auth_user(email, password)
 
     if user do
       conn

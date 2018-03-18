@@ -7,8 +7,6 @@ defmodule Reversi.Accounts do
   alias Reversi.Repo
 
   alias Reversi.Accounts.User
-  alias Reversi.Play.Game
-  alias Reversi.Play.State
   alias Reversi.Play
 
   @doc """
@@ -63,6 +61,16 @@ defmodule Reversi.Accounts do
   # a method to get a user by his/her email address, which must be unique
   def get_user_by_email(email) do
     Repo.get_by(User, email: email)
+  end
+
+  # method to get a user by email with password authentication from Nat's Notes
+  # http://www.ccs.neu.edu/home/ntuck/courses/2018/01/cs4550/notes/17-passwords/notes.html
+  def get_and_auth_user(email, password) do
+    user = get_user_by_email(email)
+    case Comeonin.Argon2.check_pass(user, password) do
+      {:ok, user} -> user
+      _else       -> nil
+    end
   end
 
   @doc """
