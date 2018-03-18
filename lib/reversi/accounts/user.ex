@@ -26,7 +26,7 @@ defmodule Reversi.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :email, :password, :password_confirmation])
+    |> cast(attrs, [:name, :email, :password, :password_confirmation, :pw_tries, :pw_last_try])
     |> validate_confirmation(:password)
     |> validate_password(:password)
     |> put_pass_hash()

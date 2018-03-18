@@ -58,6 +58,8 @@ defmodule Reversi.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user(id), do: Repo.get(User, id)
+
   # a method to get a user by his/her email address, which must be unique
   def get_user_by_email(email) do
     Repo.get_by(User, email: email)
@@ -67,10 +69,49 @@ defmodule Reversi.Accounts do
   # http://www.ccs.neu.edu/home/ntuck/courses/2018/01/cs4550/notes/17-passwords/notes.html
   def get_and_auth_user(email, password) do
     user = get_user_by_email(email)
-    case Comeonin.Argon2.check_pass(user, password) do
-      {:ok, user} -> user
-      _else       -> nil
+
+    Comeonin.Argon2.check_pass(user, password)
+    |> verify_tries(user)
+
+    # case Comeonin.Argon2.check_pass(user, password) do
+    #   {:ok, user} -> user |> verify_tries()
+    #   _else       -> nil |> verify_tries()
+    # end
+  end
+
+  def verify_tries(check_result, user) do
+    if user.pw_last_try == nil || DateTime.diff(DateTime.utc_now(), user.pw_last_try) > 360 do
+      reset_tries(user)
+
+      case check_result do
+        {:ok, user} -> user
+        _else       -> one_failed_try(user)
+      end
+    else
+      if user.pw_tries > 10 do
+        nil
+      else
+        case check_result do
+          {:ok, user} -> reset_tries(user)
+          _else       -> increment_tries(user)
+        end
+      end
     end
+  end
+
+  def reset_tries(user) do
+    update_user(user, %{pw_tries: 0, pw_last_try: DateTime.utc_now()})
+    get_user(user.id)
+  end
+
+  def one_failed_try(user) do
+    update_user(user, %{pw_tries: 1, pw_last_try: DateTime.utc_now()})
+    nil
+  end
+
+  def increment_tries(user) do
+    update_user(user, %{pw_tries: user.pw_tries + 1, pw_last_try: DateTime.utc_now()})
+    nil
   end
 
   @doc """
