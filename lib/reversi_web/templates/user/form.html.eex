@@ -51,7 +51,7 @@
 
   <div class="row justify-content-center">
     <div class="col-8">
-      <div class="btn btn-block form-label">confirm password</div>
+      <div class="btn btn-block form-label">confirm new password</div>
     </div>
   </div>
 
@@ -62,15 +62,15 @@
     </div>
   </div>
 
-  <div class="row justify-content-center">
-    <div class="col-8 form-group mb-0">
-      <%= link "cancel", to: page_path(@conn, :home), class: "btn btn-block btn-cancel" %>
+  <div class="row justify-content-center mb-4">
+    <div class="col-8 form-group">
+      <%= submit "submit", class: "btn btn-block btn-log-in border-0" %>
     </div>
   </div>
 
-  <div class="row justify-content-center">
-    <div class="col-8 form-group">
-      <%= submit "submit", class: "btn btn-block btn-submit border-0" %>
+  <div class="row justify-content-center mb-4">
+    <div class="col-8 form-group mb-0">
+      <%= link "cancel", to: page_path(@conn, :home), class: "btn btn-block btn-create-account" %>
     </div>
   </div>
 <% end %>

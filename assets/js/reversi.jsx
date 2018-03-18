@@ -222,6 +222,7 @@ class Reversi extends React.Component {
   // to complete their execution
   concede() {
     let u = window.currentUserID;
+    let si = this.state.state_id;
 
     this.channel.push("concede", {current_user_id: u, state_id: si}).receive("ok", this.gotView.bind(this));
 

@@ -106,10 +106,24 @@ defmodule Reversi.Play do
     current_state = get_current_state(state.game_id)
     current_user_id = String.to_integer(current_user_id)
 
+    # IO.write("state id: ")
+    # IO.puts(state_id)
+    # IO.write("current user id: ")
+    # IO.puts(current_user_id)
+    # IO.write("current state id: ")
+    # IO.puts(current_state.id)
+
     # can only concede if the state is current and it's your turn and you're losing
     is_current = state_id == current_state.id
     current_users_turn = is_current_users_turn(game, current_state, current_user_id)
     current_player_losing = is_current_player_losing(current_state)
+
+    # IO.write("is current: ")
+    # IO.puts(is_current)
+    # IO.write("current user's turn: ")
+    # IO.puts(current_users_turn)
+    # IO.write("current player losing: ")
+    # IO.puts(current_player_losing)
 
     if !game.is_over && is_current && current_users_turn && current_player_losing do
       update_game(game, %{is_over: true})
