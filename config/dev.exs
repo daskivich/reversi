@@ -52,7 +52,7 @@ config :phoenix, :stacktrace_depth, 20
 config :reversi, Reversi.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "reversi",
-  password: "CaeJeuThuN3t",
+  password: "dauhue0ieYii",
   database: "reversi_dev",
   hostname: "localhost",
   pool_size: 10
