@@ -1,36 +1,36 @@
 <%= form_tag("/session", method: :post) do %>
   <div class="row justify-content-center">
-    <div class="col-8 mt-4">
+    <div class="col-md-8 mt-4">
       <div class="pt-2 pb-2 form-label">email</div>
     </div>
   </div>
 
   <div class="row justify-content-center mb-4">
-    <div class="col-8 form-group">
+    <div class="col-md-8 form-group">
       <input class="form-control reg-input pt-2 pb-2" type="email" name="email" placeholder="...">
     </div>
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-md-8">
       <div class="pt-2 pb-2 form-label">password</div>
     </div>
   </div>
 
   <div class="row justify-content-center mb-4">
-    <div class="col-8">
+    <div class="col-md-8">
       <input class="form-control reg-input pt-2 pb-2" type="password" name="password" placeholder="...">
     </div>
   </div>
 
   <div class="row justify-content-center mb-2">
-    <div class="col-8 form-group">
+    <div class="col-md-8 form-group">
       <button class="btn btn-block btn-log-in border-0">log in</button>
     </div>
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-8 form-group mb-4">
+    <div class="col-md-8 form-group mb-4">
       <%= link "create an account", to: user_path(@conn, :new), class: "btn btn-block btn-create-account" %>
     </div>
   </div>

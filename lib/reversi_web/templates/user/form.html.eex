@@ -1,7 +1,7 @@
 <%= form_for @changeset, @action, fn f -> %>
 
   <div class="row justify-content-center mb-4">
-    <div class="col-8">
+    <div class="col-md-8">
       <%= if @changeset.action do %>
         <div class="alert alert-danger">
           <p>Oops, something went wrong! Please check the errors below.</p>
@@ -11,65 +11,65 @@
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-md-8">
       <div class="btn btn-block form-label">name</div>
     </div>
   </div>
 
   <div class="row justify-content-center mb-4">
-    <div class="col-8 form-group">
+    <div class="col-md-8 form-group">
       <%= text_input f, :name, class: "form-control reg-input", placeholder: "..." %>
       <%= error_tag f, :name %>
     </div>
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-md-8">
       <div class="btn btn-block form-label">email</div>
     </div>
   </div>
 
   <div class="row justify-content-center mb-4">
-    <div class="col-8 form-group">
+    <div class="col-md-8 form-group">
       <%= text_input f, :email, class: "form-control reg-input", placeholder: "..." %>
       <%= error_tag f, :email %>
     </div>
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-md-8">
       <div class="btn btn-block form-label">(re)set password</div>
     </div>
   </div>
 
   <div class="row justify-content-center mb-4">
-    <div class="col-8 form-group">
+    <div class="col-md-8 form-group">
       <%= password_input f, :password, class: "form-control reg-input", placeholder: "..." %>
       <%= error_tag f, :password %>
     </div>
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-md-8">
       <div class="btn btn-block form-label">confirm new password</div>
     </div>
   </div>
 
   <div class="row justify-content-center mb-4">
-    <div class="col-8 form-group">
+    <div class="col-md-8 form-group">
       <%= password_input f, :password_confirmation, class: "form-control reg-input", placeholder: "..." %>
       <%= error_tag f, :password_confirmation %>
     </div>
   </div>
 
   <div class="row justify-content-center mb-4">
-    <div class="col-8 form-group">
+    <div class="col-md-8 form-group">
       <%= submit "submit", class: "btn btn-block btn-log-in border-0" %>
     </div>
   </div>
 
   <div class="row justify-content-center mb-4">
-    <div class="col-8 form-group mb-0">
+    <div class="col-md-8 form-group mb-0">
       <%= link "cancel", to: page_path(@conn, :home), class: "btn btn-block btn-create-account" %>
     </div>
   </div>
