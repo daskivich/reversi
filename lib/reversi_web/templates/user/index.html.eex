@@ -1,6 +1,6 @@
 <%= if @current_user do %>
   <div class="row justify-content-center">
-    <div class="col-6 table-responsive">
+    <div class="col-lg-8 table-responsive">
       <table class="table table-styling">
         <thead>
           <tr>

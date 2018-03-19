@@ -57,8 +57,6 @@ class Reversi extends React.Component {
       .receive("error", resp => {console.log("Unable to join", resp)});
 
     this.channel.on("new_state", payload => {
-      console.log("received new state");
-
       if (this.state.is_current) {
         this.gotView(payload);
       }
