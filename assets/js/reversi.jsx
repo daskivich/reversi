@@ -60,7 +60,7 @@ class Reversi extends React.Component {
       console.log("received new state");
 
       if (this.state.is_current) {
-        gotView(payload);
+        this.gotView(payload);
       }
     });
   }
