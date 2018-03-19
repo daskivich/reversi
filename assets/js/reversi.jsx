@@ -601,39 +601,39 @@ class Reversi extends React.Component {
         </div>
 
         <div className="row justify-content-center mb-4 mt-4">
-          <div className="col-1">
-            <Button className="btn btn-primary btn-block bs border-0"
+          <div className="col-lg-1">
+            <Button className="btn btn-primary btn-block bs border-0 mb-2"
               onClick={this.prev.bind(this)}>
               prev
             </Button>
           </div>
 
-          <div className="col-1">
-            <Button className="btn btn-primary btn-block bs border-0"
+          <div className="col-lg-1">
+            <Button className="btn btn-primary btn-block bs border-0 mb-2"
               onClick={this.next.bind(this)}>
               next
             </Button>
           </div>
 
-          <div className="col-1"></div>
+          <div className="col-lg-1"></div>
 
-          <div className="col-2">
-            <Button className="btn btn-block bd border-0"
+          <div className="col-lg-2">
+            <Button className="btn btn-block bd border-0 mb-2"
               onClick={this.concede.bind(this)}>
               concede
             </Button>
           </div>
 
-          <div className="col-1"></div>
+          <div className="col-lg-1"></div>
 
-          <div className="col-1">
-            <Button className="btn btn-primary btn-block bs border-0"
+          <div className="col-lg-1">
+            <Button className="btn btn-primary btn-block bs border-0 mb-2"
               onClick={this.init.bind(this)}>
               init
             </Button>
           </div>
 
-          <div className="col-1">
+          <div className="col-lg-1">
             <Button className="btn btn-block bs border-0"
               onClick={this.now.bind(this)}>
               now
