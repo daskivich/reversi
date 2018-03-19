@@ -15,13 +15,17 @@ defmodule ReversiWeb.GamesChannel do
   # returns an updated view state when a "select" message is received
   def handle_in("select", %{"grid_index" => gi, "current_user_id" => cuid, "state_id" => si, "pieces_flipping" => pf}, socket) do
     state_id = Play.select(si, gi, cuid, pf)
-    {:reply, {:ok, %{ "game" => Play.client_view(state_id)}}, socket}
+    payload = %{"game" => Play.client_view(state_id)}
+    broadcast_from socket, "new_state", payload
+    {:reply, {:ok, payload}, socket}
   end
 
   # returns an updated view state when a "concede" message is received
   def handle_in("concede", %{"current_user_id" => cuid, "state_id" => si}, socket) do
     state_id = Play.concede(si, cuid)
-    {:reply, {:ok, %{ "game" => Play.client_view(state_id)}}, socket}
+    payload = %{ "game" => Play.client_view(state_id)}
+    broadcast_from socket, "new_state", payload
+    {:reply, {:ok, payload}, socket}
   end
 
   # returns the initial view state of this session's game
@@ -49,7 +53,7 @@ defmodule ReversiWeb.GamesChannel do
   # def handle_in("ping", payload, socket) do
   #   {:reply, {:ok, payload}, socket}
   # end
-  #
+
   # # It is also common to receive messages from the client and
   # # broadcast to everyone in the current topic (games:lobby).
   # def handle_in("shout", payload, socket) do

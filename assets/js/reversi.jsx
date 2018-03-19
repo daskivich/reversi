@@ -55,6 +55,14 @@ class Reversi extends React.Component {
     this.channel.join()
       .receive("ok", this.gotView.bind(this))
       .receive("error", resp => {console.log("Unable to join", resp)});
+
+    this.channel.on("new_state", payload => {
+      console.log("received new state");
+
+      if (this.state.is_current) {
+        gotView(payload);
+      }
+    });
   }
 
   // resets the view upon receiving an updated game state from the controller
