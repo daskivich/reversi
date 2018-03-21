@@ -10,6 +10,10 @@
 // dark red: #761428
 // light red: #832135
 
+:root {
+  --dynamic-width: 100%;
+}
+
 .card-body {
   background-color: DarkGrey;
 }
@@ -373,14 +377,14 @@ tbody tr:hover td {
   color: Gainsboro;
 }
 
-.spacer {
-  padding-bottom: 142.5%;
-}
-
 .game-board {
   background-color: #277714;
   border: thin solid #323232;
   border-radius: 5%;
+}
+
+.spacer {
+  padding-bottom: calc(100% + 30px);
 }
 
 .cell {
