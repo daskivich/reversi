@@ -5,7 +5,7 @@
 // light green: #348421
 
 // dark blue: #142876
-// light blue: #323232
+// light blue: #
 
 // dark red: #761428
 // light red: #832135
@@ -255,28 +255,43 @@ tbody tr:hover td {
 //  background-color: #277714;
 }
 
+.btn-success {
+  background-color: #277714;//pool felt green
+  border-style: none;
+}
+
+.btn-success:focus {
+  box-shadow: none;
+}
+
 .game-over:hover {
   background: #277714
 }
 
 .dark-success:hover {
-    background: #323232;//dark
+  background: #777777;
+  border: thick solid #323232;
 }
 
 .light-success:hover {
-  background: Gainsboro;//light
-}
-
-.btn-success {
-  background-color: #277714;//pool felt green
+  background: #777777;
+  border: thick solid Gainsboro;
 }
 
 .btn-info, .btn-info:hover {
   background-color: #323232;
 }
 
+.btn-info:focus {
+  box-shadow: none;
+}
+
 .btn-warning, .btn-warning:hover {
   background-color: Gainsboro;
+}
+
+.btn-warning:focus {
+  box-shadow: none;
 }
 
 .incomplete {
@@ -296,19 +311,11 @@ tbody tr:hover td {
 .btn-create-account {
   background-color: #761428;
   color: #777777;
-  // border-top-left-radius: 0px;
-  // border-top-right-radius: 0px;
-  // border-bottom-left-radius: 5px;
-  // border-bottom-right-radius: 5px;
 }
 
 .btn-create-account:hover {
   background-color: #832135;
   color: Gainsboro;
-  // border-top-left-radius: 0px;
-  // border-top-right-radius: 0px;
-  // border-bottom-left-radius: 5px;
-  // border-bottom-right-radius: 5px;
 }
 
 .btn-cancel {
