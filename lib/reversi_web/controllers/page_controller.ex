@@ -8,6 +8,17 @@ defmodule ReversiWeb.PageController do
     render conn, "index.html"
   end
 
+  def help(conn, _params) do
+    user_id = get_session(conn, :user_id)
+
+    if user_id do
+      render conn, "help.html"
+    else
+      conn
+      |> redirect(to: page_path(conn, :index))
+    end
+  end
+
   # if a user is logged in, render the home page
   # otherwise redirect to the log-in page (see index above)
   def home(conn, params) do
