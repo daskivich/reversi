@@ -257,8 +257,8 @@ class Reversi extends React.Component {
   render() {
     let status = "";
     let mode = "";
-    let dark_info = "col-md-2 text-center dark-info rounded pt-2 pb-0 mb-4";
-    let light_info = "col-md-2 text-center light-info rounded pt-2 pb-0 mb-4";
+    let dark_info = "col-md-2 text-center dark-info rounded pt-2 pb-0 float-left mb-4";
+    let light_info = "col-md-2 text-center light-info rounded pt-2 pb-0 float-right mb-4";
 
     if (this.state.is_over) {
       if (this.state.is_current) {
@@ -273,31 +273,31 @@ class Reversi extends React.Component {
         if (this.state.player_ones_turn) {
           status = "dark's turn";
           mode = "(historical view)";
-          dark_info = "col-md-2 text-center darks-turn-info rounded pt-2 pb-0 mb-4";
+          dark_info = "col-md-2 text-center darks-turn-info rounded pt-2 pb-0 float-left mb-4";
         } else {// if it's player two's turn (game over, not current state)
           status = "light's turn";
           mode = "(historical view)";
-          light_info = "col-md-2 text-center lights-turn-info rounded pt-2 pb-0 mb-4";
+          light_info = "col-md-2 text-center lights-turn-info rounded pt-2 pb-0 float-right mb-4";
         }
       }
     } else {// if the game is not over
       if (this.state.is_current) {
         if (this.state.player_ones_turn) {
           status = "dark's turn";
-          dark_info = "col-md-2 text-center darks-turn-info rounded pt-2 pb-0 mb-4";
+          dark_info = "col-md-2 text-center darks-turn-info rounded pt-2 pb-0 float-left mb-4";
         } else {// if it's player two's turn (game not over, current state)
           status = "light's turn";
-          light_info = "col-md-2 text-center lights-turn-info rounded pt-2 pb-0 mb-4";
+          light_info = "col-md-2 text-center lights-turn-info rounded pt-2 pb-0 float-right mb-4";
         }
       } else {// if the state is not current (and the game is not over)
         if (this.state.player_ones_turn) {
           status = "dark's turn";
           mode = "(historical view)";
-          dark_info = "col-md-2 text-center darks-turn-info rounded pt-2 pb-0 mb-4";
+          dark_info = "col-md-2 text-center darks-turn-info rounded pt-2 pb-0 float-left mb-4";
         } else {
           status = "light's turn";
           mode = "(historical view)";
-          light_info = "col-md-2 text-center lights-turn-info rounded pt-2 pb-0 mb-4";
+          light_info = "col-md-2 text-center lights-turn-info rounded pt-2 pb-0 float-right mb-4";
         }
       }
     }
@@ -309,11 +309,13 @@ class Reversi extends React.Component {
             <p className="mb-0 pb-0">{this.state.name_one}</p>
             <h1 className="mt-0 pt-0 mb-0 pb-0">{this.state.score_one}</h1>
           </div>
+
           <div className="col-md-4 text-center middle-grey-color pt-1 mb-4">
             <h2 className="mb-0">Game #{this.state.game_id}</h2>
             <p className="mb-0">{status}</p>
             <p className="mb-0">{mode}</p>
           </div>
+
           <div className={light_info}>
             <p className="mb-0 pb-0">{this.state.name_two}</p>
             <h1 className="mt-0 pt-0 mb-0 pb-0">{this.state.score_two}</h1>
@@ -321,283 +323,287 @@ class Reversi extends React.Component {
         </div>
 
         <div className="row justify-content-center">
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r1c1"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r1c2"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r1c3"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r1c4"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r1c5"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r1c6"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r1c7"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r1c8"} />
-        </div>
+          <div className="col-md-10">
+            <div className="row justify-content-center">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r1c8"} />
+            </div>
 
-        <div className="row justify-content-center">
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r2c1"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r2c2"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r2c3"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r2c4"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r2c5"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r2c6"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r2c7"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r2c8"} />
-        </div>
+            <div className="row justify-content-center">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r2c8"} />
+            </div>
 
-        <div className="row justify-content-center">
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r3c1"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r3c2"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r3c3"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r3c4"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r3c5"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r3c6"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r3c7"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r3c8"} />
-        </div>
+            <div className="row justify-content-center">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r3c8"} />
+            </div>
 
-        <div className="row justify-content-center">
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r4c1"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r4c2"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r4c3"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r4c4"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r4c5"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r4c6"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r4c7"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r4c8"} />
-        </div>
+            <div className="row justify-content-center">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r4c8"} />
+            </div>
 
-        <div className="row justify-content-center">
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r5c1"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r5c2"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r5c3"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r5c4"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r5c5"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r5c6"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r5c7"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r5c8"} />
-        </div>
+            <div className="row justify-content-center">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r5c8"} />
+            </div>
 
-        <div className="row justify-content-center">
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r6c1"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r6c2"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r6c3"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r6c4"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r6c5"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r6c6"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r6c7"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r6c8"} />
-        </div>
+            <div className="row justify-content-center">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r6c8"} />
+            </div>
 
-        <div className="row justify-content-center">
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r7c1"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r7c2"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r7c3"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r7c4"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r7c5"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r7c6"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r7c7"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r7c8"} />
-        </div>
+            <div className="row justify-content-center">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r7c8"} />
+            </div>
 
-        <div className="row justify-content-center">
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r8c1"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r8c2"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r8c3"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r8c4"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r8c5"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r8c6"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r8c7"} />
-          <Tile
-            state={this.state}
-            select={this.sendSelection.bind(this)}
-            index={"r8c8"} />
+            <div className="row justify-content-center">
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c1"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c2"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c3"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c4"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c5"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c6"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c7"} />
+              <Tile
+                state={this.state}
+                select={this.sendSelection.bind(this)}
+                index={"r8c8"} />
+            </div>
+          </div>
         </div>
 
         <div className="row justify-content-center mb-4 mt-4">
