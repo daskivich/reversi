@@ -42,7 +42,7 @@ defmodule ReversiWeb.GameController do
     if game.player_two_id && game_params["player_two_id"] do
       conn
       |> put_flash(:error, "Sorry, but a second player has recently joined.")
-      |> render("edit.html", game: game, changeset: changeset)
+      |> render("edit.html", game: game)
     else
 
     end
