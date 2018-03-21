@@ -10,10 +10,6 @@
 // dark red: #761428
 // light red: #832135
 
-:root {
-  --dynamic-width: 100%;
-}
-
 .card-body {
   background-color: DarkGrey;
 }
@@ -255,42 +251,33 @@ tbody tr:hover td {
 //  background-color: #277714;
 }
 
-.btn-success {
+.btn-empty, .btn-empty:hover, .btn-empty:focus, .btn-empty:active {
   background-color: #277714;//pool felt green
   border-style: none;
-}
-
-.btn-success:focus {
   box-shadow: none;
 }
 
 .game-over:hover {
-  background: #277714
+  background: #277714;
 }
 
 .dark-success:hover {
-  background: #777777;
-  border: thick solid #323232;
+  background: #323232;
 }
 
 .light-success:hover {
-  background: #777777;
-  border: thick solid Gainsboro;
+  background: Gainsboro;
 }
 
-.btn-info, .btn-info:hover {
+.btn-dark, .btn-dark:hover, .btn-dark:focus, .btn-dark:active {
   background-color: #323232;
-}
-
-.btn-info:focus {
+  border-style: none;
   box-shadow: none;
 }
 
-.btn-warning, .btn-warning:hover {
+.btn-light, .btn-light:hover, .btn-light:focus, .btn-light:active {
   background-color: Gainsboro;
-}
-
-.btn-warning:focus {
+  border-style: none;
   box-shadow: none;
 }
 

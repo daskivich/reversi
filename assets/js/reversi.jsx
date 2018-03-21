@@ -659,86 +659,86 @@ function Tile(props) {
   if (val == 1) {
     switch(angle) {
       case 15:
-        class_name = "flip-15 rounded-circle border-0 btn-warning"
+        class_name = "flip-15 rounded-circle border-0 btn-light"
         break;
       case 30:
-        class_name = "flip-30 rounded-circle border-0 btn-warning"
+        class_name = "flip-30 rounded-circle border-0 btn-light"
         break;
       case 45:
-        class_name = "flip-45 rounded-circle border-0 btn-warning"
+        class_name = "flip-45 rounded-circle border-0 btn-light"
         break;
       case 60:
-        class_name = "flip-60 rounded-circle border-0 btn-warning"
+        class_name = "flip-60 rounded-circle border-0 btn-light"
         break;
       case 75:
-        class_name = "flip-75 rounded-circle border-0 btn-warning"
+        class_name = "flip-75 rounded-circle border-0 btn-light"
         break;
       case 90:
-        class_name = "flip-90 rounded-circle border-0 btn-info"
+        class_name = "flip-90 rounded-circle border-0 btn-dark"
         break;
       case 105:
-        class_name = "flip-105 rounded-circle border-0 btn-info"
+        class_name = "flip-105 rounded-circle border-0 btn-dark"
         break;
       case 120:
-        class_name = "flip-120 rounded-circle border-0 btn-info"
+        class_name = "flip-120 rounded-circle border-0 btn-dark"
         break;
       case 135:
-        class_name = "flip-135 rounded-circle border-0 btn-info"
+        class_name = "flip-135 rounded-circle border-0 btn-dark"
         break;
       case 150:
-        class_name = "flip-150 rounded-circle border-0 btn-info"
+        class_name = "flip-150 rounded-circle border-0 btn-dark"
         break;
       case 165:
-        class_name = "flip-165 rounded-circle border-0 btn-info"
+        class_name = "flip-165 rounded-circle border-0 btn-dark"
         break;
       default:
-        class_name = "cell rounded-circle border-0 btn-info"
+        class_name = "cell rounded-circle border-0 btn-dark"
     }
   } else if (val == 2) {
     switch(angle) {
       case 15:
-        class_name = "flip-15 rounded-circle border-0 btn-info"
+        class_name = "flip-15 rounded-circle border-0 btn-dark"
         break;
       case 30:
-        class_name = "flip-30 rounded-circle border-0 btn-info"
+        class_name = "flip-30 rounded-circle border-0 btn-dark"
         break;
       case 45:
-        class_name = "flip-45 rounded-circle border-0 btn-info"
+        class_name = "flip-45 rounded-circle border-0 btn-dark"
         break;
       case 60:
-        class_name = "flip-60 rounded-circle border-0 btn-info"
+        class_name = "flip-60 rounded-circle border-0 btn-dark"
         break;
       case 75:
-        class_name = "flip-75 rounded-circle border-0 btn-info"
+        class_name = "flip-75 rounded-circle border-0 btn-dark"
         break;
       case 90:
-        class_name = "flip-90 rounded-circle border-0 btn-warning"
+        class_name = "flip-90 rounded-circle border-0 btn-light"
         break;
       case 105:
-        class_name = "flip-105 rounded-circle border-0 btn-warning"
+        class_name = "flip-105 rounded-circle border-0 btn-light"
         break;
       case 120:
-        class_name = "flip-120 rounded-circle border-0 btn-warning"
+        class_name = "flip-120 rounded-circle border-0 btn-light"
         break;
       case 135:
-        class_name = "flip-135 rounded-circle border-0 btn-warning"
+        class_name = "flip-135 rounded-circle border-0 btn-light"
         break;
       case 150:
-        class_name = "flip-150 rounded-circle border-0 btn-warning"
+        class_name = "flip-150 rounded-circle border-0 btn-light"
         break;
       case 165:
-        class_name = "flip-165 rounded-circle border-0 btn-warning"
+        class_name = "flip-165 rounded-circle border-0 btn-light"
         break;
       default:
-        class_name = "cell rounded-circle border-0 btn-warning"
+        class_name = "cell rounded-circle border-0 btn-light"
     }
   } else { // val == 0 for empty cells
     if (!props.state.is_over && props.state.player_ones_turn && props.state.id_one == window.currentUserID) {
-      class_name = "cell rounded-circle btn-success dark-success"
+      class_name = "cell rounded-circle border-0 btn-empty dark-success"
     } else if (!props.state.is_over && !props.state.player_ones_turn && props.state.id_two == window.currentUserID) {
-      class_name = "cell rounded-circle btn-success light-success"
+      class_name = "cell rounded-circle border-0 btn-empty light-success"
     } else {
-      class_name = "cell rounded-circle btn-success game-over"
+      class_name = "cell rounded-circle border-0 btn-empty game-over"
     }
   }
 
