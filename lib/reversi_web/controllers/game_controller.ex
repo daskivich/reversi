@@ -37,8 +37,15 @@ defmodule ReversiWeb.GameController do
   end
 
   def update(conn, %{"id" => id, "game" => game_params}) do
-    IO.puts "entered game_controller/update"
     game = Play.get_game!(id)
+
+    if game.player_two_id && game_params["player_two_id"] do
+      conn
+      |> put_flash(:error, "Sorry, but a second player has recently joined.")
+      |> render("edit.html", game: game, changeset: changeset)
+    else
+
+    end
 
     case Play.update_game(game, game_params) do
       {:ok, game} ->
