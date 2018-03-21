@@ -41,19 +41,17 @@ defmodule ReversiWeb.GameController do
 
     if game.player_two_id && game_params["player_two_id"] do
       conn
-      |> put_flash(:error, "Sorry, but a second player has recently joined.")
-      |> render("edit.html", game: game)
+      |> put_flash(:error, "Sorry, but a second player has recently joined this game.")
+      |> redirect(to: page_path(conn, :home, which: "all_to_join"))
     else
-
-    end
-
-    case Play.update_game(game, game_params) do
-      {:ok, game} ->
-        conn
-        |> put_flash(:info, "Game updated successfully.")
-        |> redirect(to: page_path(conn, :game, game))
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", game: game, changeset: changeset)
+      case Play.update_game(game, game_params) do
+        {:ok, game} ->
+          conn
+          |> put_flash(:info, "Game updated successfully.")
+          |> redirect(to: page_path(conn, :game, game))
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "edit.html", game: game, changeset: changeset)
+      end
     end
   end
 
