@@ -33,7 +33,7 @@ defmodule ReversiWeb.Router do
 
     get "/", PageController, :index
     get "/home", PageController, :home
-    get "/help", PageController, :help
+    get "/about", PageController, :about
     get "/game/:game", PageController, :game
     resources "/games", GameController
     resources "/users", UserController

@@ -21,10 +21,10 @@
       <div class="col-md-8">
         <nav class="navbar navbar-toggleable-md mb-1">
           <%= if @current_user do %>
+          <%= link "about", to: page_path(@conn, :about), class: "nav-item nav-link" %>
             <%= link "games", to: page_path(@conn, :home, %{"which" => "all_to_join"}), class: "nav-item nav-link" %>
-            <%= link "my profile", to: user_path(@conn, :edit, @current_user.id), class: "nav-item nav-link" %>
             <%= link "leader board", to: user_path(@conn, :index), class: "nav-item nav-link" %>
-            <%= link "help", to: page_path(@conn, :help), class: "nav-item nav-link" %>
+            <%= link "my profile", to: user_path(@conn, :edit, @current_user.id), class: "nav-item nav-link" %>
             <%= link "log out", to: "/session", method: :delete, class: "nav-item nav-link" %>
           <% end %>
         </nav>

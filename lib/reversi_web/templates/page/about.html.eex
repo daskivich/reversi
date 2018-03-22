@@ -1,0 +1,110 @@
+<%= if @current_user do %>
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <div class="card border-0 mb-4">
+        <div class="card-body rounded">
+          <h6 class="text-center">Reversi</h6>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reversi is a two-player board game
+          played on an an eight-by-eight grid.
+          Each square in this grid can be empty or contain one game piece.
+          Game pieces come in one of two colors: dark and light.
+          The player who creates the game plays with the dark pieces.
+          The player who joins an already created game plays with the light
+          pieces.
+          The game starts with four pieces placed in the center of the game
+          board, two dark pieces diagonally across from each other and two
+          light pieces diagonally across from each other.
+          The players alternate turns with dark playing first.
+          A legal move consists of a player placing one of his/her pieces on
+          the game board in an empty square as follows: this new piece must
+          be an endpoint on at least one line segment (vertical, horizontal,
+          or diagonal) of connected pieces (with no intevening empty squares);
+          the other endpoint of this line segment must be another of his/her
+          pieces, and all intervening pieces must be opponent pieces.
+          Upon each legal move, all intervening opponent pieces on all such
+          lines formed with the placement of the newest piece are flipped.
+          If a player does not have a legal move, his/her turn is skipped.
+          If neither player has a legal move, the game is over.
+          A player who is losing can use his/her turn to concede the game.
+          At the end of the game, the player with more pieces on the board
+          wins; if both players have the same number of pieces, the game is a
+          draw.
+        </div>
+      </div>
+
+      <div class="card border-0 mb-4">
+        <div class="card-body rounded">
+          <h6 class="text-center">Games</h6>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The games page allows a user to create
+          a new game and view a filtered list of existing games.
+          This list can be filtered to show all games by all players or only
+          games where you are a player.
+          This list can be filtered further to show games awaiting a
+          second player, games in progress, or completed games only (either all
+          games of these types or just your games of these types).
+          The the name of the players are displayed for each game listed,
+          as well as the current/final score of each game, the status of each
+          game, and an action button for each game.
+          If the a game doesn't yet have a second player, click the "join"
+          button to join that game as the second player.
+          If the game is in progress and you're one of the players, click the
+          "play" button to play that game.
+          If the game has two players but you're not one of them, click the
+          "view" button to view the game.
+        </div>
+      </div>
+
+      <div class="card border-0 mb-4">
+        <div class="card-body rounded">
+          <h6 class="text-center">Game #</h6>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each game has its own page.
+          If you're playing and it's your turn, click on an open square to
+          place a piece.
+          If you're playing and it's not your turn, the board will automatically
+          update when your opponent takes his/her turn.
+          If you're just viewing (i.e., not playing), the board will
+          automatically update after each turn.
+          Whether you're a player or a viewer, you can use the "init", "now",
+          "prev", and "next" buttoms below the game board to navigate the
+          past states of the game.
+          Click "init" to display the initial state of the game.
+          Click "now" to display the current state of the game (which may still
+          be ongoing or complete depending).
+          Click "prev" to see the state before the most recent move.
+          Click "next" to see the state after th enext move.
+          The game is considered to be in "historical view" when any state
+          other than the current state is being displayed; moves cannot be
+          made in "historical view"; if it's your turn to play and the game is
+          in "historical view", click the "now" button to return to the current
+          state.
+        </div>
+      </div>
+
+      <div class="card border-0 mb-4">
+        <div class="card-body rounded">
+          <h6 class="text-center">Leader Board</h6>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leader board lists each player
+          by rank.
+          For each player, his/her number of competitive wins, losses, and draws
+          (excluding games played against yourself) is listed.
+          The leader board also displays a player's cumulative plus/minus for
+          such competitive games; plus-minus subtracts the sum of the margins
+          of defeat in all of a player's competitive losses from the sum of the
+          margin of victory in all of a player's competitive wins.
+          Rank is determined by the number of competitive wins minus the number
+          of competive loses, with competitive +/- breaking ties.
+          Finally, a "games" button allows the user to see a list of each
+          player's competitive games.
+        </div>
+      </div>
+
+      <div class="card border-0 mb-4">
+        <div class="card-body rounded">
+          <h6 class="text-center">My Profile</h6>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use your profile page to change your
+          personal information or reset your password.
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

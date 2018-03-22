@@ -8,11 +8,11 @@ defmodule ReversiWeb.PageController do
     render conn, "index.html"
   end
 
-  def help(conn, _params) do
+  def about(conn, _params) do
     user_id = get_session(conn, :user_id)
 
     if user_id do
-      render conn, "help.html"
+      render conn, "about.html"
     else
       conn
       |> redirect(to: page_path(conn, :index))
