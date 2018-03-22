@@ -13,13 +13,13 @@
   </head>
 
   <body class="app-background">
-    <div class="row mt-2">
+    <div class="row fixed-top fized-z dark-background">
       <div class="col-md-2">
-        <h5 class="mb-0 nav-text text-left ml-3">Reversi</h5>
+        <h5 class="mb-0 nav-text text-left ml-3 mt-2">Reversi</h5>
       </div>
 
       <div class="col-md-8">
-        <nav class="navbar navbar-toggleable-md mb-1">
+        <nav class="navbar">
           <%= if @current_user do %>
           <%= link "about", to: page_path(@conn, :about), class: "nav-item nav-link" %>
             <%= link "games", to: page_path(@conn, :home, %{"which" => "all_to_join"}), class: "nav-item nav-link" %>
@@ -31,7 +31,7 @@
       </div>
 
       <div class="col-md-2">
-        <h5 class="mb-0 mr-0 nav-text text-right mr-3">
+        <h5 class="mb-0 mr-0 nav-text text-right mr-3 mt-2">
         <%= if @current_user, do: @current_user.name %>
       </h5>
       </div>

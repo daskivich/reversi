@@ -502,3 +502,19 @@ tbody tr:hover td {
   width: 77.5%;
   height: 64.6%;
 }
+
+body {
+  padding-top: 60px;
+}
+
+p {
+  margin-bottom: 0 !important;
+}
+
+.fixed-z {
+  z-index: 1030;
+}
+
+.first-content {
+  padding-top: 0 !important;
+}
