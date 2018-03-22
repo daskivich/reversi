@@ -5,7 +5,7 @@
         <div class="card-body rounded">
           <h6 class="text-center">Reversi</h6>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reversi is a two-player board game
-          played on an an eight-by-eight grid.
+          played on an eight-by-eight grid.
           Each square in this grid can be empty or contain one game piece.
           Game pieces come in one of two colors: dark and light.
           The player who creates the game plays with the dark pieces.
