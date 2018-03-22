@@ -5,10 +5,14 @@
 // light green: #348421
 
 // dark blue: #142876
-// light blue: #
+// light blue: #213583
 
 // dark red: #761428
 // light red: #832135
+
+// dark grey: #323232
+// middle grey: #777777
+// light grey: Gainsboro
 
 .card-body {
   background-color: #777777;
@@ -86,49 +90,6 @@
   border-bottom-right-radius: 5px;
 }
 
-.block {
-  display: block;
-}
-
-.log-input {
-  display: block;
-  background-color: #777777;
-  color: #252525;
-  text-align: center;
-  border-style: none;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-
-.log-input:hover {
-  background-color: #777777;
-  color: Gainsboro;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-
-.log-input::placeholder {
-  color: #252525;
-}
-
-.log-input:focus {
-  background-color: Gainsboro;
-  color: #252525;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-
-.form-control-login {
-  background-color: #277714;
-  color: #252525;
-}
-
 // solution to hiding default bootstrap borders via James Donnelly and miken32
 // https://stackoverflow.com/questions/40524729/in-a-bootstrap-table-how-remove-lines-between-rows
 .table>tbody>tr>td {
@@ -159,11 +120,13 @@ th {
   border-bottom: thick solid #323232;
 }
 
+// rounded left corners for the first th in the tr
 .first-th {
   border-top-left-radius: 7.5px;
   border-bottom-left-radius: 7.5px;
 }
 
+// rounded right corners for the last th in the tr
 .last-th {
   border-top-right-radius: 7.5px;
   border-bottom-right-radius: 7.5px;
@@ -176,16 +139,19 @@ td {
   border-bottom: thick solid #323232;
 }
 
+// rounded corners for the first td in the tr
 .first-td {
   border-top-left-radius: 7.5px;
   border-bottom-left-radius: 7.5px;
 }
 
+// rounded corners for the last td in the tr
 .last-td {
   border-top-right-radius: 7.5px;
   border-bottom-right-radius: 7.5px;
 }
 
+// for game id display in game/index.html's list of games
 .game-id {
   background-color: #323232;
   color: #277714;
@@ -206,36 +172,28 @@ tbody tr:hover td {
   color: Gainsboro;
 }
 
-.dark-color {
-  color: #323232;
-}
-
-.white {
-  color: White;
-}
-
-.info-spacer {
-  margin-top: 35%;
-}
-
+// for the general display of dark player info on a game page
 .dark-info {
   border: thick solid #848484;
   background-color: #323232;
   color: #848484;
 }
 
+// for the general display of light player info on a game page
 .light-info {
   border: thick solid #6a6a6a;
   background-color: Gainsboro;
   color: #6a6a6a;
 }
 
+// for the diplay of dark player info on a game page when it's his/her turn
 .darks-turn-info {
   border: thick solid #277714;
   background-color: #323232;
   color: #848484;
 }
 
+// for the diplay of light player info on a game page when it's his/her turn
 .lights-turn-info {
   border: thick solid #277714;
   background-color: Gainsboro;
@@ -246,45 +204,42 @@ tbody tr:hover td {
   background-color: #323232;
 }
 
-.alice-blue {
-  background-color: AliceBlue;
-//  background-color: #277714;
-}
-
+// game piece positions on the game board without any pieces
 .btn-empty, .btn-empty:hover, .btn-empty:focus, .btn-empty:active {
   background-color: #277714;//pool felt green
   border-style: none;
   box-shadow: none;
 }
 
+// an empty game board grid when it's not your turn in an ongoing game
 .game-over:hover {
   background: #277714;
 }
 
+// an empty game board grid when it's your (dark's) turn in an ongoing game
 .dark-success:hover, .dark-success:active {
   background: #323232 !important;
   box-shadow: 5px 5px 5px #004400 !important;
 }
 
+// an empty game board grid when it's your (light's) turn in an ongoing game
 .light-success:hover, .light-success:active {
   background: Gainsboro !important;
   box-shadow: 5px 5px 5px #004400 !important;
 }
 
+// a game board grid with a dark piece in it
 .btn-dark, .btn-dark:hover, .btn-dark:focus, .btn-dark:active {
   background-color: #323232 !important;
   border-style: none;
   box-shadow: none !important;
 }
 
+// a game board grid with a light piece in it
 .btn-light, .btn-light:hover, .btn-light:focus, .btn-light:active {
   background-color: Gainsboro !important;
   border-style: none;
   box-shadow: none !important;
-}
-
-.incomplete {
-  background-color: MistyRose;
 }
 
 .btn-log-in {
@@ -343,6 +298,7 @@ tbody tr:hover td {
   border-bottom-right-radius: 5px;
 }
 
+// short for button primary, used in games and users indexes
 .bp {
   background: #323232;
   color: #348421;
@@ -353,6 +309,8 @@ tbody tr:hover td {
   color: Gainsboro;
 }
 
+// short for button secondary, used for prev/next/init/now buttons
+// in main react game component
 .bs {
   background-color: #777777;
   color: #252525;
@@ -363,6 +321,7 @@ tbody tr:hover td {
   color: Gainsboro;
 }
 
+// short for button danger, used for conede button in main react game component
 .bd {
   background-color: #777777;
   color: #252525
@@ -379,10 +338,12 @@ tbody tr:hover td {
   border-radius: 5%;
 }
 
+// to allow for dynamic square cols in game board
 .spacer {
   padding-bottom: calc(100% + 30px);
 }
 
+// sizing and positioning of the stanard game piece (button)
 .cell {
   position: absolute;
   top: 11.5%;
@@ -392,6 +353,9 @@ tbody tr:hover td {
   width: 77.5%;
   height: 77.5%;
 }
+
+// flip classes are for game pieces in the process of being flipped
+// the number indicates the number of degrees
 
 .flip-15 {
   position: absolute;

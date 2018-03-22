@@ -13,7 +13,7 @@
   </head>
 
   <body class="app-background">
-    <div id="navbar" class="row dark-background">
+    <div class="row dark-background">
       <div class="col-md-2">
         <h5 class="mb-0 nav-text text-left ml-3 mt-2">Reversi</h5>
       </div>

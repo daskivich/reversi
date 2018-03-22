@@ -1,6 +1,6 @@
 <%= if @current_user do %>
   <div class="row justify-content-center pb-0">
-    <div class="col-lg-8 mb-2 pb-0 pt-0">
+    <div class="col-lg-8 mb-2 pt-0">
       <%= form_for @changeset, game_path(@conn, :create), fn f -> %>
         <%= if @changeset.action do %>
           <div class="alert alert-danger">
