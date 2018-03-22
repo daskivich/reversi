@@ -1,6 +1,6 @@
 <%= if @current_user do %>
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-lg-8">
       <div class="card border-0 mb-4">
         <div class="card-body rounded">
           <h6 class="text-center">Reversi</h6>
