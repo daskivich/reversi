@@ -261,24 +261,26 @@ tbody tr:hover td {
   background: #277714;
 }
 
-.dark-success:hover {
-  background: #323232;
+.dark-success:hover, .dark-success:active {
+  background: #323232 !important;
+  box-shadow: 5px 5px 5px #004400 !important;
 }
 
-.light-success:hover {
-  background: Gainsboro;
+.light-success:hover, .light-success:active {
+  background: Gainsboro !important;
+  box-shadow: 5px 5px 5px #004400 !important;
 }
 
 .btn-dark, .btn-dark:hover, .btn-dark:focus, .btn-dark:active {
-  background-color: #323232;
+  background-color: #323232 !important;
   border-style: none;
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 .btn-light, .btn-light:hover, .btn-light:focus, .btn-light:active {
-  background-color: Gainsboro;
+  background-color: Gainsboro !important;
   border-style: none;
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 .incomplete {
