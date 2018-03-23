@@ -9,13 +9,18 @@ export default function run_reversi(root, channel) {
 /*
 state
   vals: the values of the grid cells of the game board
-  name_one: the name of player name_one
+  angles: the display angles of the pieces on the game board
+  id_one: the id of player_one
+  name_one: the name of player_one
   score_one: the score of player one
-  name_two: the name of player name_two
+  id_one: the id of player_two
+  name_two: the name of player_two
   score_two: the score of player two
   player_ones_turn: a boolean to determine whose turn is it
   is_over: a boolean to determine if the game is is_over
   game_id: id of this game
+  state_id: id of the state being displayed
+  is_current: a boolean to determine if the state being displayed is current
 */
 class Reversi extends React.Component {
   constructor(props) {
@@ -56,6 +61,7 @@ class Reversi extends React.Component {
       .receive("ok", this.gotView.bind(this))
       .receive("error", resp => {console.log("Unable to join", resp)});
 
+    // reset the state (through gotView) when a "new_state" message is received
     this.channel.on("new_state", payload => {
       if (this.state.is_current) {
         this.gotView(payload);
@@ -64,14 +70,13 @@ class Reversi extends React.Component {
   }
 
   // resets the view upon receiving an updated game state from the controller
-  // sends a subsequent "match" message to the channel if two tiles are selected
   gotView(view) {
-    // identify index of new piece and pieces to be flipped
     var new_piece_index;
     var new_piece_val;
     var indexes_to_be_flipped = [];
     var i;
 
+    // identify the new piece and any pieces that are to be flipped
     for (i = 0; i < this.state.vals.length; i++) {
       if (this.state.vals[i] == 0 && view.game.vals[i] != 0) {
         new_piece_index = i;
@@ -199,7 +204,7 @@ class Reversi extends React.Component {
     );
   }
 
-  // event handler for tile selections
+  // event handler for grid square selection
   // uses closure to pass tile index to the channel message
   sendSelection(index) {
     let c = this.channel;
@@ -208,9 +213,11 @@ class Reversi extends React.Component {
       let si = this.state.state_id;
       let gv = this.gotView.bind(this);
 
+      // a boolean to determine if any pieces are in the process of flipping
       var pf = false;
       var j;
 
+      // set pf boolean to true if any pieces are in the process of flipping
       for (j = 0; j < this.state.angles.length; j++) {
         if (this.state.angles[j] != 0) {
           pf = true;
@@ -219,47 +226,67 @@ class Reversi extends React.Component {
       }
 
       return function (ev) {
-        c.push("select", { grid_index: i, current_user_id: u, state_id: si, pieces_flipping: pf }).receive("ok", gv);
+        c.push("select", {
+          grid_index: i,
+          current_user_id: u,
+          state_id: si,
+          pieces_flipping: pf
+        }).receive("ok", gv);
       }
   }
 
-  // resets the state of the game with newly randomized tile values
-  // waits a second before executing to allow previously waiting calls
-  // to complete their execution
+  // concedes a game on behalf of the current (losing) user
   concede() {
     let u = window.currentUserID;
     let si = this.state.state_id;
 
-    this.channel.push("concede", {current_user_id: u, state_id: si}).receive("ok", this.gotView.bind(this));
-
-    // setTimeout(
-    //   () => this.channel.push("concede").receive("ok", this.gotView.bind(this)),
-    //   1000
-    // );
+    this.channel.push("concede", {current_user_id: u, state_id: si})
+      .receive("ok", this.gotView.bind(this));
   }
 
+  // gets and displays the initial state of the game
   init() {
-    this.channel.push("init", {state_id: this.state.state_id}).receive("ok", this.gotView.bind(this));
+    this.channel.push("init", {state_id: this.state.state_id})
+      .receive("ok", this.gotView.bind(this));
   }
 
+  // gets and displays the current state of the game
   now() {
-    this.channel.push("now", {state_id: this.state.state_id}).receive("ok", this.gotView.bind(this));
+    this.channel.push("now", {state_id: this.state.state_id})
+      .receive("ok", this.gotView.bind(this));
   }
 
+  // gets and displays the previous state of the game (if any)
   prev() {
-    this.channel.push("prev", {state_id: this.state.state_id}).receive("ok", this.gotView.bind(this));
+    this.channel.push("prev", {state_id: this.state.state_id})
+      .receive("ok", this.gotView.bind(this));
   }
 
+  // gets and displays the next state of the game (if any)
   next() {
-    this.channel.push("next", {state_id: this.state.state_id}).receive("ok", this.gotView.bind(this));
+    this.channel.push("next", {state_id: this.state.state_id})
+      .receive("ok", this.gotView.bind(this));
   }
 
+  /*
+  displays the game:
+    - first row: game status/mode, dark player info, light player info
+    - 8 x 8 grid of Tile elements, each tile is basically a button for selection
+      each tile has a string index representing its positioning on the board
+      "r#c#" = row number and column number
+      grid indexes correspond to indexes in the state's vals[] and angles[]
+      a val of 0 represents an empty square, 1 a dark piece, 2 a light piece
+      css controls hover piece display for empty squares
+    - bottom row: buttons to control what state is displayed and concede
+  */
   render() {
     let status = "";
     let mode = "";
     let dark_info = "col-sm-3 text-center dark-info rounded pt-2 pb-0 mb-4";
     let light_info = "col-sm-3 text-center light-info rounded pt-2 pb-0 mb-4";
 
+    // determine className for dark player info and light player info
+    // and game status and mode
     if (this.state.is_over) {
       if (this.state.is_current) {
         if (this.state.score_one > this.state.score_two) {
@@ -661,7 +688,9 @@ class Reversi extends React.Component {
   }
 }
 
-// the main component of the game containing a Button
+// the main element of the game board containing a Button
+// button clicking controls the main game play action: "select"
+// css controls the color/angle of the piece to display based on the state
 function Tile(props) {
   let indexString = props.index;
   let row = indexString.charAt(1);
@@ -672,7 +701,7 @@ function Tile(props) {
 
   var class_name;
 
-  if (val == 1) {
+  if (val == 1) { // set dark piece display css, including piece angle
     switch(angle) {
       case 15:
         class_name = "flip-15 rounded-circle border-0 btn-light"
@@ -710,7 +739,7 @@ function Tile(props) {
       default:
         class_name = "cell rounded-circle border-0 btn-dark"
     }
-  } else if (val == 2) {
+  } else if (val == 2) { // set light piece display css, including piece angle
     switch(angle) {
       case 15:
         class_name = "flip-15 rounded-circle border-0 btn-dark"
@@ -748,7 +777,7 @@ function Tile(props) {
       default:
         class_name = "cell rounded-circle border-0 btn-light"
     }
-  } else { // val == 0 for empty cells
+  } else { // val == 0, set empty square display css
     if (!props.state.is_over && props.state.player_ones_turn && props.state.id_one == window.currentUserID) {
       class_name = "cell rounded-circle border-0 btn-empty dark-success"
     } else if (!props.state.is_over && !props.state.player_ones_turn && props.state.id_two == window.currentUserID) {
@@ -761,7 +790,8 @@ function Tile(props) {
   return (
     <div className="col-1 game-board">
       <div className="spacer"></div>
-      <Button className={class_name} onClick={props.select(indexString, props.state.current_user_id)}>
+      <Button className={class_name}
+        onClick={props.select(indexString, props.state.current_user_id)}>
       </Button>
     </div>
   );
