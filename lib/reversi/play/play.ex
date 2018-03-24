@@ -97,54 +97,6 @@ defmodule Reversi.Play do
     }
   end
 
-  # counts the number of the given player's pieces in the given list of vals
-  def get_score(vals, player) do
-    vals
-    |> Enum.reduce(0, fn(v, acc) -> if v == player, do: acc + 1, else: acc end)
-  end
-
-  # returns given state_id and, as a side effect, updates the related game
-  # to be over if the necessary concession conditions are met
-  def concede(state_id, current_user_id) do
-    state = get_state(state_id)
-    game = get_game(state.game_id)
-    current_state = get_current_state(state.game_id)
-    current_user_id = String.to_integer(current_user_id)
-
-    # determine the various conditions necessary for concession
-    is_current = state_id == current_state.id
-    current_users_turn = is_current_users_turn(game, current_state, current_user_id)
-    current_player_losing = is_current_player_losing(current_state)
-
-    # if these conditions are met, update game.is_over to true
-    if !game.is_over && is_current && current_users_turn &&
-      current_player_losing do
-
-      update_game(game, %{is_over: true})
-    end
-
-    # return the given game state regardless
-    state_id
-  end
-
-  def is_current_player_losing(current_state) do
-    vals = get_vals(current_state)
-
-    if current_state.player_ones_turn &&
-      get_score(vals, 1) < get_score(vals, 2) do
-
-      true
-    else
-      if !current_state.player_ones_turn &&
-        get_score(vals, 2) < get_score(vals, 1) do
-
-        true
-      else
-        false
-      end
-    end
-  end
-
   # for valid selections, creates a new back-end game state
   # with updated game board grid values based on game logic
   # and returns this new state's state_id
@@ -203,118 +155,174 @@ defmodule Reversi.Play do
     end
   end
 
-  # determines if the given player has a valid next move from the given state
-  def has_next_move(player, current_state) do
-    # get indexes of all 0's in current_state
-    # for each selected 0 index, accummulate a list of indexes to flip
-    flippable_indexes = get_zero_indexes(current_state)
-    |> Enum.flat_map(fn(i) -> get_indexes_to_flip(i, player, current_state) end)
+  # returns given state_id and, as a side effect, updates the related game
+  # to be over if the necessary concession conditions are met
+  def concede(state_id, current_user_id) do
+    state = get_state(state_id)
+    game = get_game(state.game_id)
+    current_state = get_current_state(state.game_id)
+    current_user_id = String.to_integer(current_user_id)
 
-    # if this accumulated list is empty, return false, otherwise return true
-    Enum.count(flippable_indexes) > 0
+    # determine the various conditions necessary for concession
+    is_current = state_id == current_state.id
+    current_users_turn = is_current_users_turn(game, current_state, current_user_id)
+    current_player_losing = is_current_player_losing(current_state)
+
+    # if these conditions are met, update game.is_over to true
+    if !game.is_over && is_current && current_users_turn &&
+      current_player_losing do
+
+      update_game(game, %{is_over: true})
+    end
+
+    # return the given game state regardless
+    state_id
   end
 
-  def get_zero_indexes(current_state) do
-    index_string_list()
-    |> Enum.filter(fn(i) -> get_val(current_state, i) == 0 end)
+  # takes a game id and returns the current state of this game
+  def get_current_state(game_id) do
+    query = from s in State,
+      where: s.game_id == ^game_id,
+      select: s
+    query = from q in query,
+      order_by: q.inserted_at
+    Ecto.Query.last(query)
+    |> Repo.one()
   end
 
-  # creates an attributes map that sets the selected index val
-  # and all indexes to flip to the corresponding player val
-  # and sets the turn to the opposing player
-  def get_new_state_attrs(current_state, indexes_to_flip, selected, player) do
-    attrs = get_current_state_attrs(current_state)
-    enum = Enum.map(indexes_to_flip, fn(i) ->  {String.to_atom(i), player} end)
+  # takes a game id and returns the initial state of this game
+  def get_initial_state(game_id) do
+    query = from s in State,
+      where: s.game_id == ^game_id,
+      select: s
+    query = from q in query,
+      order_by: q.inserted_at
+    Ecto.Query.first(query)
+    |> Repo.one()
+  end
 
-    Map.merge(attrs, Map.new(enum))
-    |> Map.put(String.to_atom(selected), player)
-    |> Map.put(:player_ones_turn, !current_state.player_ones_turn)
-    |> Map.put(:game_id, current_state.game_id)
+  # returns the previous game state (or the given game state if no prev exists)
+  def get_previous_state(game_id, state_id) do
+    query = from s in State,
+      where: s.game_id == ^game_id and s.id < ^state_id,
+      order_by: s.id,
+      select: s
+
+    previous_states = Repo.all(query)
+
+    if Enum.count(previous_states) == 0 do
+      get_state!(state_id)
+    else
+      Enum.at(previous_states, -1)
+    end
+  end
+
+  # returns the next game state (or the given game state if no prev exists)
+  def get_next_state(game_id, state_id) do
+    query = from s in State,
+      where: s.game_id == ^game_id and s.id > ^state_id,
+      order_by: s.id,
+      select: s
+
+    next_states = Repo.all(query)
+
+    if Enum.count(next_states) == 0 do
+      get_state!(state_id)
+    else
+      Enum.at(next_states, 0)
+    end
+  end
+
+  def get_vals(state) do
+    s = state
+    [s.r1c1, s.r1c2, s.r1c3, s.r1c4, s.r1c5, s.r1c6, s.r1c7, s.r1c8,
+      s.r2c1, s.r2c2, s.r2c3, s.r2c4, s.r2c5, s.r2c6, s.r2c7, s.r2c8,
+      s.r3c1, s.r3c2, s.r3c3, s.r3c4, s.r3c5, s.r3c6, s.r3c7, s.r3c8,
+      s.r4c1, s.r4c2, s.r4c3, s.r4c4, s.r4c5, s.r4c6, s.r4c7, s.r4c8,
+      s.r5c1, s.r5c2, s.r5c3, s.r5c4, s.r5c5, s.r5c6, s.r5c7, s.r5c8,
+      s.r6c1, s.r6c2, s.r6c3, s.r6c4, s.r6c5, s.r6c6, s.r6c7, s.r6c8,
+      s.r7c1, s.r7c2, s.r7c3, s.r7c4, s.r7c5, s.r7c6, s.r7c7, s.r7c8,
+      s.r8c1, s.r8c2, s.r8c3, s.r8c4, s.r8c5, s.r8c6, s.r8c7, s.r8c8]
+  end
+
+  # counts the number of the given player's pieces in the given list of vals
+  def get_score(vals, player) do
+    vals
+    |> Enum.reduce(0, fn(v, acc) -> if v == player, do: acc + 1, else: acc end)
+  end
+
+  def get_val(current_state, index) do
+    case index do
+      "r1c1" -> current_state.r1c1
+      "r1c2" -> current_state.r1c2
+      "r1c3" -> current_state.r1c3
+      "r1c4" -> current_state.r1c4
+      "r1c5" -> current_state.r1c5
+      "r1c6" -> current_state.r1c6
+      "r1c7" -> current_state.r1c7
+      "r1c8" -> current_state.r1c8
+      "r2c1" -> current_state.r2c1
+      "r2c2" -> current_state.r2c2
+      "r2c3" -> current_state.r2c3
+      "r2c4" -> current_state.r2c4
+      "r2c5" -> current_state.r2c5
+      "r2c6" -> current_state.r2c6
+      "r2c7" -> current_state.r2c7
+      "r2c8" -> current_state.r2c8
+      "r3c1" -> current_state.r3c1
+      "r3c2" -> current_state.r3c2
+      "r3c3" -> current_state.r3c3
+      "r3c4" -> current_state.r3c4
+      "r3c5" -> current_state.r3c5
+      "r3c6" -> current_state.r3c6
+      "r3c7" -> current_state.r3c7
+      "r3c8" -> current_state.r3c8
+      "r4c1" -> current_state.r4c1
+      "r4c2" -> current_state.r4c2
+      "r4c3" -> current_state.r4c3
+      "r4c4" -> current_state.r4c4
+      "r4c5" -> current_state.r4c5
+      "r4c6" -> current_state.r4c6
+      "r4c7" -> current_state.r4c7
+      "r4c8" -> current_state.r4c8
+      "r5c1" -> current_state.r5c1
+      "r5c2" -> current_state.r5c2
+      "r5c3" -> current_state.r5c3
+      "r5c4" -> current_state.r5c4
+      "r5c5" -> current_state.r5c5
+      "r5c6" -> current_state.r5c6
+      "r5c7" -> current_state.r5c7
+      "r5c8" -> current_state.r5c8
+      "r6c1" -> current_state.r6c1
+      "r6c2" -> current_state.r6c2
+      "r6c3" -> current_state.r6c3
+      "r6c4" -> current_state.r6c4
+      "r6c5" -> current_state.r6c5
+      "r6c6" -> current_state.r6c6
+      "r6c7" -> current_state.r6c7
+      "r6c8" -> current_state.r6c8
+      "r7c1" -> current_state.r7c1
+      "r7c2" -> current_state.r7c2
+      "r7c3" -> current_state.r7c3
+      "r7c4" -> current_state.r7c4
+      "r7c5" -> current_state.r7c5
+      "r7c6" -> current_state.r7c6
+      "r7c7" -> current_state.r7c7
+      "r7c8" -> current_state.r7c8
+      "r8c1" -> current_state.r8c1
+      "r8c2" -> current_state.r8c2
+      "r8c3" -> current_state.r8c3
+      "r8c4" -> current_state.r8c4
+      "r8c5" -> current_state.r8c5
+      "r8c6" -> current_state.r8c6
+      "r8c7" -> current_state.r8c7
+      "r8c8" -> current_state.r8c8
+    end
   end
 
   def is_current_users_turn(game, current_state, current_user_id) do
     (current_state.player_ones_turn && game.player_one.id == current_user_id) ||
       (!current_state.player_ones_turn && game.player_two.id == current_user_id)
-  end
-
-  def index_string_list() do
-    ["r1c1", "r1c2", "r1c3", "r1c4", "r1c5", "r1c6", "r1c7", "r1c8",
-      "r2c1", "r2c2", "r2c3", "r2c4", "r2c5", "r2c6", "r2c7", "r2c8",
-      "r3c1", "r3c2", "r3c3", "r3c4", "r3c5", "r3c6", "r3c7", "r3c8",
-      "r4c1", "r4c2", "r4c3", "r4c4", "r4c5", "r4c6", "r4c7", "r4c8",
-      "r5c1", "r5c2", "r5c3", "r5c4", "r5c5", "r5c6", "r5c7", "r5c8",
-      "r6c1", "r6c2", "r6c3", "r6c4", "r6c5", "r6c6", "r6c7", "r6c8",
-      "r7c1", "r7c2", "r7c3", "r7c4", "r7c5", "r7c6", "r7c7", "r7c8",
-      "r8c1", "r8c2", "r8c3", "r8c4", "r8c5", "r8c6", "r8c7", "r8c8"]
-  end
-
-  def get_current_state_attrs(current_state) do
-    %{
-      r1c1: get_val(current_state, "r1c1"),
-      r1c2: get_val(current_state, "r1c2"),
-      r1c3: get_val(current_state, "r1c3"),
-      r1c4: get_val(current_state, "r1c4"),
-      r1c5: get_val(current_state, "r1c5"),
-      r1c6: get_val(current_state, "r1c6"),
-      r1c7: get_val(current_state, "r1c7"),
-      r1c8: get_val(current_state, "r1c8"),
-      r2c1: get_val(current_state, "r2c1"),
-      r2c2: get_val(current_state, "r2c2"),
-      r2c3: get_val(current_state, "r2c3"),
-      r2c4: get_val(current_state, "r2c4"),
-      r2c5: get_val(current_state, "r2c5"),
-      r2c6: get_val(current_state, "r2c6"),
-      r2c7: get_val(current_state, "r2c7"),
-      r2c8: get_val(current_state, "r2c8"),
-      r3c1: get_val(current_state, "r3c1"),
-      r3c2: get_val(current_state, "r3c2"),
-      r3c3: get_val(current_state, "r3c3"),
-      r3c4: get_val(current_state, "r3c4"),
-      r3c5: get_val(current_state, "r3c5"),
-      r3c6: get_val(current_state, "r3c6"),
-      r3c7: get_val(current_state, "r3c7"),
-      r3c8: get_val(current_state, "r3c8"),
-      r4c1: get_val(current_state, "r4c1"),
-      r4c2: get_val(current_state, "r4c2"),
-      r4c3: get_val(current_state, "r4c3"),
-      r4c4: get_val(current_state, "r4c4"),
-      r4c5: get_val(current_state, "r4c5"),
-      r4c6: get_val(current_state, "r4c6"),
-      r4c7: get_val(current_state, "r4c7"),
-      r4c8: get_val(current_state, "r4c8"),
-      r5c1: get_val(current_state, "r5c1"),
-      r5c2: get_val(current_state, "r5c2"),
-      r5c3: get_val(current_state, "r5c3"),
-      r5c4: get_val(current_state, "r5c4"),
-      r5c5: get_val(current_state, "r5c5"),
-      r5c6: get_val(current_state, "r5c6"),
-      r5c7: get_val(current_state, "r5c7"),
-      r5c8: get_val(current_state, "r5c8"),
-      r6c1: get_val(current_state, "r6c1"),
-      r6c2: get_val(current_state, "r6c2"),
-      r6c3: get_val(current_state, "r6c3"),
-      r6c4: get_val(current_state, "r6c4"),
-      r6c5: get_val(current_state, "r6c5"),
-      r6c6: get_val(current_state, "r6c6"),
-      r6c7: get_val(current_state, "r6c7"),
-      r6c8: get_val(current_state, "r6c8"),
-      r7c1: get_val(current_state, "r7c1"),
-      r7c2: get_val(current_state, "r7c2"),
-      r7c3: get_val(current_state, "r7c3"),
-      r7c4: get_val(current_state, "r7c4"),
-      r7c5: get_val(current_state, "r7c5"),
-      r7c6: get_val(current_state, "r7c6"),
-      r7c7: get_val(current_state, "r7c7"),
-      r7c8: get_val(current_state, "r7c8"),
-      r8c1: get_val(current_state, "r8c1"),
-      r8c2: get_val(current_state, "r8c2"),
-      r8c3: get_val(current_state, "r8c3"),
-      r8c4: get_val(current_state, "r8c4"),
-      r8c5: get_val(current_state, "r8c5"),
-      r8c6: get_val(current_state, "r8c6"),
-      r8c7: get_val(current_state, "r8c7"),
-      r8c8: get_val(current_state, "r8c8"),
-    }
   end
 
   # given a state and a new move (index, player),
@@ -333,6 +341,21 @@ defmodule Reversi.Play do
     |> Enum.concat(get_northwest_to_flip(player, opponent, row, col, current_state))
     |> Enum.concat(get_north_to_flip(player, opponent, row, col, current_state))
     |> Enum.concat(get_northeast_to_flip(player, opponent, row, col, current_state))
+  end
+
+  # gets the zero-based interger row/col indexes
+  # from the given one-based string index
+  def get_row_col_indexes(index) do
+    { String.to_integer(String.at(index, 1)) - 1,
+      String.to_integer(String.at(index, 3)) - 1 }
+  end
+
+  def get_opponent(player) do
+    case player do
+      1 -> 2
+      2 -> 1
+      _ -> 0
+    end
   end
 
   # gets a list of indexes to flip to the east of the selected row/col
@@ -437,6 +460,12 @@ defmodule Reversi.Play do
     end
   end
 
+  # returns the db field/react Tile index
+  # from the given zero-based row/col indexes
+  def get_index(row, col) do
+    "r" <> Integer.to_string(row + 1) <> "c" <> Integer.to_string(col + 1)
+  end
+
   # given a list of vals in some direction from a selected index,
   # determines if the given player has a valid move in that direction
   # a move is valid if and only if the list of vals starts with some
@@ -480,135 +509,132 @@ defmodule Reversi.Play do
     end
   end
 
-  def get_opponent(player) do
-    case player do
-      1 -> 2
-      2 -> 1
-      _ -> 0
+  # creates an attributes map that sets the selected index val
+  # and all indexes to flip to the corresponding player val
+  # and sets the turn to the opposing player
+  def get_new_state_attrs(current_state, indexes_to_flip, selected, player) do
+    attrs = get_current_state_attrs(current_state)
+    enum = Enum.map(indexes_to_flip, fn(i) ->  {String.to_atom(i), player} end)
+
+    Map.merge(attrs, Map.new(enum))
+    |> Map.put(String.to_atom(selected), player)
+    |> Map.put(:player_ones_turn, !current_state.player_ones_turn)
+    |> Map.put(:game_id, current_state.game_id)
+  end
+
+  def get_current_state_attrs(current_state) do
+    %{
+      r1c1: get_val(current_state, "r1c1"),
+      r1c2: get_val(current_state, "r1c2"),
+      r1c3: get_val(current_state, "r1c3"),
+      r1c4: get_val(current_state, "r1c4"),
+      r1c5: get_val(current_state, "r1c5"),
+      r1c6: get_val(current_state, "r1c6"),
+      r1c7: get_val(current_state, "r1c7"),
+      r1c8: get_val(current_state, "r1c8"),
+      r2c1: get_val(current_state, "r2c1"),
+      r2c2: get_val(current_state, "r2c2"),
+      r2c3: get_val(current_state, "r2c3"),
+      r2c4: get_val(current_state, "r2c4"),
+      r2c5: get_val(current_state, "r2c5"),
+      r2c6: get_val(current_state, "r2c6"),
+      r2c7: get_val(current_state, "r2c7"),
+      r2c8: get_val(current_state, "r2c8"),
+      r3c1: get_val(current_state, "r3c1"),
+      r3c2: get_val(current_state, "r3c2"),
+      r3c3: get_val(current_state, "r3c3"),
+      r3c4: get_val(current_state, "r3c4"),
+      r3c5: get_val(current_state, "r3c5"),
+      r3c6: get_val(current_state, "r3c6"),
+      r3c7: get_val(current_state, "r3c7"),
+      r3c8: get_val(current_state, "r3c8"),
+      r4c1: get_val(current_state, "r4c1"),
+      r4c2: get_val(current_state, "r4c2"),
+      r4c3: get_val(current_state, "r4c3"),
+      r4c4: get_val(current_state, "r4c4"),
+      r4c5: get_val(current_state, "r4c5"),
+      r4c6: get_val(current_state, "r4c6"),
+      r4c7: get_val(current_state, "r4c7"),
+      r4c8: get_val(current_state, "r4c8"),
+      r5c1: get_val(current_state, "r5c1"),
+      r5c2: get_val(current_state, "r5c2"),
+      r5c3: get_val(current_state, "r5c3"),
+      r5c4: get_val(current_state, "r5c4"),
+      r5c5: get_val(current_state, "r5c5"),
+      r5c6: get_val(current_state, "r5c6"),
+      r5c7: get_val(current_state, "r5c7"),
+      r5c8: get_val(current_state, "r5c8"),
+      r6c1: get_val(current_state, "r6c1"),
+      r6c2: get_val(current_state, "r6c2"),
+      r6c3: get_val(current_state, "r6c3"),
+      r6c4: get_val(current_state, "r6c4"),
+      r6c5: get_val(current_state, "r6c5"),
+      r6c6: get_val(current_state, "r6c6"),
+      r6c7: get_val(current_state, "r6c7"),
+      r6c8: get_val(current_state, "r6c8"),
+      r7c1: get_val(current_state, "r7c1"),
+      r7c2: get_val(current_state, "r7c2"),
+      r7c3: get_val(current_state, "r7c3"),
+      r7c4: get_val(current_state, "r7c4"),
+      r7c5: get_val(current_state, "r7c5"),
+      r7c6: get_val(current_state, "r7c6"),
+      r7c7: get_val(current_state, "r7c7"),
+      r7c8: get_val(current_state, "r7c8"),
+      r8c1: get_val(current_state, "r8c1"),
+      r8c2: get_val(current_state, "r8c2"),
+      r8c3: get_val(current_state, "r8c3"),
+      r8c4: get_val(current_state, "r8c4"),
+      r8c5: get_val(current_state, "r8c5"),
+      r8c6: get_val(current_state, "r8c6"),
+      r8c7: get_val(current_state, "r8c7"),
+      r8c8: get_val(current_state, "r8c8"),
+    }
+  end
+
+  # determines if the given player has a valid next move from the given state
+  def has_next_move(player, current_state) do
+    # get indexes of all 0's in current_state
+    # for each selected 0 index, accummulate a list of indexes to flip
+    flippable_indexes = get_zero_indexes(current_state)
+    |> Enum.flat_map(fn(i) -> get_indexes_to_flip(i, player, current_state) end)
+
+    # if this accumulated list is empty, return false, otherwise return true
+    Enum.count(flippable_indexes) > 0
+  end
+
+  def get_zero_indexes(current_state) do
+    index_string_list()
+    |> Enum.filter(fn(i) -> get_val(current_state, i) == 0 end)
+  end
+
+  def index_string_list() do
+    ["r1c1", "r1c2", "r1c3", "r1c4", "r1c5", "r1c6", "r1c7", "r1c8",
+      "r2c1", "r2c2", "r2c3", "r2c4", "r2c5", "r2c6", "r2c7", "r2c8",
+      "r3c1", "r3c2", "r3c3", "r3c4", "r3c5", "r3c6", "r3c7", "r3c8",
+      "r4c1", "r4c2", "r4c3", "r4c4", "r4c5", "r4c6", "r4c7", "r4c8",
+      "r5c1", "r5c2", "r5c3", "r5c4", "r5c5", "r5c6", "r5c7", "r5c8",
+      "r6c1", "r6c2", "r6c3", "r6c4", "r6c5", "r6c6", "r6c7", "r6c8",
+      "r7c1", "r7c2", "r7c3", "r7c4", "r7c5", "r7c6", "r7c7", "r7c8",
+      "r8c1", "r8c2", "r8c3", "r8c4", "r8c5", "r8c6", "r8c7", "r8c8"]
+  end
+
+  def is_current_player_losing(current_state) do
+    vals = get_vals(current_state)
+
+    if current_state.player_ones_turn &&
+      get_score(vals, 1) < get_score(vals, 2) do
+
+      true
+    else
+      if !current_state.player_ones_turn &&
+        get_score(vals, 2) < get_score(vals, 1) do
+
+        true
+      else
+        false
+      end
     end
   end
-
-  # returns the list-based index of the given zero-based row/col indexes
-  def get_vals_index(row, col) do
-    (row * 8) + col
-  end
-
-  # returns the db field/react Tile index
-  # from the given zero-based row/col indexes
-  def get_index(row, col) do
-    "r" <> Integer.to_string(row + 1) <> "c" <> Integer.to_string(col + 1)
-  end
-
-  # gets the zero-based interger row/col indexes
-  # from the given one-based string index
-  def get_row_col_indexes(index) do
-    { String.to_integer(String.at(index, 1)) - 1,
-      String.to_integer(String.at(index, 3)) - 1 }
-  end
-
-  def get_val(current_state, index) do
-    case index do
-      "r1c1" -> current_state.r1c1
-      "r1c2" -> current_state.r1c2
-      "r1c3" -> current_state.r1c3
-      "r1c4" -> current_state.r1c4
-      "r1c5" -> current_state.r1c5
-      "r1c6" -> current_state.r1c6
-      "r1c7" -> current_state.r1c7
-      "r1c8" -> current_state.r1c8
-      "r2c1" -> current_state.r2c1
-      "r2c2" -> current_state.r2c2
-      "r2c3" -> current_state.r2c3
-      "r2c4" -> current_state.r2c4
-      "r2c5" -> current_state.r2c5
-      "r2c6" -> current_state.r2c6
-      "r2c7" -> current_state.r2c7
-      "r2c8" -> current_state.r2c8
-      "r3c1" -> current_state.r3c1
-      "r3c2" -> current_state.r3c2
-      "r3c3" -> current_state.r3c3
-      "r3c4" -> current_state.r3c4
-      "r3c5" -> current_state.r3c5
-      "r3c6" -> current_state.r3c6
-      "r3c7" -> current_state.r3c7
-      "r3c8" -> current_state.r3c8
-      "r4c1" -> current_state.r4c1
-      "r4c2" -> current_state.r4c2
-      "r4c3" -> current_state.r4c3
-      "r4c4" -> current_state.r4c4
-      "r4c5" -> current_state.r4c5
-      "r4c6" -> current_state.r4c6
-      "r4c7" -> current_state.r4c7
-      "r4c8" -> current_state.r4c8
-      "r5c1" -> current_state.r5c1
-      "r5c2" -> current_state.r5c2
-      "r5c3" -> current_state.r5c3
-      "r5c4" -> current_state.r5c4
-      "r5c5" -> current_state.r5c5
-      "r5c6" -> current_state.r5c6
-      "r5c7" -> current_state.r5c7
-      "r5c8" -> current_state.r5c8
-      "r6c1" -> current_state.r6c1
-      "r6c2" -> current_state.r6c2
-      "r6c3" -> current_state.r6c3
-      "r6c4" -> current_state.r6c4
-      "r6c5" -> current_state.r6c5
-      "r6c6" -> current_state.r6c6
-      "r6c7" -> current_state.r6c7
-      "r6c8" -> current_state.r6c8
-      "r7c1" -> current_state.r7c1
-      "r7c2" -> current_state.r7c2
-      "r7c3" -> current_state.r7c3
-      "r7c4" -> current_state.r7c4
-      "r7c5" -> current_state.r7c5
-      "r7c6" -> current_state.r7c6
-      "r7c7" -> current_state.r7c7
-      "r7c8" -> current_state.r7c8
-      "r8c1" -> current_state.r8c1
-      "r8c2" -> current_state.r8c2
-      "r8c3" -> current_state.r8c3
-      "r8c4" -> current_state.r8c4
-      "r8c5" -> current_state.r8c5
-      "r8c6" -> current_state.r8c6
-      "r8c7" -> current_state.r8c7
-      "r8c8" -> current_state.r8c8
-    end
-  end
-
-  def get_vals(state) do
-    s = state
-    [s.r1c1, s.r1c2, s.r1c3, s.r1c4, s.r1c5, s.r1c6, s.r1c7, s.r1c8,
-      s.r2c1, s.r2c2, s.r2c3, s.r2c4, s.r2c5, s.r2c6, s.r2c7, s.r2c8,
-      s.r3c1, s.r3c2, s.r3c3, s.r3c4, s.r3c5, s.r3c6, s.r3c7, s.r3c8,
-      s.r4c1, s.r4c2, s.r4c3, s.r4c4, s.r4c5, s.r4c6, s.r4c7, s.r4c8,
-      s.r5c1, s.r5c2, s.r5c3, s.r5c4, s.r5c5, s.r5c6, s.r5c7, s.r5c8,
-      s.r6c1, s.r6c2, s.r6c3, s.r6c4, s.r6c5, s.r6c6, s.r6c7, s.r6c8,
-      s.r7c1, s.r7c2, s.r7c3, s.r7c4, s.r7c5, s.r7c6, s.r7c7, s.r7c8,
-      s.r8c1, s.r8c2, s.r8c3, s.r8c4, s.r8c5, s.r8c6, s.r8c7, s.r8c8]
-  end
-
-  # takes a game id and returns the current state of this game
-  def get_current_state(game_id) do
-    query = from s in State,
-      where: s.game_id == ^game_id,
-      select: s
-    query = from q in query,
-      order_by: q.inserted_at
-    Ecto.Query.last(query)
-    |> Repo.one()
-  end
-
-  # takes a game id and returns the initial state of this game
-  def get_initial_state(game_id) do
-    query = from s in State,
-      where: s.game_id == ^game_id,
-      select: s
-    query = from q in query,
-      order_by: q.inserted_at
-    Ecto.Query.first(query)
-    |> Repo.one()
-  end
-
 
   @doc """
   Returns the list of games, preloading player_one and player_two.
@@ -833,38 +859,6 @@ defmodule Reversi.Play do
   def get_state!(id), do: Repo.get!(State, id)
 
   def get_state(id), do: Repo.get(State, id)
-
-  # returns the previous game state (or the given game state if no prev exists)
-  def get_previous_state(game_id, state_id) do
-    query = from s in State,
-      where: s.game_id == ^game_id and s.id < ^state_id,
-      order_by: s.id,
-      select: s
-
-    previous_states = Repo.all(query)
-
-    if Enum.count(previous_states) == 0 do
-      get_state!(state_id)
-    else
-      Enum.at(previous_states, -1)
-    end
-  end
-
-  # returns the next game state (or the given game state if no prev exists)
-  def get_next_state(game_id, state_id) do
-    query = from s in State,
-      where: s.game_id == ^game_id and s.id > ^state_id,
-      order_by: s.id,
-      select: s
-
-    next_states = Repo.all(query)
-
-    if Enum.count(next_states) == 0 do
-      get_state!(state_id)
-    else
-      Enum.at(next_states, 0)
-    end
-  end
 
   @doc """
   Creates a state.
