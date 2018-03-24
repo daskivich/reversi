@@ -18,11 +18,15 @@
               <td class="align-middle first-td"><%= user.name %></td>
               <td class="align-middle"><%= user.victories %></td>
               <td class="align-middle"><%= user.defeats %></td>
-              <td class="align-middle"><%= user.games - user.victories - user.defeats %></td>
+              <td class="align-middle">
+                <%= user.games - user.victories - user.defeats %>
+              </td>
               <td class="align-middle"><%= user.differential %></td>
 
               <td class="align-middle last-td">
-                <%= link "games", to: game_path(@conn, :index, %{"user_id" => user.id}), class: "btn btn-block bp" %>
+                <%= link "games",
+                  to: game_path(@conn, :index, %{"user_id" => user.id}),
+                  class: "btn btn-block bp" %>
               </td>
             </tr>
           <% end %>

@@ -4,6 +4,8 @@ defmodule ReversiWeb.GameController do
   alias Reversi.Play
   alias Reversi.Play.Game
 
+  # used via a leader board "games" button click to list the completed games
+  # of the user specified in the params
   def index(conn, params) do
     games = Play.list_games("yours_complete_two_player", params["user_id"])
     render(conn, "index.html", games: games)
@@ -14,6 +16,7 @@ defmodule ReversiWeb.GameController do
     render(conn, "new.html", changeset: changeset)
   end
 
+  # creates an initial back-end game state as well, within Play.create_game()
   def create(conn, %{"game" => game_params}) do
     case Play.create_game(game_params) do
       {:ok, _game} ->
@@ -36,6 +39,7 @@ defmodule ReversiWeb.GameController do
     render(conn, "edit.html", game: game, changeset: changeset)
   end
 
+  # the only time a game is updated is when a second player joins
   def update(conn, %{"id" => id, "game" => game_params}) do
     game = Play.get_game!(id)
 

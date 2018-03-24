@@ -30,13 +30,17 @@
       <div class="row justify-content-center">
         <div class="col-6 pb-0 mb-0">
           <div class="form-group mb-0">
-            <%= link "all games", to: page_path(@conn, :home, %{"which" => "all"}), class: "btn btn-block bs border-0 pt-2 pb-2" %>
+            <%= link "all games",
+              to: page_path(@conn, :home, %{"which" => "all"}),
+              class: "btn btn-block bs border-0 pt-2 pb-2" %>
           </div>
         </div>
 
         <div class="col-6 pb-0 mb-0">
           <div class="form-group mb-0">
-            <%= link "all to join", to: page_path(@conn, :home, %{"which" => "all_to_join"}), class: "btn btn-block bs border-0 pt-2 pb-2" %>
+            <%= link "all to join",
+              to: page_path(@conn, :home, %{"which" => "all_to_join"}),
+              class: "btn btn-block bs border-0 pt-2 pb-2" %>
           </div>
         </div>
       </div>
@@ -46,13 +50,17 @@
       <div class="row justify-content-center">
         <div class="col-6 pb-0 mb-0">
           <div class="form-group mb-0">
-            <%= link "all ongoing", to: page_path(@conn, :home, %{"which" => "all_in_progress"}), class: "btn btn-block bs border-0 pt-2 pb-2" %>
+            <%= link "all ongoing",
+              to: page_path(@conn, :home, %{"which" => "all_in_progress"}),
+              class: "btn btn-block bs border-0 pt-2 pb-2" %>
           </div>
         </div>
 
         <div class="col-6 pb-0 mb-0">
           <div class="form-group mb-0">
-            <%= link "all complete", to: page_path(@conn, :home, %{"which" => "all_complete"}), class: "btn btn-block bs border-0 pt-2 pb-2" %>
+            <%= link "all complete",
+              to: page_path(@conn, :home, %{"which" => "all_complete"}),
+              class: "btn btn-block bs border-0 pt-2 pb-2" %>
           </div>
         </div>
       </div>
@@ -64,13 +72,17 @@
       <div class="row justify-content-center">
         <div class="col-6 pb-0 mb-0">
           <div class="form-group mb-0">
-            <%= link "your games", to: page_path(@conn, :home, %{"which" => "yours"}), class: "btn btn-block bs border-0 pt-2 pb-2" %>
+            <%= link "your games",
+              to: page_path(@conn, :home, %{"which" => "yours"}),
+              class: "btn btn-block bs border-0 pt-2 pb-2" %>
           </div>
         </div>
 
         <div class="col-6 pb-0 mb-0">
           <div class="form-group mb-0">
-            <%= link "yours to join", to: page_path(@conn, :home, %{"which" => "yours_to_join"}), class: "btn btn-block bs border-0 pt-2 pb-2" %>
+            <%= link "yours to join",
+              to: page_path(@conn, :home, %{"which" => "yours_to_join"}),
+              class: "btn btn-block bs border-0 pt-2 pb-2" %>
           </div>
         </div>
       </div>
@@ -80,13 +92,17 @@
       <div class="row justify-content-center">
         <div class="col-6 pb-0 mb-0">
           <div class="form-group mb-0">
-            <%= link "yours ongoing", to: page_path(@conn, :home, %{"which" => "yours_in_progress"}), class: "btn btn-block bs border-0 pt-2 pb-2" %>
+            <%= link "yours ongoing",
+              to: page_path(@conn, :home, %{"which" => "yours_in_progress"}),
+              class: "btn btn-block bs border-0 pt-2 pb-2" %>
           </div>
         </div>
 
         <div class="col-6 pb-0 mb-0">
           <div class="form-group mb-0">
-            <%= link "yours complete", to: page_path(@conn, :home, %{"which" => "yours_complete"}), class: "btn btn-block bs border-0 pt-2 pb-2" %>
+            <%= link "yours complete",
+              to: page_path(@conn, :home, %{"which" => "yours_complete"}),
+              class: "btn btn-block bs border-0 pt-2 pb-2" %>
           </div>
         </div>
       </div>

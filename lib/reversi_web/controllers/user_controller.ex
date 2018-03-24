@@ -14,6 +14,7 @@ defmodule ReversiWeb.UserController do
     render(conn, "new.html", changeset: changeset)
   end
 
+  # redirects to the home page after creation
   def create(conn, %{"user" => user_params}) do
     case Accounts.create_user(user_params) do
       {:ok, _user} ->
@@ -36,6 +37,7 @@ defmodule ReversiWeb.UserController do
     render(conn, "edit.html", user: user, changeset: changeset)
   end
 
+  # redirects to the home page after update
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Accounts.get_user!(id)
 

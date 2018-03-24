@@ -36,9 +36,12 @@ defmodule Reversi.Accounts do
     points_two = u2.victories - u2.defeats
 
     cond do
-      points_one == points_two && u1.differential == u2.differential -> u1.name < u2.name
-      points_one == points_two -> u1.differential > u2.differential
-      true -> points_one > points_two
+      points_one == points_two && u1.differential == u2.differential ->
+          u1.name < u2.name
+      points_one == points_two ->
+          u1.differential > u2.differential
+      true ->
+          points_one > points_two
     end
   end
 
@@ -80,7 +83,9 @@ defmodule Reversi.Accounts do
   end
 
   def verify_tries(check_result, user) do
-    if user.pw_last_try == nil || DateTime.diff(DateTime.utc_now(), user.pw_last_try) > 360 do
+    if user.pw_last_try == nil ||
+      DateTime.diff(DateTime.utc_now(), user.pw_last_try) > 360 do
+
       reset_tries(user)
 
       case check_result do
@@ -110,7 +115,8 @@ defmodule Reversi.Accounts do
   end
 
   def increment_tries(user) do
-    update_user(user, %{pw_tries: user.pw_tries + 1, pw_last_try: DateTime.utc_now()})
+    update_user(user, %{pw_tries: user.pw_tries + 1,
+      pw_last_try: DateTime.utc_now()})
     nil
   end
 

@@ -7,7 +7,8 @@
 
   <div class="row justify-content-center mb-4">
     <div class="col-md-8 form-group">
-      <input class="form-control reg-input pt-2 pb-2" type="email" name="email" placeholder="...">
+      <input class="form-control reg-input pt-2 pb-2"
+        type="email" name="email" placeholder="...">
     </div>
   </div>
 
@@ -19,7 +20,8 @@
 
   <div class="row justify-content-center mb-4">
     <div class="col-md-8">
-      <input class="form-control reg-input pt-2 pb-2" type="password" name="password" placeholder="...">
+      <input class="form-control reg-input pt-2 pb-2"
+        type="password" name="password" placeholder="...">
     </div>
   </div>
 
@@ -31,7 +33,9 @@
 
   <div class="row justify-content-center">
     <div class="col-md-8 form-group mb-4">
-      <%= link "create an account", to: user_path(@conn, :new), class: "btn btn-block btn-create-account" %>
+      <%= link "create an account",
+        to: user_path(@conn, :new),
+        class: "btn btn-block btn-create-account" %>
     </div>
   </div>
 <% end %>

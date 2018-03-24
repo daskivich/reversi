@@ -125,7 +125,9 @@ defmodule Reversi.Play do
     # IO.write("current player losing: ")
     # IO.puts(current_player_losing)
 
-    if !game.is_over && is_current && current_users_turn && current_player_losing do
+    if !game.is_over && is_current && current_users_turn &&
+      current_player_losing do
+
       update_game(game, %{is_over: true})
     end
 
@@ -135,10 +137,14 @@ defmodule Reversi.Play do
   def is_current_player_losing(current_state) do
     vals = get_vals(current_state)
 
-    if current_state.player_ones_turn && get_score(vals, 1) < get_score(vals, 2) do
+    if current_state.player_ones_turn &&
+      get_score(vals, 1) < get_score(vals, 2) do
+
       true
     else
-      if !current_state.player_ones_turn && get_score(vals, 2) < get_score(vals, 1) do
+      if !current_state.player_ones_turn &&
+        get_score(vals, 2) < get_score(vals, 1) do
+
         true
       else
         false
@@ -155,7 +161,12 @@ defmodule Reversi.Play do
     p = if cs.player_ones_turn, do: 1, else: 2
     current_user_id = String.to_integer(current_user_id)
 
-    if !pieces_flipping && is_current && !g.is_over && get_val(cs, index) == 0 && is_current_users_turn(g, cs, current_user_id) do
+    if !pieces_flipping &&
+      is_current &&
+      !g.is_over &&
+      get_val(cs, index) == 0 &&
+      is_current_users_turn(g, cs, current_user_id) do
+
       indexes_to_flip = get_indexes_to_flip(index, p, cs)
 
       if Enum.count(indexes_to_flip) < 1 do
@@ -167,9 +178,13 @@ defmodule Reversi.Play do
         new_state = get_current_state(s.game_id)
 
         cond do
-          has_next_move(get_opponent(p), new_state) -> :ok
-          has_next_move(p, new_state) -> update_state(new_state, %{player_ones_turn: (if p == 1, do: true, else: false)})
-          true -> update_game(g, %{is_over: true})
+          has_next_move(get_opponent(p), new_state) ->
+              :ok
+          has_next_move(p, new_state) ->
+              update_state(new_state,
+                %{player_ones_turn: (if p == 1, do: true, else: false)})
+          true ->
+              update_game(g, %{is_over: true})
         end
 
         new_state.id
@@ -205,7 +220,8 @@ defmodule Reversi.Play do
   end
 
   def is_current_users_turn(game, current_state, current_user_id) do
-    (current_state.player_ones_turn && game.player_one.id == current_user_id) || (!current_state.player_ones_turn && game.player_two.id == current_user_id)
+    (current_state.player_ones_turn && game.player_one.id == current_user_id) ||
+      (!current_state.player_ones_turn && game.player_two.id == current_user_id)
   end
 
   def index_string_list() do
@@ -421,9 +437,12 @@ defmodule Reversi.Play do
       val = get_val(current_state, head)
 
       cond do
-        val == 0 -> []
-        val == player -> possible_flips
-        val == opponent -> valid_rest(player, opponent, tail, Enum.concat(possible_flips, [head]), current_state)
+        val == 0 ->
+            []
+        val == player ->
+            possible_flips
+        val == opponent ->
+            valid_rest(player, opponent, tail, Enum.concat(possible_flips, [head]), current_state)
       end
     end
   end
@@ -447,7 +466,8 @@ defmodule Reversi.Play do
   end
 
   def get_row_col_indexes(index) do
-    { String.to_integer(String.at(index, 1)) - 1, String.to_integer(String.at(index, 3)) - 1 }
+    { String.to_integer(String.at(index, 1)) - 1,
+      String.to_integer(String.at(index, 3)) - 1 }
   end
 
   def get_val(current_state, index) do

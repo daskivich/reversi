@@ -778,9 +778,13 @@ function Tile(props) {
         class_name = "cell rounded-circle border-0 btn-light"
     }
   } else { // val == 0, set empty square display css
-    if (!props.state.is_over && props.state.player_ones_turn && props.state.id_one == window.currentUserID) {
+    if (!props.state.is_over &&
+      props.state.player_ones_turn &&
+      props.state.id_one == window.currentUserID) {
       class_name = "cell rounded-circle border-0 btn-empty dark-success"
-    } else if (!props.state.is_over && !props.state.player_ones_turn && props.state.id_two == window.currentUserID) {
+    } else if (!props.state.is_over &&
+      !props.state.player_ones_turn &&
+      props.state.id_two == window.currentUserID) {
       class_name = "cell rounded-circle border-0 btn-empty light-success"
     } else {
       class_name = "cell rounded-circle border-0 btn-empty game-over"

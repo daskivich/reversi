@@ -18,7 +18,8 @@
 
   <div class="row justify-content-center mb-4">
     <div class="col-md-8 form-group">
-      <%= text_input f, :name, class: "form-control reg-input", placeholder: "..." %>
+      <%= text_input f, :name,
+        class: "form-control reg-input", placeholder: "..." %>
       <%= error_tag f, :name %>
     </div>
   </div>
@@ -31,7 +32,8 @@
 
   <div class="row justify-content-center mb-4">
     <div class="col-md-8 form-group">
-      <%= text_input f, :email, class: "form-control reg-input", placeholder: "..." %>
+      <%= text_input f, :email,
+        class: "form-control reg-input", placeholder: "..." %>
       <%= error_tag f, :email %>
     </div>
   </div>
@@ -44,7 +46,8 @@
 
   <div class="row justify-content-center mb-4">
     <div class="col-md-8 form-group">
-      <%= password_input f, :password, class: "form-control reg-input", placeholder: "..." %>
+      <%= password_input f, :password,
+        class: "form-control reg-input", placeholder: "..." %>
       <%= error_tag f, :password %>
     </div>
   </div>
@@ -57,7 +60,8 @@
 
   <div class="row justify-content-center mb-4">
     <div class="col-md-8 form-group">
-      <%= password_input f, :password_confirmation, class: "form-control reg-input", placeholder: "..." %>
+      <%= password_input f, :password_confirmation,
+        class: "form-control reg-input", placeholder: "..." %>
       <%= error_tag f, :password_confirmation %>
     </div>
   </div>
@@ -70,7 +74,8 @@
 
   <div class="row justify-content-center mb-4">
     <div class="col-md-8 form-group mb-0">
-      <%= link "cancel", to: page_path(@conn, :home), class: "btn btn-block btn-create-account" %>
+      <%= link "cancel", to: page_path(@conn, :home),
+        class: "btn btn-block btn-create-account" %>
     </div>
   </div>
 <% end %>

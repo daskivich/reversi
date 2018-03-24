@@ -34,6 +34,8 @@ defmodule ReversiWeb.PageController do
     end
   end
 
+  # if a user is logged in, render the game page
+  # otherwise redirect to the log-in page (see index above)
   def game(conn, params) do
     user_id = get_session(conn, :user_id)
 

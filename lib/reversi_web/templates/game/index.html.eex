@@ -27,16 +27,20 @@
               complete
             <% else %>
               <%= if game.player_two do %>
-                <%= if game.player_ones_turn and @current_user.id == game.player_one.id do %>
+                <%= if game.player_ones_turn and
+                  @current_user.id == game.player_one.id do %>
                   your turn
                 <% else %>
-                  <%= if game.player_ones_turn and @current_user.id == game.player_two.id do %>
+                  <%= if game.player_ones_turn and
+                    @current_user.id == game.player_two.id do %>
                     opponent's turn
                   <% else %>
-                    <%= if !game.player_ones_turn and @current_user.id == game.player_two.id do %>
+                    <%= if !game.player_ones_turn and
+                      @current_user.id == game.player_two.id do %>
                       your turn
                     <% else %>
-                      <%= if !game.player_ones_turn and @current_user.id == game.player_one.id do %>
+                      <%= if !game.player_ones_turn and
+                        @current_user.id == game.player_one.id do %>
                         opponent's turn
                       <% else %>
                         ongoing
@@ -52,11 +56,15 @@
 
           <td class="align-middle last-td">
             <%= if game.player_two_id == nil do %>
-              <%= form_for @changeset, game_path(@conn, :update, game.id), [method: :put], fn f -> %>
+              <%= form_for @changeset, game_path(@conn, :update, game.id),
+                [method: :put], fn f -> %>
+
                 <% IO.puts game_path(@conn, :update, game.id) %>
                 <%= if @changeset.action do %>
                   <div class="alert alert-danger">
-                    <p>Oops, something went wrong! Please check the errors below.</p>
+                    <p>
+                      Oops, something went wrong! Please check the errors below.
+                    </p>
                   </div>
                 <% end %>
 
@@ -66,7 +74,8 @@
                 </div>
 
                 <div class="form-group">
-                  <%= hidden_input f, :player_one_id, value: game.player_one_id %>
+                  <%= hidden_input f, :player_one_id,
+                    value: game.player_one_id %>
                   <%= error_tag f, :player_one_id %>
                 </div>
 
@@ -76,17 +85,22 @@
                 </div>
 
                 <div class="form-group">
-                  <%= submit "join game", class: "btn btn-primary btn-block bp border-0" %>
+                  <%= submit "join game",
+                    class: "btn btn-primary btn-block bp border-0" %>
                 </div>
               <% end %>
             <% else %>
-              <%= if (game.player_one_id == @current_user.id or game.player_two_id == @current_user.id) and !game.is_over do %>
+              <%= if (game.player_one_id == @current_user.id or
+                game.player_two_id == @current_user.id)
+                and !game.is_over do %>
                 <span>
-                  <%= link "play", to: page_path(@conn, :game, game), class: "btn btn-primary btn-block bp border-0" %>
+                  <%= link "play", to: page_path(@conn, :game, game),
+                    class: "btn btn-primary btn-block bp border-0" %>
                 </span>
               <% else %>
               <span>
-                <%= link "view", to: page_path(@conn, :game, game), class: "btn btn-primary btn-block bp border-0" %>
+                <%= link "view", to: page_path(@conn, :game, game),
+                  class: "btn btn-primary btn-block bp border-0" %>
               </span>
               <% end %>
             <% end %>

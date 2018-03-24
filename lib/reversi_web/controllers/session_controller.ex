@@ -3,6 +3,7 @@ defmodule ReversiWeb.SessionController do
 
   alias Reversi.Accounts
 
+  # creates a session for the given user credentials if authorized
   def create(conn, %{"email" => email, "password" => password}) do
     user = Accounts.get_and_auth_user(email, password)
 
@@ -18,6 +19,7 @@ defmodule ReversiWeb.SessionController do
     end
   end
 
+  # closes the given connection's session
   def delete(conn, _params) do
     conn
     |> delete_session(:user_id)
