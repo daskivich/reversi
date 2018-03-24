@@ -31,19 +31,19 @@ defmodule Reversi.Play do
       0, 0, 0, 0, 0, 0, 0, 0]
 
     %{
-      vals: vals,
-      angles: angles,
+      vals: vals, # an array to represent the contents of game board grid
+      angles: angles, # an array to represent the display angles of game pieces
       id_one: p1.id,
       name_one: p1.name,
-      score_one: get_score(vals, 1),
+      score_one: get_score(vals, 1), # the number of player one's pieces on the board
       id_two: p2.id,
       name_two: p2.name,
-      score_two: get_score(vals, 2),
-      player_ones_turn: s.player_ones_turn,
-      is_over: g.is_over,
+      score_two: get_score(vals, 2), # the number of player two's pieces on the board
+      player_ones_turn: s.player_ones_turn, # boolean: is it player one's turn?
+      is_over: g.is_over, # boolean: is the game over?
       game_id: s.game_id,
       state_id: s.id,
-      is_current: state_id == cs.id
+      is_current: state_id == cs.id # boolean: is this state the current state of the game?
     }
   end
 
@@ -81,19 +81,19 @@ defmodule Reversi.Play do
       0, 0, 0, 0, 0, 0, 0, 0]
 
     %{
-      vals: vals,
-      angles: angles,
+      vals: vals, # an array to represent the contents of game board grid
+      angles: angles, # an array to represent the display angles of game pieces
       id_one: p1.id,
       name_one: p1.name,
-      score_one: get_score(vals, 1),
+      score_one: get_score(vals, 1), # the number of player one's pieces on the board
       id_two: p2.id,
       name_two: p2.name,
-      score_two: get_score(vals, 2),
-      player_ones_turn: s.player_ones_turn,
-      is_over: g.is_over,
+      score_two: get_score(vals, 2), # the number of player two's pieces on the board
+      player_ones_turn: s.player_ones_turn, # boolean: is it player one's turn?
+      is_over: g.is_over, # boolean: is the game over?
       game_id: s.game_id,
       state_id: s.id,
-      is_current: s.id == cs.id
+      is_current: s.id == cs.id # boolean: is this state the current state of the game?
     }
   end
 
