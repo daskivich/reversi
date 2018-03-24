@@ -24,7 +24,7 @@ defmodule Reversi.Accounts do
 
   def get_users_with_stats do
     Repo.all(User)
-    |> Enum.map(fn(u) -> Map.put(u, :games, Play.games(u.id)) end)
+    |> Enum.map(fn(u) -> Map.put(u, :games, Play.competitive_games(u.id)) end)
     |> Enum.map(fn(u) -> Map.put(u, :victories, Play.victories(u.id)) end)
     |> Enum.map(fn(u) -> Map.put(u, :defeats, Play.defeats(u.id)) end)
     |> Enum.map(fn(u) -> Map.put(u, :differential, Play.differential(u.id)) end)

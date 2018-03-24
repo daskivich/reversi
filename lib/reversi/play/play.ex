@@ -9,7 +9,8 @@ defmodule Reversi.Play do
   alias Reversi.Play.Game
   alias Reversi.Play.State
 
-  # returns the client view of the state corresponding to the given state id
+  # returns the front-end view state of the back-end game state
+  # corresponding to the given state_id from the states table
   def client_view(state_id) do
     s = get_state(state_id)
     g = get_game(s.game_id)
@@ -46,11 +47,13 @@ defmodule Reversi.Play do
     }
   end
 
-  # returns the appropriate client view based on the given option
+  # returns the front-end view state of the back-end game state
+  # corresponding to the given state_id from the states table
+  # with respect to the given option
   #   init: the initial state of the given state's game
   #   now: the current state of the given state's game
-  #   prev: the previous state of the given state's game
-  #   next: the next state of the given state's game
+  #   prev: the state immediately prior to the given state
+  #   next: the state immediately following the given state
   def client_view(state_id, option) do
     s = get_state(state_id)
     g = get_game(s.game_id)
@@ -94,43 +97,33 @@ defmodule Reversi.Play do
     }
   end
 
+  # counts the number of the given player's pieces in the given list of vals
   def get_score(vals, player) do
     vals
     |> Enum.reduce(0, fn(v, acc) -> if v == player, do: acc + 1, else: acc end)
   end
 
-  # returns the updated game for valid conessions
+  # returns given state_id and, as a side effect, updates the related game
+  # to be over if the necessary concession conditions are met
   def concede(state_id, current_user_id) do
     state = get_state(state_id)
     game = get_game(state.game_id)
     current_state = get_current_state(state.game_id)
     current_user_id = String.to_integer(current_user_id)
 
-    # IO.write("state id: ")
-    # IO.puts(state_id)
-    # IO.write("current user id: ")
-    # IO.puts(current_user_id)
-    # IO.write("current state id: ")
-    # IO.puts(current_state.id)
-
-    # can only concede if the state is current and it's your turn and you're losing
+    # determine the various conditions necessary for concession
     is_current = state_id == current_state.id
     current_users_turn = is_current_users_turn(game, current_state, current_user_id)
     current_player_losing = is_current_player_losing(current_state)
 
-    # IO.write("is current: ")
-    # IO.puts(is_current)
-    # IO.write("current user's turn: ")
-    # IO.puts(current_users_turn)
-    # IO.write("current player losing: ")
-    # IO.puts(current_player_losing)
-
+    # if these conditions are met, update game.is_over to true
     if !game.is_over && is_current && current_users_turn &&
       current_player_losing do
 
       update_game(game, %{is_over: true})
     end
 
+    # return the given game state regardless
     state_id
   end
 
@@ -152,7 +145,10 @@ defmodule Reversi.Play do
     end
   end
 
-  # creates a new state for valid selections, returns the updated state
+  # for valid selections, creates a new back-end game state
+  # with updated game board grid values based on game logic
+  # and returns this new state's state_id
+  # for invalid selections, returns the given state_id
   def select(state_id, index, current_user_id, pieces_flipping) do
     s = get_state(state_id)
     cs = get_current_state(s.game_id)
@@ -161,6 +157,12 @@ defmodule Reversi.Play do
     p = if cs.player_ones_turn, do: 1, else: 2
     current_user_id = String.to_integer(current_user_id)
 
+    # first validate the selection
+    # - no pieces are in the process of flipping
+    # - the state being displayed must be the current state
+    # - the game must still be in progress
+    # - the selected game board grid square must be empty (val=0)
+    # - at least one opposing piece must be flipped in accordance with game logic
     if !pieces_flipping &&
       is_current &&
       !g.is_over &&
@@ -169,14 +171,20 @@ defmodule Reversi.Play do
 
       indexes_to_flip = get_indexes_to_flip(index, p, cs)
 
-      if Enum.count(indexes_to_flip) < 1 do
+      if Enum.count(indexes_to_flip) < 1 do # invalid selection
         state_id
-      else
-        # create new state from attrs
+      else  # the selection is valid
+        # create the attributes needed to create the new state
         attrs = get_new_state_attrs(cs, indexes_to_flip, index, p)
+
+        # create the new state from these attributes
+        # set the turn for the opposing player by default
         create_state(attrs)
         new_state = get_current_state(s.game_id)
 
+        # determine whose turn it is next
+        # and reset the turn if necessary
+        # or end the game if neither player has a valid move next
         cond do
           has_next_move(get_opponent(p), new_state) ->
               :ok
@@ -187,20 +195,22 @@ defmodule Reversi.Play do
               update_game(g, %{is_over: true})
         end
 
+        # return the state_id of the newly created state
         new_state.id
       end
-    else
+    else # invalid selection
       state_id
     end
   end
 
+  # determines if the given player has a valid next move from the given state
   def has_next_move(player, current_state) do
     # get indexes of all 0's in current_state
-    # concatenate list of indexes to flip for each 0
-    # if list is not empty, return true, else return false
+    # for each selected 0 index, accummulate a list of indexes to flip
     flippable_indexes = get_zero_indexes(current_state)
     |> Enum.flat_map(fn(i) -> get_indexes_to_flip(i, player, current_state) end)
 
+    # if this accumulated list is empty, return false, otherwise return true
     Enum.count(flippable_indexes) > 0
   end
 
@@ -209,6 +219,9 @@ defmodule Reversi.Play do
     |> Enum.filter(fn(i) -> get_val(current_state, i) == 0 end)
   end
 
+  # creates an attributes map that sets the selected index val
+  # and all indexes to flip to the corresponding player val
+  # and sets the turn to the opposing player
   def get_new_state_attrs(current_state, indexes_to_flip, selected, player) do
     attrs = get_current_state_attrs(current_state)
     enum = Enum.map(indexes_to_flip, fn(i) ->  {String.to_atom(i), player} end)
@@ -304,10 +317,13 @@ defmodule Reversi.Play do
     }
   end
 
+  # given a state and a new move (index, player),
+  # creates and returns a list of indexes that should be flipped
   def get_indexes_to_flip(index, player, current_state) do
     { row, col } = get_row_col_indexes(index)
     opponent = get_opponent(player)
 
+    # accumulate in all eight directions
     []
     |> Enum.concat(get_east_to_flip(player, opponent, row, col, current_state))
     |> Enum.concat(get_southeast_to_flip(player, opponent, row, col, current_state))
@@ -421,7 +437,22 @@ defmodule Reversi.Play do
     end
   end
 
+  # given a list of vals in some direction from a selected index,
+  # determines if the given player has a valid move in that direction
+  # a move is valid if and only if the list of vals starts with some
+  # positive number of consecutive opposing player vals
+  # with an immediately following current player val
+  # e.g., if the current player is 1, the following are valid moves
+  # - [2, 1, ?, ?, ?...]
+  # - [2, 2, 1, ?, ?...]
+  # - [2, 2, 2, 1, ?...]
+  # but the following are invalid moves
+  # - [1, ?, ?, ?, ?...]
+  # - [2, 2, 2, 2, 2]
+  # - [0, ?, ?, ?, ?...]
+  # - [2, 2, 0, ?, ?...]
   def valid_move([first | rest], player, opponent, current_state) do
+    # the first val in the list must be the opponent's val
     if get_val(current_state, first) != opponent do
       []
     else
@@ -429,6 +460,7 @@ defmodule Reversi.Play do
     end
   end
 
+  # recursive helper function for valid_move()
   def valid_rest(player, opponent, rest, possible_flips, current_state) do
     if rest == [] do
       []
@@ -442,7 +474,8 @@ defmodule Reversi.Play do
         val == player ->
             possible_flips
         val == opponent ->
-            valid_rest(player, opponent, tail, Enum.concat(possible_flips, [head]), current_state)
+            valid_rest(player, opponent, tail,
+              Enum.concat(possible_flips, [head]), current_state)
       end
     end
   end
@@ -460,11 +493,14 @@ defmodule Reversi.Play do
     (row * 8) + col
   end
 
-  # returns the db field/react Tile index from the given zero-based row/col indexes
+  # returns the db field/react Tile index
+  # from the given zero-based row/col indexes
   def get_index(row, col) do
     "r" <> Integer.to_string(row + 1) <> "c" <> Integer.to_string(col + 1)
   end
 
+  # gets the zero-based interger row/col indexes
+  # from the given one-based string index
   def get_row_col_indexes(index) do
     { String.to_integer(String.at(index, 1)) - 1,
       String.to_integer(String.at(index, 3)) - 1 }
@@ -575,7 +611,7 @@ defmodule Reversi.Play do
 
 
   @doc """
-  Returns the list of games.
+  Returns the list of games, preloading player_one and player_two.
 
   ## Examples
 
@@ -589,6 +625,16 @@ defmodule Reversi.Play do
     |> Repo.preload(:player_two)
   end
 
+  # creates and returns a query for the games table
+  # to select only the appropriate games based on the given which_games
+  # - yours: all games where the given user is a player
+  # - yours_to_join: games waiting for a second player where the given user is player one
+  # - yours_in_progress: games still in progress where the given user is a player
+  # - yours_complete: completed games where the given user is a player
+  # - all: all games
+  # - all_to_join: all games waiting for a second player to join
+  # - all_in_progress: all games still in progress
+  # - all_complete: all games that have ended
   def get_list_games_query(which_games, user_id) do
     case which_games do
       "yours" -> from g in Game,
@@ -634,6 +680,18 @@ defmodule Reversi.Play do
     state.player_ones_turn
   end
 
+  # gets the appropriate list of games based on the given which_games
+  # preloads player_one and player_two
+  # determines and adds player one's score, player two's score,
+  # and whose turn it is as key/value pairs
+  # - yours: all games where the given user is a player
+  # - yours_to_join: games waiting for a second player where the given user is player one
+  # - yours_in_progress: games still in progress where the given user is a player
+  # - yours_complete: completed games where the given user is a player
+  # - all: all games
+  # - all_to_join: all games waiting for a second player to join
+  # - all_in_progress: all games still in progress
+  # - all_complete: all games that have ended
   def list_games(which_games, user_id) do
     Ecto.Query.order_by(get_list_games_query(which_games, user_id), desc: :id)
     |> Repo.all()
@@ -661,6 +719,7 @@ defmodule Reversi.Play do
   def get_game!(id), do: Repo.get!(Game, id)
 
   # a non-bang version of get game that doesn't throw an error
+  # and preloads player_one and player_two
   def get_game(id) do
     Repo.get(Game, id)
     |> Repo.preload(:player_one)
@@ -668,7 +727,7 @@ defmodule Reversi.Play do
   end
 
   @doc """
-  Creates a game.
+  Creates a game and a new state with default initial vals.
 
   ## Examples
 
@@ -687,7 +746,8 @@ defmodule Reversi.Play do
     { resp, game } = Repo.insert(game)
 
     # create new starting state
-    newState = %{ :game_id => game.id, :r4c4 => 2, :r4c5 => 1, :r5c4 => 1, :r5c5 => 2 }
+    newState =
+        %{ :game_id => game.id, :r4c4 => 2, :r4c5 => 1, :r5c4 => 1, :r5c5 => 2 }
     create_state(newState)
 
     # return response with game
@@ -871,7 +931,8 @@ defmodule Reversi.Play do
     State.changeset(state, %{})
   end
 
-  def games(user_id) do
+  # gets a list of completed competitive games for the given user
+  def competitive_games(user_id) do
     query = from g in Game,
       where: g.is_over and g.player_one_id != g.player_two_id
         and (g.player_one_id == ^user_id or g.player_two_id == ^user_id),
@@ -881,6 +942,7 @@ defmodule Reversi.Play do
     |> Enum.count()
   end
 
+  # increments the given accumulation if the given player won the given game
   def accumulate_victories(game, acc, player) do
     current_state = get_current_state(game.id)
     vals = get_vals(current_state)
@@ -892,26 +954,32 @@ defmodule Reversi.Play do
     end
   end
 
+  # counts the number of victories the given user has
   def victories(user_id) do
+    # query to select competitive games in which the given user was player one
     p1_games = from g in Game,
       where: g.is_over
         and g.player_one_id == ^user_id
         and g.player_two_id != ^user_id,
       select: g
 
+    # query to select competitive games in which the given user was player two
     p2_games = from g in Game,
       where: g.is_over
         and g.player_one_id != ^user_id
         and g.player_two_id == ^user_id,
       select: g
 
+    # count victories as player one
     victories = Repo.all(p1_games)
     |> Enum.reduce(0, fn(g, acc) -> accumulate_victories(g, acc, 1) end)
 
+    # count victories as player two and add to victoris as player one
     Repo.all(p2_games)
     |> Enum.reduce(victories, fn(g, acc) -> accumulate_victories(g, acc, 2) end)
   end
 
+  # increments the given accumulation if the given player lost the given game
   def accumulate_defeats(game, acc, player) do
     current_state = get_current_state(game.id)
     vals = get_vals(current_state)
@@ -923,22 +991,27 @@ defmodule Reversi.Play do
     end
   end
 
+  # counts the number of defeats the given user has
   def defeats(user_id) do
+    # query to select competitive games in which the given user was player one
     p1_games = from g in Game,
       where: g.is_over
         and g.player_one_id == ^user_id
         and g.player_two_id != ^user_id,
       select: g
 
+    # query to select competitive games in which the given user was player two
     p2_games = from g in Game,
       where: g.is_over
         and g.player_one_id != ^user_id
         and g.player_two_id == ^user_id,
       select: g
 
+    # count defeats as player one
     defeats = Repo.all(p1_games)
     |> Enum.reduce(0, fn(g, acc) -> accumulate_defeats(g, acc, 1) end)
 
+    # count defeats as player two and add to defeats as player one
     Repo.all(p2_games)
     |> Enum.reduce(defeats, fn(g, acc) -> accumulate_defeats(g, acc, 2) end)
   end
