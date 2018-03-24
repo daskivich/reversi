@@ -9,6 +9,12 @@ defmodule Reversi.Play do
   alias Reversi.Play.Game
   alias Reversi.Play.State
 
+#-------------------------- Four Major Methods --------------------------------#
+  # 1. client_view(state_id)
+  # 2. client_view(state_id, option)
+  # 3. select()
+  # 4. concede()
+
   # returns the front-end view state of the back-end game state
   # corresponding to the given state_id from the states table
   def client_view(state_id) do
@@ -178,6 +184,8 @@ defmodule Reversi.Play do
     # return the given game state regardless
     state_id
   end
+
+  #-------------------------- Helper Methods ---------------------------------#
 
   # takes a game id and returns the current state of this game
   def get_current_state(game_id) do
@@ -727,6 +735,8 @@ defmodule Reversi.Play do
     |> Enum.map(fn(g) -> Map.put(g, :score_two, get_score(get_vals(get_current_state(g.id)), 2)) end)
     |> Enum.map(fn(g) -> Map.put(g, :player_ones_turn, get_player_ones_turn(get_current_state(g.id))) end)
   end
+
+  #---------------------- Repo Access Methods --------------------------------#
 
   @doc """
   Gets a single game.
