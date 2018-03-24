@@ -5,15 +5,15 @@ defmodule Reversi.Accounts.User do
   alias Reversi.Play.Game
 
   schema "users" do
-    field :email, :string
+    field :email, :string # must be unique
     field :name, :string
 
-    field :password_hash, :string
-    field :pw_tries, :integer
-    field :pw_last_try, :utc_datetime
+    field :password_hash, :string # hash value of this user's password
+    field :pw_tries, :integer # a running count of attempted log-ins
+    field :pw_last_try, :utc_datetime # time of last attempted log-in
 
     field :password, :string, virtual: true
-    field :password_confirmation, :string, virtual: true
+    field :password_confirmation, :string, virtual: true # must match password
 
     has_many :player_one_games, Game, foreign_key: :player_one_id
     has_many :player_two_games, Game, foreign_key: :player_two_id

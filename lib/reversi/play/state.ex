@@ -4,6 +4,7 @@ defmodule Reversi.Play.State do
 
   alias Reversi.Play.Game
 
+  # "r#" for row index, "c#" for column index on an 8x8 game-board grid
   schema "states" do
     field :r2c6, :integer, default: 0
     field :r5c3, :integer, default: 0
@@ -54,7 +55,7 @@ defmodule Reversi.Play.State do
     field :r8c2, :integer, default: 0
     field :r6c7, :integer, default: 0
     field :r7c1, :integer, default: 0
-    field :player_ones_turn, :boolean, default: true
+    field :player_ones_turn, :boolean, default: true # true if player one's turn, false if player two's turn
     field :r3c4, :integer, default: 0
     field :r5c7, :integer, default: 0
     field :r5c6, :integer, default: 0

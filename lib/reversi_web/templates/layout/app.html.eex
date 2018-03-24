@@ -36,7 +36,7 @@
               class: "nav-item nav-link" %>
 
             <%= link "log out", to: "/session", method: :delete,
-              sclass: "nav-item nav-link" %>
+              class: "nav-item nav-link" %>
           <% end %>
         </nav>
       </div>

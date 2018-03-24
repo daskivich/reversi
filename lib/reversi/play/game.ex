@@ -6,7 +6,7 @@ defmodule Reversi.Play.Game do
   alias Reversi.Play.State
 
   schema "games" do
-    field :is_over, :boolean, default: false
+    field :is_over, :boolean, default: false # true of game is over, false otherwise
     belongs_to :player_one, User
     belongs_to :player_two, User
     has_many :states, State, foreign_key: :game_id
