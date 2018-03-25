@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <div class="row justify-content-center mb-4">
+  <div class="row justify-content-center mb-3">
     <div class="col-md-8 form-group">
       <%= text_input f, :name,
         class: "form-control reg-input", placeholder: "..." %>
@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <div class="row justify-content-center mb-4">
+  <div class="row justify-content-center mb-3">
     <div class="col-md-8 form-group">
       <%= text_input f, :email,
         class: "form-control reg-input", placeholder: "..." %>
@@ -44,7 +44,7 @@
     </div>
   </div>
 
-  <div class="row justify-content-center mb-4">
+  <div class="row justify-content-center mb-3">
     <div class="col-md-8 form-group">
       <%= password_input f, :password,
         class: "form-control reg-input", placeholder: "..." %>
@@ -58,7 +58,7 @@
     </div>
   </div>
 
-  <div class="row justify-content-center mb-4">
+  <div class="row justify-content-center mb-3">
     <div class="col-md-8 form-group">
       <%= password_input f, :password_confirmation,
         class: "form-control reg-input", placeholder: "..." %>
@@ -66,7 +66,7 @@
     </div>
   </div>
 
-  <div class="row justify-content-center mb-4">
+  <div class="row justify-content-center mb-2">
     <div class="col-md-8 form-group">
       <%= submit "submit", class: "btn btn-block btn-log-in border-0" %>
     </div>
