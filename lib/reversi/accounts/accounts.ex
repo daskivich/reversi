@@ -78,7 +78,6 @@ defmodule Reversi.Accounts do
     else
       Comeonin.Argon2.check_pass(user, password)
       |> verify_tries(user)
-
     end
 
     # case Comeonin.Argon2.check_pass(user, password) do
@@ -87,6 +86,7 @@ defmodule Reversi.Accounts do
     # end
   end
 
+  # allows 10 log-in attempts per hour
   def verify_tries(check_result, user) do
     if user.pw_last_try == nil ||
       DateTime.diff(DateTime.utc_now(), user.pw_last_try) > 360 do
@@ -109,16 +109,19 @@ defmodule Reversi.Accounts do
     end
   end
 
+  # resets pw_tries to 0 and pw_last_try to utc_now
   def reset_tries(user) do
     update_user(user, %{pw_tries: 0, pw_last_try: DateTime.utc_now()})
     get_user(user.id)
   end
 
+  # resets pw_tries to 1 and pw_last_try to utc_now
   def one_failed_try(user) do
     update_user(user, %{pw_tries: 1, pw_last_try: DateTime.utc_now()})
     nil
   end
 
+  # increments pw_tries and sets pw_last_try to utc_now
   def increment_tries(user) do
     update_user(user, %{pw_tries: user.pw_tries + 1,
       pw_last_try: DateTime.utc_now()})

@@ -339,11 +339,15 @@ tbody tr:hover td {
 }
 
 // to allow for dynamic square cols in game board
+// idea for general approach from Bootply user "jquery"
+// https://www.bootply.com/99278
 .spacer {
   padding-bottom: calc(100% + 30px);
 }
 
 // sizing and positioning of the stanard game piece (button)
+// idea for general approach from Bootply user "jquery"
+// https://www.bootply.com/99278
 .cell {
   position: absolute;
   top: 11.5%;
